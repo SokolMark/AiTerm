@@ -1,0 +1,24 @@
+* {
+  box-sizing: border-box !important;
+}
+
+html, body {
+  width: 430px;
+  height: 600px;
+  margin: 0;
+  padding: 0;
+  overflow: hidden !important;
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  transition: background-color 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* ДОБАВЛЕНО: плавность для body */
+}
+
+#root {
+  height: 100%;
+}
+
+body.light-theme {
+  background-color: #f0f2f5;
+}
+body.dark-theme {
+  background-color: #1e1e1e;
+}

@@ -1,0 +1,151 @@
+/* =========================================
+   LANGUAGE SELECTOR MODALS
+   ========================================= */
+.lang-modal {
+    position: absolute;
+    z-index: 70;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    opacity: 0;
+    /* Убрал кастомные переменные: */
+    transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.4s ease;
+}
+
+.lang-modal.left {
+    top: 0;
+    left: 0;
+    width: calc(100% + 100px);
+    height: 100%;
+    padding-right: 100px;
+    background: linear-gradient(to right, var(--lang-modal-start) 0%, var(--lang-modal-end) 100%);
+    -webkit-mask-image: linear-gradient(to right, black calc(100% - 100px), transparent 100%);
+    mask-image: linear-gradient(to right, black calc(100% - 100px), transparent 100%);
+    transform: translateX(-100%);
+}
+
+.lang-modal.left .modal-close-btn {
+    right: 120px;
+    top: 20px;
+}
+
+.lang-modal.right {
+    top: 0;
+    right: 0;
+    left: auto;
+    width: calc(100% + 100px);
+    height: 100%;
+    padding-left: 100px;
+    background: linear-gradient(to left, var(--lang-modal-start) 0%, var(--lang-modal-end) 100%);
+    -webkit-mask-image: linear-gradient(to left, black calc(100% - 100px), transparent 100%);
+    mask-image: linear-gradient(to left, black calc(100% - 100px), transparent 100%);
+    transform: translateX(100%);
+}
+
+.lang-modal.right .modal-close-btn {
+    right: 20px;
+    top: 20px;
+}
+
+.lang-modal.bottom {
+    bottom: 0;
+    left: 0;
+    top: auto;
+    width: 100%;
+    height: calc(100% + 100px);
+    padding-top: 100px;
+    background: linear-gradient(to top, var(--lang-modal-start) 0%, var(--lang-modal-end) 100%);
+    -webkit-mask-image: linear-gradient(to top, black calc(100% - 100px), transparent 100%);
+    mask-image: linear-gradient(to top, black calc(100% - 100px), transparent 100%);
+    transform: translateY(100%);
+}
+
+.lang-modal.bottom .modal-close-btn {
+    top: 120px;
+    right: 20px;
+}
+
+.popup-container.dark-theme .lang-modal.left {
+    background: linear-gradient(to right, #1f4277 0%, #1a1a1a 100%);
+}
+
+.popup-container.dark-theme .lang-modal.right {
+    background: linear-gradient(to left, #1f4277 0%, #1a1a1a 100%);
+}
+
+.popup-container.dark-theme .lang-modal.bottom {
+    background: linear-gradient(to top, #1f4277 0%, #1a1a1a 100%);
+}
+
+.lang-modal.open {
+    opacity: 1;
+    transform: translate(0, 0);
+    pointer-events: auto;
+}
+
+.modal-close-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.lang-list {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    align-items: center;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    max-height: 80vh;
+    padding: 30px 40px;
+    width: 100%;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 30px, black calc(100% - 30px), transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, black 30px, black calc(100% - 30px), transparent 100%);
+}
+
+.lang-list::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    background: transparent !important;
+}
+
+.lang-item {
+    font-size: 28px;
+    font-weight: bold;
+    color: #FFFFFF;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.popup-container.dark-theme .lang-item {
+    color: #e0e0e0;
+}
+
+.lang-item:not(.selected) {
+    opacity: 0.6;
+}
+
+.lang-item:hover {
+    transform: scale(1.1);
+    opacity: 1;
+    color: var(--header-bg);
+}
+
+.lang-item.active {
+    color: var(--header-bg);
+    text-decoration: underline;
+}
+
+.lang-flag {
+    margin-right: 15px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}

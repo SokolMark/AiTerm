@@ -1,0 +1,11 @@
+@import "./styles/variables.css";
+@import "./styles/layout.css";
+@import "./styles/header.css";
+@import "./styles/menu.css";
+@import "./styles/languages.css";
+@import "./styles/translation.css";
+@import "./styles/stats.css";
+@import "./styles/examples.css";
+@import "./styles/modals.css";
+@import "./styles/prices.css";
+@import "./styles/shared.css";
