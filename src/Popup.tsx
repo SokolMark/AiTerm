@@ -30,7 +30,7 @@ const localTranslations = {
 };
 
 const planConfig = {
-    free: { main: 20, quick: 30, dicts: 5, words: 200 },
+    free: { main: 15, quick: 30, dicts: 5, words: 200 },
     pro: { main: 100, quick: 150, dicts: 50, words: 1000 },
     super: { main: 250, quick: 300, dicts: 99999, words: 999999 }
 };
@@ -410,6 +410,7 @@ function Popup() {
         finally { setIsLoggingIn(false); }
     };
 
+
     useLayoutEffect(() => {
         localStorage.setItem('aiterm-theme', isDarkTheme ? 'dark' : 'light');
         document.body.className = isDarkTheme ? 'dark-theme' : 'light-theme';
@@ -678,13 +679,15 @@ function Popup() {
     }
 
     const toggleSourceLangObj = displaySourceLangObj;
-    const currentCarouselData = contentLang === 'source' ? wordData?.sourceContent : wordData?.targetContent;
+
+    // БЕЗОПАСНЫЙ ФОЛЛБЭК: Если ИИ забыл создать targetContent, берем из корня
+    const currentCarouselData = contentLang === 'source' ? wordData?.sourceContent : (wordData?.targetContent || wordData);
 
     return (
         <div className={`popup-container ${isDarkTheme ? 'dark-theme' : 'light-theme'}`}>
             <div className={`toast ${toastState.type} ${toastState.visible ? 'visible' : ''}`}>{toastState.message}</div>
 
-            <div className="content-wrapper" style={{ transition: 'background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease' }}>
+            <div className="content-wrapper">
                 <header className="header">
                     <div className="header-left">
                         <div className="info-trigger" onClick={() => { setIsMenuOpen(true); setActiveMenuView('main'); }}><MenuIcon/></div>
@@ -760,12 +763,14 @@ function Popup() {
                         </div>
                         <div className="examples-arrows-container">
                             <div className={`examples-arrow-button left-arrow ${shakeArrow === 'left' ? 'shake-left' : ''}`} onClick={() => { if (activeTabIndex > 0) setActiveTabIndex(activeTabIndex - 1); else { setShakeArrow('left'); setTimeout(() => setShakeArrow(null), 300); } }}>
-                                <svg width="38" height="24" viewBox="0 0 32 24" fill="transparent" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg">
+                                {/* УВЕЛИЧИЛ СТРЕЛКИ ЗДЕСЬ */}
+                                <svg width="46" height="30" viewBox="0 0 32 24" fill="transparent" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg">
                                     <path className="custom-arrow-path" d="M20 4l8 8-8 8v-5H4v-6h16V4z" />
                                 </svg>
                             </div>
                             <div className={`examples-arrow-button right-arrow ${shakeArrow === 'right' ? 'shake-right' : ''}`} onClick={() => { if (activeTabIndex < 2) setActiveTabIndex(activeTabIndex + 1); else { setShakeArrow('right'); setTimeout(() => setShakeArrow(null), 300); } }}>
-                                <svg width="38" height="24" viewBox="0 0 32 24" fill="transparent" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg">
+                                {/* УВЕЛИЧИЛ СТРЕЛКИ ЗДЕСЬ */}
+                                <svg width="46" height="30" viewBox="0 0 32 24" fill="transparent" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg">
                                     <path className="custom-arrow-path" d="M20 4l8 8-8 8v-5H4v-6h16V4z" />
                                 </svg>
                             </div>
@@ -1112,21 +1117,17 @@ function Popup() {
                         </div>
                         <div className="prices-body">
 
-                            <div className="rules-hint-box">
+                            <div className="rules-hint-box" style={{ fontWeight: 500, letterSpacing: '0.3px' }}>
                                 <p>• Limits reset every 12 hours.</p>
                                 <p>• Main Requests = detailed translations in this app.</p>
                                 <p>• Quick Requests = fast translations on websites.</p>
-                                <div style={{ marginTop: '10px', paddingTop: '8px', borderTop: '1px dashed rgba(220, 53, 69, 0.3)' }}>
-                                    <p style={{ color: 'var(--text-color)', fontWeight: 'bold', marginBottom: '4px' }}>⚡ Why Gemini 3.1 (PRO)?</p>
-                                    <p style={{ color: 'var(--text-color)', opacity: 0.9 }}>It unlocks native-level nuances, understands complex idioms, and provides richer, deeper contextual examples.</p>
-                                </div>
                             </div>
 
                             <div className="plan-card">
                                 <div className="plan-name">Free Plan</div>
                                 <div className="plan-details">
-                                    <div className="plan-row"><span>AI Model:</span><span>gemini-flash-lite-latest</span></div>
-                                    <div className="plan-row"><span>Main Requests:</span><span>20 / 12 hrs</span></div>
+                                    <div className="plan-row"><span>AI Model:</span><span>Gemini 3.1 flash lite preview</span></div>
+                                    <div className="plan-row"><span>Main Requests:</span><span>15 / 12 hrs</span></div>
                                     <div className="plan-row"><span>Quick Requests:</span><span>30 / 12 hrs</span></div>
                                     <div className="plan-row"><span>Max Dictionaries:</span><span>5</span></div>
                                     <div className="plan-row"><span>Saved Words:</span><span>200 total</span></div>
@@ -1161,7 +1162,7 @@ function Popup() {
                             </div>
 
                             <div style={{marginTop: '15px', textAlign: 'center', padding: '15px', background: 'var(--card-bg)', border: '1px solid var(--border-color)', borderRadius: '12px'}}>
-                                <div style={{fontSize: '11.5px', color: 'var(--text-secondary)', marginBottom: '12px', lineHeight: '1.5'}}>
+                                <div style={{fontSize: '11.5px', color: 'var(--text-secondary)', marginBottom: '12px', lineHeight: '1.5', fontWeight: 500, letterSpacing: '0.3px'}}>
                                     {t.donateText}
                                 </div>
                                 <a href="https://donatello.to/fenrizar" target="_blank" rel="noopener noreferrer" className="donate-btn">

@@ -70,7 +70,7 @@ export const fetchWordData = async (word: string, sourceLang: string | null, tar
     const currentPlan = localStorage.getItem('aiterm-plan') || 'free';
     const isPremiumBackend = currentPlan === 'pro' || currentPlan === 'super';
 
-    // КОРОТКИЙ ПРОМПТ ДЛЯ FREE ТАРИФА
+    // УЛУЧШИЛ ПРОМПТ ДЛЯ ЖЕСТКОГО РАЗДЕЛЕНИЯ ЯЗЫКОВ
     const freePrompt = `
 Task: Translate "${word}" to ${targetLang}. Source: ${sourceLang || 'auto'}.
 
@@ -86,19 +86,18 @@ Rules:
   4-5 = medium frequency
   2-3 = rare
   1 = very rare
-- examples: 2-3 simple sentences
-- synonyms: 2-3 common synonyms
-- explanation: 1-2 short sentences
+- detectedSourceLangCode: EXACT 2-letter ISO code. Even if the text is random gibberish/nonsense, strictly detect the language based on the alphabet/characters used.
 
 CRITICAL LANGUAGE ISOLATION:
-1. "sourceContent" MUST be written 100% in the exact source language.
-2. "targetContent" MUST be written 100% in ${targetLang}. No exceptions. Do NOT use English to explain foreign words in this block. Explanations must be strictly in ${targetLang}.
+1. "sourceContent" fields (examples, synonyms, explanation) MUST be written entirely in the source language (${sourceLang || 'the detected source language'}).
+2. "targetContent" fields (examples, synonyms, explanation) MUST be written entirely in ${targetLang}.
+Do not mix languages. Explanations in targetContent MUST be strictly in ${targetLang}.
 
 JSON:
 {"translation":"","level":"","frequency":1,"detectedSourceLangCode":"","sourceContent":{"examples":[],"synonyms":[],"explanation":""},"targetContent":{"examples":[],"synonyms":[],"explanation":""}}
 `;
 
-    // РАЗВЕРНУТЫЙ ПРОМПТ ДЛЯ PREMIUM ТАРИФА
+    // УЛУЧШИЛ ПРОМПТ ДЛЯ PREMIUM
     const premiumPrompt = `
 Task: Translate "${word}" to ${targetLang}. Source: ${sourceLang || 'auto'}.
 
@@ -108,13 +107,12 @@ Rules:
 - translation: main translation
 - level: CEFR A1-C2 or "?"
 - frequency: 1-10 using same scale as free
-- examples: 4-7 sentences (easy → harder)
-- synonyms: 5-10 frequent synonyms
-- explanation: 3-5 sentences
+- detectedSourceLangCode: EXACT 2-letter ISO code. Even if the text is random gibberish/nonsense, strictly detect the language based on the alphabet/characters used.
 
 CRITICAL LANGUAGE ISOLATION:
-1. "sourceContent" MUST be written 100% in the exact source language.
-2. "targetContent" MUST be written 100% in ${targetLang}. No exceptions. Do NOT use English to explain foreign words in this block. Explanations must be strictly in ${targetLang}.
+1. "sourceContent" fields MUST be written entirely in the source language (${sourceLang || 'the detected source language'}). Give 4-7 sentences for examples, 5-10 synonyms, and 3-5 sentences for explanation.
+2. "targetContent" fields MUST be written entirely in ${targetLang}. Give 4-7 sentences for examples, 5-10 synonyms, and 3-5 sentences for explanation.
+Do not mix languages. Explanations in targetContent MUST be strictly in ${targetLang}.
 
 JSON:
 {"translation":"","level":"","frequency":1,"detectedSourceLangCode":"","sourceContent":{"examples":[],"synonyms":[],"explanation":""},"targetContent":{"examples":[],"synonyms":[],"explanation":""}}

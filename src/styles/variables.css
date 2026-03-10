@@ -10,9 +10,10 @@ html, body {
     overflow: hidden !important;
     outline: none !important;
     border: none !important;
-    /* УБИРАЕМ РАЗМЫТИЕ ШРИФТОВ */
-    -webkit-font-smoothing: antialiased !important;
-    -moz-osx-font-smoothing: grayscale !important;
+
+    /* ВОЗВРАЩАЕМ ВИНДОВСКОЕ СГЛАЖИВАНИЕ CLEARTYPE */
+    -webkit-font-smoothing: subpixel-antialiased !important;
+    -moz-osx-font-smoothing: auto !important;
     text-rendering: optimizeLegibility !important;
 }
 
@@ -25,7 +26,6 @@ html, body {
     box-sizing: inherit;
 }
 
-/* УБИРАЕМ РАЗМЫТИЕ КАРТИНОК И ФЛАГОВ */
 img {
     image-rendering: -webkit-optimize-contrast;
     image-rendering: crisp-edges;
@@ -38,58 +38,62 @@ img {
     --theme-scale-sm: 1;
     --bg-color: #f0f2f5;
     --bg-color-rgb: 240, 242, 245;
-    --text-color: #333333;
-    --text-secondary: #5f6368;
+
+    /* Четкие контрастные цвета для светлой темы */
+    --text-color: #000000;
+    --text-secondary: #333333;
+    --hint-color: #555555;
+    --term-color: #737b8b; /* Сделали чуть темнее, глубокий серый */
+
     --accent-color: #4a90e2;
     --card-bg: #FFFFFF;
     --border-color: #ccc;
     --header-bg: #4a90e2;
     --header-text: white;
-    --hint-color: #888;
     --panel-bg: #FFFFFF;
     --arrow-hover: #0056D2;
     --bg-gradient-start: rgba(74, 144, 226, 0.18);
     --inward-glow: rgba(74, 144, 226, 0.4);
     --donut-inner-bg: rgba(74, 144, 226, 0.15);
-    --term-color: #777777;
+
     --swap-btn-scale: 1.05;
     --lang-btn-basis: 112px;
     --translate-btn-basis: 145px;
     --popup-border: var(--header-bg);
     --lang-modal-start: var(--header-bg);
     --lang-modal-end: #8ab4f8;
-
-    /* НОВЫЙ ИДЕАЛЬНО ГЛАДКИЙ ЦВЕТ ДЛЯ СВЕТЛОЙ ТЕМЫ */
     --bg-gradient-bottom: #d7e2f1;
 }
 
 .popup-container.dark-theme {
     --bg-color: #1e1e1e;
     --bg-color-rgb: 30, 30, 30;
-    --text-color: #e0e0e0;
-    --text-secondary: #9aa0a6;
+
+    /* Четкие контрастные цвета для темной темы */
+    --text-color: #FFFFFF;
+    --text-secondary: #CCCCCC;
+    --hint-color: #AAAAAA;
+    --term-color: #949cac; /* Пропорционально затемнили для темной темы */
+
     --accent-color: #3a7dcb;
     --card-bg: #2a2a2a;
     --border-color: #555;
     --header-bg: #3a7dcb;
-    --header-text: #e0e0e0;
-    --hint-color: #aaa;
+    --header-text: #ffffff;
     --panel-bg: #212121;
     --arrow-hover: #5ba3f5;
     --bg-gradient-start: rgba(58, 125, 203, 0.18);
     --inward-glow: rgba(58, 125, 203, 0.5);
     --donut-inner-bg: rgba(58, 125, 203, 0.25);
-    --term-color: #bbbbbb;
+
     --popup-border: #333333;
     --lang-modal-start: #1f4277;
     --lang-modal-end: #1a1a1a;
-    --theme-scale-lg: 1.05;
-    --theme-scale-sm: 1.02;
+    --theme-scale-lg: 1;
+    --theme-scale-sm: 1;
     --swap-btn-scale: 0.95;
     --lang-btn-basis: 118px;
     --translate-btn-basis: 155px;
-
-    /* НОВЫЙ ИДЕАЛЬНО ГЛАДКИЙ ЦВЕТ ДЛЯ ТЕМНОЙ ТЕМЫ */
     --bg-gradient-bottom: #253649;
 }
 
@@ -108,25 +112,45 @@ img {
     overflow: hidden;
     font-family: 'Segoe UI', system-ui, sans-serif;
     transition: border-color 0.3s ease, background-color 0.3s ease;
-    will-change: background-color, border-color;
 }
 
 .content-wrapper {
     width: 100%;
     height: 100%;
-
-    /* СПЛОШНОЙ ГРАДИЕНТ БЕЗ ПРОЗРАЧНОСТИ (УБИРАЕТ ВСЕ ПОЛОСЫ) */
-    background: linear-gradient(to bottom, var(--bg-color) 45%, var(--bg-gradient-bottom) 100%);
+    background-color: transparent;
     box-shadow: none;
-
+    position: relative;
+    z-index: 1;
     overflow: hidden;
     padding: 15px 15px 0 15px;
     display: flex;
     flex-direction: column;
-    transition: background 0.3s ease, color 0.3s ease;
 }
 
-/* СКРОЛЛБАРЫ ПРИМЕНЕНЫ КО ВСЕМ КОНТЕЙНЕРАМ */
+.content-wrapper::before,
+.content-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.content-wrapper::before {
+    background: linear-gradient(to bottom, #f0f2f5 45%, #d7e2f1 100%);
+    opacity: 1;
+}
+
+.content-wrapper::after {
+    background: linear-gradient(to bottom, #1e1e1e 45%, #253649 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.popup-container.dark-theme .content-wrapper::after {
+    opacity: 1;
+}
+
 .text-box::-webkit-scrollbar, .examples-content::-webkit-scrollbar,
 .prices-body::-webkit-scrollbar, .lang-list::-webkit-scrollbar,
 .dictionaries-body::-webkit-scrollbar, .words-list-container::-webkit-scrollbar,
@@ -182,7 +206,7 @@ img {
     align-items: center;
     justify-content: center;
     color: var(--text-secondary);
-    transition: transform 0.2s ease, color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.2s ease, background-color 0.3s ease, box-shadow 0.3s ease;
     width: 32px;
     height: 32px;
     border-radius: 8px;
