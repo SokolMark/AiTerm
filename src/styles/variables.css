@@ -1,16 +1,41 @@
 /* =========================================
-   GLOBAL & THEME VARIABLES
+   СБРОС БАЗОВЫХ СТИЛЕЙ CHROME EXTENSION
    ========================================= */
+html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 430px;
+    height: 600px;
+    background-color: transparent !important;
+    overflow: hidden !important;
+    outline: none !important;
+    border: none !important;
+    /* УБИРАЕМ РАЗМЫТИЕ ШРИФТОВ */
+    -webkit-font-smoothing: antialiased !important;
+    -moz-osx-font-smoothing: grayscale !important;
+    text-rendering: optimizeLegibility !important;
+}
+
 * {
     box-sizing: border-box !important;
+    outline: none !important;
 }
 
-.popup-container {
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+/* УБИРАЕМ РАЗМЫТИЕ КАРТИНОК И ФЛАГОВ */
+img {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+:root {
     --theme-scale-lg: 1;
     --theme-scale-sm: 1;
-}
-
-.popup-container.light-theme {
     --bg-color: #f0f2f5;
     --bg-color-rgb: 240, 242, 245;
     --text-color: #333333;
@@ -33,6 +58,9 @@
     --popup-border: var(--header-bg);
     --lang-modal-start: var(--header-bg);
     --lang-modal-end: #8ab4f8;
+
+    /* НОВЫЙ ИДЕАЛЬНО ГЛАДКИЙ ЦВЕТ ДЛЯ СВЕТЛОЙ ТЕМЫ */
+    --bg-gradient-bottom: #d7e2f1;
 }
 
 .popup-container.dark-theme {
@@ -52,13 +80,117 @@
     --inward-glow: rgba(58, 125, 203, 0.5);
     --donut-inner-bg: rgba(58, 125, 203, 0.25);
     --term-color: #bbbbbb;
+    --popup-border: #333333;
     --lang-modal-start: #1f4277;
     --lang-modal-end: #1a1a1a;
-    --popup-border: #333333;
-
     --theme-scale-lg: 1.05;
     --theme-scale-sm: 1.02;
     --swap-btn-scale: 0.95;
     --lang-btn-basis: 118px;
     --translate-btn-basis: 155px;
+
+    /* НОВЫЙ ИДЕАЛЬНО ГЛАДКИЙ ЦВЕТ ДЛЯ ТЕМНОЙ ТЕМЫ */
+    --bg-gradient-bottom: #253649;
+}
+
+.popup-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+    background-color: var(--header-bg);
+    color: var(--text-color);
+    width: 430px;
+    height: 600px;
+    position: relative;
+    border: 3px solid var(--popup-border);
+    border-radius: 0 !important;
+    overflow: hidden;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+    will-change: background-color, border-color;
+}
+
+.content-wrapper {
+    width: 100%;
+    height: 100%;
+
+    /* СПЛОШНОЙ ГРАДИЕНТ БЕЗ ПРОЗРАЧНОСТИ (УБИРАЕТ ВСЕ ПОЛОСЫ) */
+    background: linear-gradient(to bottom, var(--bg-color) 45%, var(--bg-gradient-bottom) 100%);
+    box-shadow: none;
+
+    overflow: hidden;
+    padding: 15px 15px 0 15px;
+    display: flex;
+    flex-direction: column;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* СКРОЛЛБАРЫ ПРИМЕНЕНЫ КО ВСЕМ КОНТЕЙНЕРАМ */
+.text-box::-webkit-scrollbar, .examples-content::-webkit-scrollbar,
+.prices-body::-webkit-scrollbar, .lang-list::-webkit-scrollbar,
+.dictionaries-body::-webkit-scrollbar, .words-list-container::-webkit-scrollbar,
+.word-detail-box::-webkit-scrollbar, .dict-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.text-box::-webkit-scrollbar-track, .examples-content::-webkit-scrollbar-track,
+.prices-body::-webkit-scrollbar-track, .dictionaries-body::-webkit-scrollbar-track,
+.words-list-container::-webkit-scrollbar-track, .word-detail-box::-webkit-scrollbar-track, .dict-list::-webkit-scrollbar-track {
+    background: transparent;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.text-box::-webkit-scrollbar-thumb, .examples-content::-webkit-scrollbar-thumb,
+.prices-body::-webkit-scrollbar-thumb, .dictionaries-body::-webkit-scrollbar-thumb,
+.words-list-container::-webkit-scrollbar-thumb, .word-detail-box::-webkit-scrollbar-thumb, .dict-list::-webkit-scrollbar-thumb {
+    background-color: var(--header-bg);
+    border-radius: 10px;
+    opacity: 0.5;
+    transition: background-color 0.3s ease;
+}
+
+.popup-container.dark-theme .text-box::-webkit-scrollbar-thumb,
+.popup-container.dark-theme .examples-content::-webkit-scrollbar-thumb,
+.popup-container.dark-theme .prices-body::-webkit-scrollbar-thumb,
+.popup-container.dark-theme .dictionaries-body::-webkit-scrollbar-thumb,
+.popup-container.dark-theme .words-list-container::-webkit-scrollbar-thumb,
+.popup-container.dark-theme .word-detail-box::-webkit-scrollbar-thumb,
+.popup-container.dark-theme .dict-list::-webkit-scrollbar-thumb {
+    background-color: var(--border-color);
+}
+
+.examples-content::-webkit-scrollbar-thumb:hover, .prices-body::-webkit-scrollbar-thumb:hover,
+.dictionaries-body::-webkit-scrollbar-thumb:hover, .words-list-container::-webkit-scrollbar-thumb:hover,
+.word-detail-box::-webkit-scrollbar-thumb:hover, .dict-list::-webkit-scrollbar-thumb:hover {
+    background-color: var(--arrow-hover);
+}
+
+.popup-container.dark-theme .examples-content::-webkit-scrollbar-thumb:hover,
+.popup-container.dark-theme .prices-body::-webkit-scrollbar-thumb:hover,
+.popup-container.dark-theme .dictionaries-body::-webkit-scrollbar-thumb:hover,
+.popup-container.dark-theme .words-list-container::-webkit-scrollbar-thumb:hover,
+.popup-container.dark-theme .word-detail-box::-webkit-scrollbar-thumb:hover,
+.popup-container.dark-theme .dict-list::-webkit-scrollbar-thumb:hover {
+    background-color: var(--text-secondary);
+}
+
+.close-button, .back-button, .modal-close-btn, .absolute-close {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    transition: transform 0.2s ease, color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: transparent;
+}
+
+.close-button:hover, .back-button:hover, .modal-close-btn:hover, .absolute-close:hover {
+    color: var(--accent-color);
+    background: rgba(66, 133, 244, 0.1);
+    box-shadow: 0 0 0 2px var(--accent-color);
 }

@@ -1,12 +1,160 @@
 /* =========================================
-   TOAST NOTIFICATION
+   MODALS, OVERLAYS, TOASTS
    ========================================= */
-.warning-toast {
+.lang-modal {
+    position: absolute;
+    z-index: 70;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    opacity: 0;
+    transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.4s ease;
+}
+
+.lang-modal.left {
+    top: 0;
+    left: 0;
+    width: calc(100% + 100px);
+    height: 100%;
+    padding-right: 100px;
+    background: linear-gradient(to right, var(--lang-modal-start) 0%, var(--lang-modal-end) 100%);
+    -webkit-mask-image: linear-gradient(to right, black calc(100% - 100px), transparent 100%);
+    mask-image: linear-gradient(to right, black calc(100% - 100px), transparent 100%);
+    transform: translateX(-100%);
+}
+
+.lang-modal.left .modal-close-btn {
+    right: 120px;
+    top: 20px;
+}
+
+.lang-modal.right {
+    top: 0;
+    right: 0;
+    left: auto;
+    width: calc(100% + 100px);
+    height: 100%;
+    padding-left: 100px;
+    background: linear-gradient(to left, var(--lang-modal-start) 0%, var(--lang-modal-end) 100%);
+    -webkit-mask-image: linear-gradient(to left, black calc(100% - 100px), transparent 100%);
+    mask-image: linear-gradient(to left, black calc(100% - 100px), transparent 100%);
+    transform: translateX(100%);
+}
+
+.lang-modal.right .modal-close-btn {
+    right: 20px;
+    top: 20px;
+}
+
+.lang-modal.bottom {
+    bottom: 0;
+    left: 0;
+    top: auto;
+    width: 100%;
+    height: calc(100% + 100px);
+    padding-top: 100px;
+    background: linear-gradient(to top, var(--lang-modal-start) 0%, var(--lang-modal-end) 100%);
+    -webkit-mask-image: linear-gradient(to top, black calc(100% - 100px), transparent 100%);
+    mask-image: linear-gradient(to top, black calc(100% - 100px), transparent 100%);
+    transform: translateY(100%);
+}
+
+.lang-modal.bottom .modal-close-btn {
+    top: 120px;
+    right: 20px;
+}
+
+.popup-container.dark-theme .lang-modal.left {
+    background: linear-gradient(to right, #1f4277 0%, #1a1a1a 100%);
+}
+
+.popup-container.dark-theme .lang-modal.right {
+    background: linear-gradient(to left, #1f4277 0%, #1a1a1a 100%);
+}
+
+.popup-container.dark-theme .lang-modal.bottom {
+    background: linear-gradient(to top, #1f4277 0%, #1a1a1a 100%);
+}
+
+.lang-modal.open {
+    opacity: 1;
+    transform: translate(0, 0);
+    pointer-events: auto;
+}
+
+.modal-close-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.lang-list {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    align-items: center;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    max-height: 80vh;
+    padding: 30px 40px;
+    width: 100%;
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 30px, black calc(100% - 30px), transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, black 30px, black calc(100% - 30px), transparent 100%);
+}
+
+.lang-list::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    background: transparent !important;
+}
+
+.lang-item {
+    font-size: 28px;
+    font-weight: bold;
+    color: #FFFFFF;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.popup-container.dark-theme .lang-item {
+    color: #e0e0e0;
+}
+
+.lang-item:not(.selected) {
+    opacity: 0.6;
+}
+
+.lang-item:hover {
+    transform: scale(1.1);
+    opacity: 1;
+    color: var(--header-bg);
+}
+
+.lang-item.active {
+    color: var(--header-bg);
+    text-decoration: underline;
+}
+
+.lang-flag {
+    margin-right: 15px;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* --- TOAST NOTIFICATIONS (Обновлено) --- */
+.toast {
     position: absolute;
     top: -60px;
     left: 50%;
     transform: translateX(-50%);
-    background-color: #ff4757;
     color: white;
     padding: 10px 20px;
     border-radius: 20px;
@@ -14,20 +162,29 @@
     font-weight: bold;
     z-index: 100;
     pointer-events: none;
-    box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4);
     text-align: center;
     width: max-content;
     max-width: 90%;
-    transition: top 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    transition: top 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55), background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.warning-toast.visible {
+.toast.visible {
     top: 15px;
 }
 
-/* =========================================
-   CONFIRMATION MODAL
-   ========================================= */
+/* Красный для ошибок */
+.toast.error {
+    background-color: #ff4757;
+    box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4);
+}
+
+/* Зеленый для успеха */
+.toast.success {
+    background-color: #2ed573;
+    box-shadow: 0 4px 15px rgba(46, 213, 115, 0.4);
+}
+
+/* ------------------------------------- */
 .confirm-overlay {
     position: absolute;
     top: 0;
@@ -41,8 +198,9 @@
     justify-content: center;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.3s ease, background-color 0.25s ease;
-    z-index: 10;
+    transition: opacity 0.3s ease, background-color 0.3s ease;
+    /* БЫЛО 10, СТАЛО 100 - теперь окно всегда поверх меню */
+    z-index: 100;
 }
 
 .popup-container.light-theme .confirm-overlay {
@@ -65,7 +223,7 @@
     text-align: center;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
     transform: translateY(20px) scale(0.95);
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.25s ease, box-shadow 0.25s ease;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .confirm-overlay.visible .confirm-box {
@@ -81,14 +239,14 @@
     align-items: center;
     justify-content: center;
     margin-bottom: 16px;
-    transition: background-color 0.25s ease;
+    transition: background-color 0.3s ease;
 }
 
 .confirm-icon svg {
     width: 24px;
     height: 24px;
     color: var(--text-color);
-    transition: color 0.25s ease;
+    transition: color 0.3s ease;
 }
 
 .confirm-title {
@@ -96,7 +254,7 @@
     font-weight: bold;
     color: var(--text-color);
     margin: 0 0 8px 0;
-    transition: color 0.25s ease;
+    transition: color 0.3s ease;
 }
 
 .confirm-text {
@@ -104,7 +262,7 @@
     color: var(--hint-color);
     margin: 0 0 24px 0;
     line-height: 1.4;
-    transition: color 0.25s ease;
+    transition: color 0.3s ease;
 }
 
 .confirm-actions {
@@ -121,7 +279,7 @@
     font-size: 14px;
     font-weight: bold;
     cursor: pointer;
-    transition: all 0.25s ease;
+    transition: all 0.3s ease;
 }
 
 .confirm-btn.cancel {
@@ -151,9 +309,6 @@
     background-color: #e84118;
 }
 
-/* =========================================
-   SAVE MODAL
-   ========================================= */
 .save-box {
     position: relative;
     padding-top: 40px;
@@ -195,7 +350,7 @@
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.25s ease;
+    transition: all 0.3s ease;
 }
 
 .dict-item-btn:hover {
@@ -205,12 +360,9 @@
 
 .dict-item-btn svg {
     color: var(--header-bg);
-    transition: color 0.25s ease;
+    transition: color 0.3s ease;
 }
 
-/* =========================================
-   AUTH OVERLAY
-   ========================================= */
 .auth-overlay {
     position: fixed;
     top: 0;
@@ -225,7 +377,7 @@
     justify-content: center;
     align-items: center;
     animation: fadeIn 0.3s ease forwards;
-    transition: background-color 0.25s ease;
+    transition: background-color 0.3s ease;
 }
 
 .auth-box {
@@ -240,7 +392,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .auth-title {
@@ -248,7 +400,7 @@
     font-weight: 700;
     margin-bottom: 8px;
     color: var(--text-color);
-    transition: color 0.25s ease;
+    transition: color 0.3s ease;
 }
 
 .auth-subtitle {
@@ -256,7 +408,7 @@
     color: var(--text-secondary);
     margin-bottom: 25px;
     line-height: 1.4;
-    transition: color 0.25s ease;
+    transition: color 0.3s ease;
 }
 
 .google-login-btn {
@@ -273,7 +425,7 @@
     font-size: 15px;
     font-weight: bold;
     cursor: pointer;
-    transition: all 0.25s ease;
+    transition: all 0.3s ease;
 }
 
 .google-login-btn:hover:not(:disabled) {
@@ -293,4 +445,22 @@
     to {
         opacity: 1;
     }
+}
+
+/* --- DICTIONARY INPUT --- */
+.dict-input {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-size: 14px;
+    margin-bottom: 20px;
+    outline: none;
+    transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+}
+
+.dict-input:focus {
+    border-color: var(--header-bg);
 }

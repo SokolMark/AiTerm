@@ -35,18 +35,11 @@
     flex-shrink: 0;
     letter-spacing: 1.2px;
     font-family: inherit;
-    transition: color 0.25s ease;
+    transition: color 0.3s ease;
 }
 
-.title-ai {
-    color: var(--header-bg);
-    transition: color 0.25s ease;
-}
-
-.title-term {
-    color: var(--term-color);
-    transition: color 0.25s ease;
-}
+.title-ai { color: var(--header-bg); transition: color 0.3s ease; }
+.title-term { color: var(--term-color); transition: color 0.3s ease; }
 
 .info-trigger {
     font-size: 20px;
@@ -65,7 +58,7 @@
     justify-content: center;
     line-height: 1;
     font-style: normal;
-    transition: opacity 0.25s ease, transform 0.2s ease, color 0.25s ease;
+    transition: opacity 0.25s ease, transform 0.2s ease, color 0.3s ease;
 }
 
 .info-trigger:hover {
@@ -73,7 +66,6 @@
     transform: scale(1.1);
 }
 
-/* --- THEME SWITCH (TRACK & BALL) --- */
 .theme-switch {
     position: relative;
     width: 44px;
@@ -91,7 +83,7 @@
     background-color: var(--header-bg);
     opacity: 0.2;
     border-radius: 7px;
-    transition: background-color 0.25s ease;
+    transition: background-color 0.3s ease;
 }
 
 .theme-ball {
@@ -105,24 +97,19 @@
     align-items: center;
     justify-content: center;
     font-size: 14px;
-    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), color 0.25s ease;
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s ease;
     z-index: 2;
     color: var(--header-bg);
 }
 
-.theme-ball.light {
-    transform: translateX(0);
-}
-
-.theme-ball.dark {
-    transform: translateX(20px);
-}
+.theme-ball.light { transform: translateX(0); }
+.theme-ball.dark { transform: translateX(20px); }
 
 .theme-ball svg {
     width: 18px;
     height: 18px;
     stroke: var(--header-bg);
-    transition: stroke 0.25s ease;
+    transition: stroke 0.3s ease;
 }
 
 .save-btn {
@@ -136,7 +123,7 @@
     padding: 2px 8px;
     border-radius: 15px;
     user-select: none;
-    transition: transform 0.2s ease, opacity 0.25s ease, color 0.25s ease, background-color 0.25s ease;
+    transition: transform 0.2s ease, opacity 0.25s ease, color 0.3s ease, background-color 0.3s ease;
 }
 
 .save-btn:hover {

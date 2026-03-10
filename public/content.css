@@ -15,9 +15,8 @@
     font-weight: 700;
     font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
     cursor: pointer;
-    box-shadow:
-            0 4px 12px rgba(74, 144, 226, 0.35),
-            0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(74, 144, 226, 0.35),
+    0 1px 3px rgba(0, 0, 0, 0.1);
     user-select: none;
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     letter-spacing: 0.3px;
@@ -26,17 +25,15 @@
 
 #aiterm-trigger-btn:hover {
     background: linear-gradient(135deg, #3d7ecf, #5558e3);
-    box-shadow:
-            0 6px 20px rgba(74, 144, 226, 0.45),
-            0 2px 6px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 6px 20px rgba(74, 144, 226, 0.45),
+    0 2px 6px rgba(0, 0, 0, 0.12);
     transform: translateY(-1px);
 }
 
 #aiterm-trigger-btn:active {
     transform: translateY(0) scale(0.96);
-    box-shadow:
-            0 2px 8px rgba(74, 144, 226, 0.3),
-            0 1px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(74, 144, 226, 0.3),
+    0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 @keyframes aitermBtnPop {
@@ -58,10 +55,9 @@
     border: 1px solid rgba(0, 0, 0, 0.06);
     border-radius: 16px;
     padding: 16px;
-    box-shadow:
-            0 8px 32px rgba(74, 144, 226, 0.18),
-            0 2px 8px rgba(0, 0, 0, 0.06),
-            0 0 0 1px rgba(74, 144, 226, 0.05);
+    box-shadow: 0 8px 32px rgba(74, 144, 226, 0.18),
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    0 0 0 1px rgba(74, 144, 226, 0.05);
     font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
     color: #2d3348;
     width: 370px;
@@ -87,10 +83,9 @@
     background: #1a1d27;
     color: #e1e4ea;
     border: 1px solid rgba(255, 255, 255, 0.06);
-    box-shadow:
-            0 8px 32px rgba(0, 0, 0, 0.4),
-            0 2px 8px rgba(0, 0, 0, 0.2),
-            0 0 0 1px rgba(74, 144, 226, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4),
+    0 2px 8px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(74, 144, 226, 0.1);
 }
 
 /* --- ЗАГОЛОВОК --- */
@@ -301,12 +296,24 @@
 
 /* --- Анімація тремтіння стрілки --- */
 @keyframes aitermTremble {
-    0%   { transform: translate(0, 0); }
-    20%  { transform: translate(-1.5px, 0.5px); }
-    40%  { transform: translate(1.5px, -0.5px); }
-    60%  { transform: translate(-0.5px, -1px); }
-    80%  { transform: translate(1px, 0.5px); }
-    100% { transform: translate(0, 0); }
+    0% {
+        transform: translate(0, 0);
+    }
+    20% {
+        transform: translate(-1.5px, 0.5px);
+    }
+    40% {
+        transform: translate(1.5px, -0.5px);
+    }
+    60% {
+        transform: translate(-0.5px, -1px);
+    }
+    80% {
+        transform: translate(1px, 0.5px);
+    }
+    100% {
+        transform: translate(0, 0);
+    }
 }
 
 .aiterm-tremble {
@@ -352,4 +359,67 @@
 .aiterm-dark .aiterm-cancel-btn:hover {
     background: rgba(255, 107, 107, 0.18);
     box-shadow: 0 2px 8px rgba(255, 107, 107, 0.2);
+}
+
+/* --- Подсказка про словари --- */
+.aiterm-save-hint {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px dashed rgba(0, 0, 0, 0.08);
+    font-size: 11px;
+    color: #8b90a0;
+    text-align: center;
+    line-height: 1.3;
+    font-style: italic;
+}
+
+#aiterm-floating-window.aiterm-dark .aiterm-save-hint {
+    border-top: 1px dashed rgba(255, 255, 255, 0.1);
+    color: #7b8193;
+}
+
+/* --- Подсказка про словари --- */
+.aiterm-save-hint {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px dashed rgba(0, 0, 0, 0.08);
+    font-size: 11px;
+    color: #8b90a0;
+    text-align: center;
+    line-height: 1.3;
+    font-style: italic;
+}
+
+#aiterm-floating-window.aiterm-dark .aiterm-save-hint {
+    border-top: 1px dashed rgba(255, 255, 255, 0.1);
+    color: #7b8193;
+}
+
+/* --- Подсказки про словари и настройки --- */
+.aiterm-save-hint {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px dashed rgba(0, 0, 0, 0.08);
+    font-size: 11px;
+    color: #8b90a0;
+    text-align: center;
+    line-height: 1.3;
+    font-style: italic;
+}
+
+.aiterm-disable-hint {
+    margin-top: 8px;
+    font-size: 10px;
+    color: #a0a5b5;
+    text-align: center;
+    line-height: 1.2;
+}
+
+#aiterm-floating-window.aiterm-dark .aiterm-save-hint {
+    border-top: 1px dashed rgba(255, 255, 255, 0.1);
+    color: #7b8193;
+}
+
+#aiterm-floating-window.aiterm-dark .aiterm-disable-hint {
+    color: #6b7189;
 }

@@ -6,150 +6,309 @@ export interface WordData {
     examples: string[];
     synonyms: string[];
     detectedSourceLangCode?: string;
-    sourceContent?: {
-        examples: string[];
-        synonyms: string[];
-        explanation: string;
-    };
-    targetContent?: {
-        examples: string[];
-        synonyms: string[];
-        explanation: string;
-    };
+    sourceContent?: { examples: string[]; synonyms: string[]; explanation: string; };
+    targetContent?: { examples: string[]; synonyms: string[]; explanation: string; };
 }
 
-// --- ФУНКЦИЯ ПЕРЕВОДА (ОБЩЕНИЕ С ИИ) ---
-export const fetchWordData = async (word: string, sourceLang: string | null, targetLang: string): Promise<WordData> => {
-    // Получаем статус пользователя: премиум он или нет
-    const isPremium = localStorage.getItem('aiterm-premium') === 'true';
+const BASE_URL = "http://127.0.0.1:8787";
+// const BASE_URL = "https://aiterm-proxy.sarkkofag.workers.dev";
 
-    // Формируем системный промпт для ИИ, чтобы он всегда возвращал строгий JSON
-    const prompt = `
-Translate the following word/phrase: "${word}".
-Target language: ${targetLang}.
-Source language: ${sourceLang ? sourceLang : 'Auto-detect'}.
+const CACHE_KEY = 'aiterm-translation-cache';
+const MAX_CACHE_SIZE = 100;
 
-Provide a response strictly in the following JSON format:
-{
-  "translation": "Translated word/phrase",
-  "level": "CEFR level (A1, A2, B1, B2, C1, C2) or '?' if unknown",
-  "frequency": 1 to 10 (1 = rare, 10 = extremely common),
-  "detectedSourceLangCode": "2-letter language code (e.g., 'en', 'ru', 'uk')",
-  "sourceContent": {
-    "examples": ["example 1 in source language", "example 2 in source language"],
-    "synonyms": ["synonym 1", "synonym 2"],
-    "explanation": "Short explanation in source language"
-  },
-  "targetContent": {
-    "examples": ["example 1 in target language", "example 2 in target language"],
-    "synonyms": ["synonym 1", "synonym 2"],
-    "explanation": "Short explanation in target language"
-  }
+interface CacheEntry {
+    wordData: WordData;
+    timestamp: number;
 }
-Return ONLY valid JSON without markdown formatting like \`\`\`json.
-`;
 
+const getCacheKey = (word: string, sourceLang: string | null, targetLang: string) => {
+    return `${word.trim().toLowerCase()}_${sourceLang || 'auto'}_${targetLang}`;
+};
+
+const getFromCache = (key: string): WordData | null => {
     try {
-        // Запрос к твоему Воркеру (замени ссылку на глобальную, когда задеплоишь)
-        // Если у тебя один роут на воркере обрабатывает и авторизацию, и перевод,
-        // убедись, что ссылки /auth и /translate настроены правильно.
-        // Сейчас я ставлю базовый локальный адрес, как было в твоем Воркере.
-        const response = await fetch("http://127.0.0.1:8787/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                prompt: prompt,
-                isPremium: isPremium // Передаем статус премиума в Воркер!
-            })
-        });
+        const cacheStr = localStorage.getItem(CACHE_KEY);
+        if (!cacheStr) return null;
+        const cache = JSON.parse(cacheStr);
+        if (cache[key]) {
+            console.log("⚡ Loaded from local cache!");
+            return cache[key].wordData;
+        }
+    } catch (e) {
+        console.error("Cache read error", e);
+    }
+    return null;
+};
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+const saveToCache = (key: string, wordData: WordData) => {
+    try {
+        let cache: Record<string, CacheEntry> = {};
+        const cacheStr = localStorage.getItem(CACHE_KEY);
+        if (cacheStr) {
+            cache = JSON.parse(cacheStr);
         }
 
-        const data = await response.json();
+        cache[key] = {wordData, timestamp: Date.now()};
 
-        // Gemini иногда всё равно оборачивает JSON в markdown, поэтому очищаем строку
-        let cleanJson = data.candidates[0].content.parts[0].text;
-        cleanJson = cleanJson.replace(/```json/g, '').replace(/```/g, '').trim();
+        if (Object.keys(cache).length > MAX_CACHE_SIZE) {
+            const keys = Object.keys(cache);
+            keys.sort((a, b) => cache[a].timestamp - cache[b].timestamp);
+            delete cache[keys[0]];
+        }
 
-        const parsedData = JSON.parse(cleanJson);
-
-        return {
-            translation: parsedData.translation,
-            level: parsedData.level,
-            frequency: parsedData.frequency,
-            explanation: parsedData.targetContent?.explanation || '',
-            examples: parsedData.targetContent?.examples || [],
-            synonyms: parsedData.targetContent?.synonyms || [],
-            detectedSourceLangCode: parsedData.detectedSourceLangCode,
-            sourceContent: parsedData.sourceContent,
-            targetContent: parsedData.targetContent
-        };
-
-    } catch (error) {
-        console.error("Ошибка при запросе к ИИ:", error);
-        throw error; // Пробрасываем ошибку дальше, чтобы UI показал Toast
+        localStorage.setItem(CACHE_KEY, JSON.stringify(cache));
+    } catch (e) {
+        console.error("Cache write error", e);
     }
 };
 
-// --- ФУНКЦИИ АВТОРИЗАЦИИ И РАБОТЫ С БД ---
+export const fetchWordData = async (word: string, sourceLang: string | null, targetLang: string): Promise<WordData> => {
+    const cacheKey = getCacheKey(word, sourceLang, targetLang);
+    const cachedData = getFromCache(cacheKey);
+    if (cachedData) return cachedData;
 
-export const authenticateUser = async (email: string) => {
+    const currentPlan = localStorage.getItem('aiterm-plan') || 'free';
+    const isPremiumBackend = currentPlan === 'pro' || currentPlan === 'super';
+
+    // КОРОТКИЙ ПРОМПТ ДЛЯ FREE ТАРИФА
+    const freePrompt = `
+Task: Translate "${word}" to ${targetLang}. Source: ${sourceLang || 'auto'}.
+
+Return strict JSON.
+
+Rules:
+- translation: main translation
+- level: CEFR A1-C2 or "?"
+- frequency: 1-10 using scale:
+  10 = extremely common (time, go)
+  8-9 = very common
+  6-7 = common
+  4-5 = medium frequency
+  2-3 = rare
+  1 = very rare
+- examples: 2-3 simple sentences
+- synonyms: 2-3 common synonyms
+- explanation: 1-2 short sentences
+
+CRITICAL LANGUAGE ISOLATION:
+1. "sourceContent" MUST be written 100% in the exact source language.
+2. "targetContent" MUST be written 100% in ${targetLang}. No exceptions. Do NOT use English to explain foreign words in this block. Explanations must be strictly in ${targetLang}.
+
+JSON:
+{"translation":"","level":"","frequency":1,"detectedSourceLangCode":"","sourceContent":{"examples":[],"synonyms":[],"explanation":""},"targetContent":{"examples":[],"synonyms":[],"explanation":""}}
+`;
+
+    // РАЗВЕРНУТЫЙ ПРОМПТ ДЛЯ PREMIUM ТАРИФА
+    const premiumPrompt = `
+Task: Translate "${word}" to ${targetLang}. Source: ${sourceLang || 'auto'}.
+
+Return strict JSON.
+
+Rules:
+- translation: main translation
+- level: CEFR A1-C2 or "?"
+- frequency: 1-10 using same scale as free
+- examples: 4-7 sentences (easy → harder)
+- synonyms: 5-10 frequent synonyms
+- explanation: 3-5 sentences
+
+CRITICAL LANGUAGE ISOLATION:
+1. "sourceContent" MUST be written 100% in the exact source language.
+2. "targetContent" MUST be written 100% in ${targetLang}. No exceptions. Do NOT use English to explain foreign words in this block. Explanations must be strictly in ${targetLang}.
+
+JSON:
+{"translation":"","level":"","frequency":1,"detectedSourceLangCode":"","sourceContent":{"examples":[],"synonyms":[],"explanation":""},"targetContent":{"examples":[],"synonyms":[],"explanation":""}}
+`;
+
+    const activePrompt = isPremiumBackend ? premiumPrompt : freePrompt;
+
     try {
-        // Стучимся на сервер Cloudflare Worker (ендпоинт авторизации)
-        const response = await fetch("http://127.0.0.1:8787/auth", {
+        const response = await fetch(`${BASE_URL}/translate`, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ email })
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({prompt: activePrompt, isPremium: isPremiumBackend})
         });
 
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            let serverError = `HTTP error ${response.status}`;
+            try {
+                const errData = await response.json();
+                serverError = errData.error || serverError;
+            } catch (e) {
+            }
+            throw new Error(serverError);
         }
 
         const data = await response.json();
-        console.log("Успешный ответ от бэкенда:", data);
-        return data;
+        let cleanJson = data.candidates[0].content.parts[0].text.replace(/```json/gi, '').replace(/```/g, '').trim();
+        const parsedData = JSON.parse(cleanJson);
+
+        let safeLevel = parsedData.level ? String(parsedData.level) : "?";
+        const levelMatch = safeLevel.match(/(A1|A2|B1|B2|C1|C2)/i);
+        safeLevel = levelMatch ? levelMatch[0].toUpperCase() : "?";
+
+        let safeSourceLang = parsedData.detectedSourceLangCode ? String(parsedData.detectedSourceLangCode).toLowerCase().trim() : "en";
+        if (safeSourceLang.length > 2) {
+            const langMap: Record<string, string> = {
+                english: 'en',
+                russian: 'ru',
+                spanish: 'es',
+                french: 'fr',
+                german: 'de',
+                chinese: 'zh',
+                ukrainian: 'uk',
+                polish: 'pl',
+                arabic: 'ar'
+            };
+            safeSourceLang = langMap[safeSourceLang] || safeSourceLang.substring(0, 2);
+        }
+
+        const finalData = {...parsedData, level: safeLevel, detectedSourceLangCode: safeSourceLang};
+        saveToCache(cacheKey, finalData);
+
+        return finalData;
     } catch (error) {
-        console.error("Ошибка авторизации:", error);
+        console.error("Ошибка при запросе к бэкенду:", error);
+        throw error;
+    }
+};
+
+export const authenticateUser = async (email: string) => {
+    try {
+        const response = await fetch(`${BASE_URL}/auth`, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({email})
+        });
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        return await response.json();
+    } catch (error) {
+        return null;
+    }
+};
+
+export const deleteUserProfile = async (email: string) => {
+    try {
+        const response = await fetch(`${BASE_URL}/user`, {
+            method: "DELETE",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({email})
+        });
+        return await response.json();
+    } catch (error) {
+        return null;
+    }
+};
+
+export const getDictionaries = async (email: string) => {
+    try {
+        const response = await fetch(`${BASE_URL}/dictionaries?email=${encodeURIComponent(email)}`);
+        const data = await response.json();
+        return data.dictionaries || [];
+    } catch (error) {
+        return [];
+    }
+};
+
+export const createDictionary = async (email: string, name: string) => {
+    try {
+        const response = await fetch(`${BASE_URL}/dictionaries`, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({email, name})
+        });
+        return await response.json();
+    } catch (error) {
+        return null;
+    }
+};
+
+export const deleteDictionary = async (dictId: string) => {
+    try {
+        const response = await fetch(`${BASE_URL}/dictionaries`, {
+            method: "DELETE",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({dictId})
+        });
+        return await response.json();
+    } catch (error) {
+        return null;
+    }
+};
+
+export const getDictionaryWords = async (dictId: string) => {
+    try {
+        const response = await fetch(`${BASE_URL}/words?dictId=${encodeURIComponent(dictId)}`);
+        const data = await response.json();
+        return data.words || [];
+    } catch (error) {
+        return [];
+    }
+};
+
+export const saveWordToDictionary = async (dictId: string, word: string, translation: string, wordData: any) => {
+    try {
+        const response = await fetch(`${BASE_URL}/words`, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({dictId, word, translation, wordData})
+        });
+        return await response.json();
+    } catch (error) {
+        return null;
+    }
+};
+
+export const deleteWord = async (wordId: string) => {
+    try {
+        const response = await fetch(`${BASE_URL}/words`, {
+            method: "DELETE",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({wordId})
+        });
+        return await response.json();
+    } catch (error) {
         return null;
     }
 };
 
 export const loginWithGoogle = async (): Promise<any> => {
     return new Promise((resolve, reject) => {
-        // Вызываем встроенное окно авторизации Chrome
-        chrome.identity.getAuthToken({ interactive: true }, async function(token) {
+        chrome.identity.getAuthToken({interactive: true}, async function (token) {
             if (chrome.runtime.lastError || !token) {
-                console.error("Ошибка получения токена:", chrome.runtime.lastError);
                 reject(chrome.runtime.lastError);
                 return;
             }
-
             try {
-                // Идем в Google API, чтобы по токену узнать email пользователя
-                const response = await fetch('https://www.googleapis.com/oauth2/v1/userinfo?alt=json', {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
-
+                const response = await fetch('https://www.googleapis.com/oauth2/v1/userinfo?alt=json', {headers: {Authorization: `Bearer ${token}`}});
                 if (!response.ok) throw new Error("Не удалось получить данные профиля");
-
                 const userInfo = await response.json();
-                console.log("Реальный email пользователя:", userInfo.email);
-
-                // Отправляем этот реальный email на наш сервер Cloudflare
                 const dbResult = await authenticateUser(userInfo.email);
                 resolve(dbResult);
-
             } catch (error) {
-                console.error("Ошибка в процессе логина:", error);
                 reject(error);
             }
+        });
+    });
+};
+
+export const logoutFromGoogle = (): Promise<void> => {
+    return new Promise((resolve) => {
+        chrome.identity.getAuthToken({interactive: false}, (token) => {
+            if (chrome.runtime.lastError || !token) {
+                chrome.identity.clearAllCachedAuthTokens(() => resolve());
+                return;
+            }
+
+            fetch('https://oauth2.googleapis.com/revoke', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                body: `token=${token}`
+            }).finally(() => {
+                chrome.identity.removeCachedAuthToken({token}, () => {
+                    chrome.identity.clearAllCachedAuthTokens(() => resolve());
+                });
+            });
         });
     });
 };

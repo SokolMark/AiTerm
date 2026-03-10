@@ -9,7 +9,6 @@ html, body {
   padding: 0;
   overflow: hidden !important;
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  transition: background-color 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); /* ДОБАВЛЕНО: плавность для body */
 }
 
 #root {
