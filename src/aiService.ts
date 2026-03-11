@@ -70,7 +70,6 @@ export const fetchWordData = async (word: string, sourceLang: string | null, tar
     const currentPlan = localStorage.getItem('aiterm-plan') || 'free';
     const isPremiumBackend = currentPlan === 'pro' || currentPlan === 'super';
 
-    // УЛУЧШИЛ ПРОМПТ ДЛЯ ЖЕСТКОГО РАЗДЕЛЕНИЯ ЯЗЫКОВ
     const freePrompt = `
 Task: Translate "${word}" to ${targetLang}. Source: ${sourceLang || 'auto'}.
 
@@ -97,7 +96,6 @@ JSON:
 {"translation":"","level":"","frequency":1,"detectedSourceLangCode":"","sourceContent":{"examples":[],"synonyms":[],"explanation":""},"targetContent":{"examples":[],"synonyms":[],"explanation":""}}
 `;
 
-    // УЛУЧШИЛ ПРОМПТ ДЛЯ PREMIUM
     const premiumPrompt = `
 Task: Translate "${word}" to ${targetLang}. Source: ${sourceLang || 'auto'}.
 
@@ -214,6 +212,19 @@ export const createDictionary = async (email: string, name: string) => {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({email, name})
+        });
+        return await response.json();
+    } catch (error) {
+        return null;
+    }
+};
+
+export const renameDictionary = async (dictId: string, newName: string) => {
+    try {
+        const response = await fetch(`${BASE_URL}/dictionaries`, {
+            method: "PUT",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({dictId, newName})
         });
         return await response.json();
     } catch (error) {

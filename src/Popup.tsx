@@ -1,8 +1,8 @@
 import {useState, useEffect, useLayoutEffect, useRef} from 'react';
-import {fetchWordData, WordData, loginWithGoogle, logoutFromGoogle, getDictionaries, createDictionary, getDictionaryWords, saveWordToDictionary, deleteDictionary, deleteWord, deleteUserProfile} from './aiService';
+import {fetchWordData, WordData, loginWithGoogle, logoutFromGoogle, getDictionaries, createDictionary, getDictionaryWords, saveWordToDictionary, deleteDictionary, deleteWord, deleteUserProfile, renameDictionary} from './aiService';
 import {translations, availableLanguages, getLanguageName} from './languages';
 
-import { CloseIcon, SwapIcon, MenuIcon, SaveIcon, SunIcon, MoonIcon, BookIcon, CrownIcon, GlobeIcon, LogOutIcon, TrashIcon, BackIcon, InfoIcon, ProductHuntIcon, LinkedInIcon, MailIcon, CopyIcon, GithubIcon, SettingsIcon } from './components/Icons';
+import { CloseIcon, SwapIcon, MenuIcon, SaveIcon, SunIcon, MoonIcon, BookIcon, CrownIcon, GlobeIcon, LogOutIcon, TrashIcon, BackIcon, InfoIcon, ProductHuntIcon, LinkedInIcon, MailIcon, CopyIcon, GithubIcon, SettingsIcon, EditIcon } from './components/Icons';
 import { AuthScreen } from './components/AuthScreen';
 
 import './styles/variables.css';
@@ -20,13 +20,13 @@ const getAutoLanguage = (): keyof typeof translations => {
 
 const localTranslations = {
     ...translations,
-    en: { ...translations.en, confirmRemoveText: 'This action will permanently delete your profile, all dictionaries, and cancel your active subscription.', resetTimer: 'Resets in:', limitReached: 'Limit reached. Wait for reset.', dictLimit: 'Dictionary limit reached for your plan.', wordLimit: 'Saved words limit reached.', donateText: "Want to help AiTerm get even better? In addition to our paid plans, you can support the project with a custom donation. It’s never required, but always deeply appreciated! ❤️", supportBtn: "Support the project", downgradeBtn: "Downgrade to free", limitModalTitle: "Limit Reached", limitModalRequests: "You have reached your translation requests limit. Please wait for the timer to reset or upgrade your plan for more requests.", limitModalDicts: "You have reached the maximum number of dictionaries for your current plan. Please upgrade to create more.", limitModalWords: "You have reached the maximum number of saved words for your current plan. Please upgrade to save more.", btnUpgradePlan: "Upgrade Plan", btnMaxPlan: "Maximum Plan Active", btnCloseModal: "Close", serverBusy: "AI servers are overloaded. Please try again in a few seconds.", networkError: "Network error. Check your internet connection.", genericError: "An error occurred. Please try again." },
-    ru: { ...translations.ru, confirmRemoveText: 'Это действие навсегда удалит ваш профиль, все словари и аннулирует подписку.', resetTimer: 'Обновление через:', limitReached: 'Лимит исчерпан. Дождитесь обновления.', dictLimit: 'Лимит словарей для вашего тарифа исчерпан.', wordLimit: 'Лимит сохраненных слов исчерпан.', donateText: "Want to help AiTerm get even better? In addition to our paid plans, you can support the project with a custom donation. It’s never required, but always deeply appreciated! ❤️", supportBtn: "Support the project", downgradeBtn: "Перейти на бесплатный", limitModalTitle: "Лимит исчерпан", limitModalRequests: "Вы превысили лимит запросов на перевод. Подождите обновления таймера или перейдите на более высокий тариф.", limitModalDicts: "Вы достигли лимита словарей для вашего тарифа. Обновите план, чтобы создавать больше.", limitModalWords: "Вы достигли лимита сохраненных слов. Обновите тариф, чтобы сохранять без ограничений.", btnUpgradePlan: "Обновить тариф", btnMaxPlan: "У вас максимальный тариф", btnCloseModal: "Закрыть", serverBusy: "Серверы ИИ перегружены. Попробуйте через пару секунд.", networkError: "Ошибка сети. Проверьте интернет.", genericError: "Произошла ошибка. Попробуйте еще раз." },
-    uk: { ...translations.uk, confirmRemoveText: 'Ця дія назавжди видалить ваш профіль, усі словники та анулює підписку.', resetTimer: 'Оновлення через:', limitReached: 'Ліміт вичерпано. Дочекайтесь оновлення.', dictLimit: 'Ліміт словників для вашого тарифу вичерпано.', wordLimit: 'Ліміт збережених слів вичерпано.', donateText: "Want to help AiTerm get even better? In addition to our paid plans, you can support the project with a custom donation. It’s never required, but always deeply appreciated! ❤️", supportBtn: "Support the project", downgradeBtn: "Перейти на безкоштовний", limitModalTitle: "Ліміт вичерпано", limitModalRequests: "Ви перевищили ліміт запитів на переклад. Зачекайте на оновлення таймера або перейдіть на вищий тариф.", limitModalDicts: "Ви досягли ліміту словників для вашого тарифу. Оновіть план, щоб створювати більше.", limitModalWords: "Ви досягли ліміту збережених слів. Оновіть тариф, щоб зберігати без обмежень.", btnUpgradePlan: "Оновити тариф", btnMaxPlan: "У вас максимальный тариф", btnCloseModal: "Закрити", serverBusy: "Сервери ШІ перевантажені. Спробуйте через кілька секунд.", networkError: "Помилка мережі. Перевірте з'єднання.", genericError: "Сталася помилка. Спробуйте ще раз." },
-    zh: { ...translations.zh, confirmRemoveText: '此操作将永久删除您的个人资料、所有词典，并取消您的有效订阅。', resetTimer: '重置时间：', limitReached: '达到限制。等待重置。', dictLimit: '已达到您的计划的词典限制。', wordLimit: '保存单词的限制已达到。', limitModalTitle: "达到限制", limitModalRequests: "您已达到翻译请求限制。请等待计时器重置或升级计划以获取更多请求。", limitModalDicts: "您已达到当前计划的最大词典数量。请升级以创建更多。", limitModalWords: "您已达到当前计划保存单词的最大数量。请升级以保存更多。", btnUpgradePlan: "升级计划", btnMaxPlan: "已达到最高计划", btnCloseModal: "关闭", serverBusy: "AI 服务器过载。请几秒钟后再试。", networkError: "网络错误。请检查您的连接。", genericError: "发生错误。请重试。" },
-    es: { ...translations.es, confirmRemoveText: 'Esta acción eliminará permanentemente su perfil, todos los diccionarios y cancelará su suscripción activa.', resetTimer: 'Se reinicia en:', limitReached: 'Límite alcanzado.', dictLimit: 'Límite de diccionarios alcanzado.', wordLimit: 'Límite de palabras guardadas alcanzado.', limitModalTitle: "Límite alcanzado", limitModalRequests: "Has alcanzado tu límite de solicitudes de traducción. Espera a que se reinicie el temporizador o actualiza tu plan.", limitModalDicts: "Has alcanzado el número máximo de diccionarios para tu plan. Actualiza para crear más.", limitModalWords: "Has alcanzado el número máximo de palabras guardadas. Actualiza tu plan para guardar más.", btnUpgradePlan: "Actualizar plan", btnMaxPlan: "Plan máximo activo", btnCloseModal: "Cerrar", serverBusy: "Los servidores de IA están sobrecargados. Inténtalo en unos segundos.", networkError: "Error de red. Comprueba tu conexión.", genericError: "Ocurrió un error. Inténtalo de nuevo." },
-    ar: { ...translations.ar, confirmRemoveText: 'سيؤدي هذا الإجراء إلى حذف ملفك الشخصي وجميع القواميس نهائيًا وإلغاء اشتراكك النشط.', resetTimer: 'إعادة التعيين في:', limitReached: 'تم الوصول إلى الحد.', dictLimit: 'تم الوصول إلى حد القاموس.', wordLimit: 'تم الوصول إلى حد الكلمات المحفوظة.', limitModalTitle: "تم الوصول إلى الحد", limitModalRequests: "لقد وصلت إلى حد طلبات الترجمة الخاصة بك. يرجى الانتظار حتى يتم إعادة ضبط المؤقت أو ترقية خطتك.", limitModalDicts: "لقد وصلت إلى الحد الأقصى لعدد القواميس لخطتك الحالية. يرجى الترقية لإنشاء المزيد.", limitModalWords: "لقد وصلت إلى الحد الأقصى للكلمات المحفوظة. يرجى الترقية للحفظ أكثر.", btnUpgradePlan: "ترقية الخطة", btnMaxPlan: "أقصى خطة نشطة", btnCloseModal: "إغلاق", serverBusy: "خوادم الذكاء الاصطناعي محملة بشكل زائد. يرجى المحاولة بعد بضع ثوانٍ.", networkError: "خطأ في الشبكة. تحقق من اتصالك.", genericError: "حدث خطأ. يرجى المحاولة مرة أخرى." },
-    pl: { ...translations.pl, confirmRemoveText: 'Ta akcja trwale usunie Twój profil, wszystkie słowniki i anuluje aktywną subskrypcję.', resetTimer: 'Reset za:', limitReached: 'Limit wyczerpany.', dictLimit: 'Osiągnięto limit słowników dla Twojego planu.', wordLimit: 'Osiągnięto limit zapisanych słów.', limitModalTitle: "Limit osiągnięty", limitModalRequests: "Osiągnąłeś limit zapytań o tłumaczenie. Poczekaj na reset timera lub zaktualizuj swój plan.", limitModalDicts: "Osiągnąłeś maksymalną liczbę słowników dla swojego planu. Zaktualizuj, aby utworzyć więcej.", limitModalWords: "Osiągnąłeś maksymalną liczbę zapisanych słów. Zaktualizuj, aby zapisać więcej.", btnUpgradePlan: "Zaktualizuj plan", btnMaxPlan: "Maksymalny plan aktywny", btnCloseModal: "Zamknij", serverBusy: "Serwery AI są przeciążone. Spróbuj ponownie za kilka sekund.", networkError: "Błąd sieci. Sprawdź swoje połączenie.", genericError: "Wystąpił błąd. Spróbuj ponownie." },
+    en: { ...translations.en, textTooLong: 'Text is too long', confirmRemoveText: 'This action will permanently delete your profile, all dictionaries, and cancel your active subscription.', resetTimer: 'Resets in:', limitReached: 'Limit reached. Wait for reset.', dictLimit: 'Dictionary limit reached for your plan.', wordLimit: 'Saved words limit reached.', donateText: "Want to help AiTerm get even better? In addition to our paid plans, you can support the project with a custom donation. It’s never required, but always deeply appreciated! ❤️", supportBtn: "Support the project", downgradeBtn: "Downgrade to free", limitModalTitle: "Limit Reached", limitModalRequests: "You have reached your translation requests limit. Please wait for the timer to reset or upgrade your plan for more requests.", limitModalDicts: "You have reached the maximum number of dictionaries for your current plan. Please upgrade to create more.", limitModalWords: "You have reached the maximum number of saved words for your current plan. Please upgrade to save more.", btnUpgradePlan: "Upgrade Plan", btnMaxPlan: "Maximum Plan Active", btnCloseModal: "Close", serverBusy: "AI servers are overloaded. Please try again in a few seconds.", networkError: "Network error. Check your internet connection.", genericError: "An error occurred. Please try again." },
+    ru: { ...translations.ru, textTooLong: 'Слишком длинный текст', confirmRemoveText: 'Это действие навсегда удалит ваш профиль, все словари и аннулирует подписку.', resetTimer: 'Обновление через:', limitReached: 'Лимит исчерпан. Дождитесь обновления.', dictLimit: 'Лимит словарей для вашего тарифа исчерпан.', wordLimit: 'Лимит сохраненных слов исчерпан.', donateText: "Want to help AiTerm get even better? In addition to our paid plans, you can support the project with a custom donation. It’s never required, but always deeply appreciated! ❤️", supportBtn: "Support the project", downgradeBtn: "Перейти на бесплатный", limitModalTitle: "Лимит исчерпан", limitModalRequests: "Вы превысили лимит запросов на перевод. Подождите обновления таймера или перейдите на более высокий тариф.", limitModalDicts: "Вы достигли лимита словарей для вашего тарифа. Обновите план, чтобы создавать больше.", limitModalWords: "Вы достигли лимита сохраненных слов. Обновите тариф, чтобы сохранять без ограничений.", btnUpgradePlan: "Обновить тариф", btnMaxPlan: "У вас максимальный тариф", btnCloseModal: "Закрыть", serverBusy: "Серверы ИИ перегружены. Попробуйте через пару секунд.", networkError: "Ошибка сети. Проверьте интернет.", genericError: "Произошла ошибка. Попробуйте еще раз." },
+    uk: { ...translations.uk, textTooLong: 'Занадто довгий текст', confirmRemoveText: 'Ця дія назавжди видалить ваш профіль, усі словники та анулює підписку.', resetTimer: 'Оновлення через:', limitReached: 'Ліміт вичерпано. Дочекайтесь оновлення.', dictLimit: 'Ліміт словників для вашого тарифу вичерпано.', wordLimit: 'Ліміт збережених слів вичерпано.', donateText: "Want to help AiTerm get even better? In addition to our paid plans, you can support the project with a custom donation. It’s never required, but always deeply appreciated! ❤️", supportBtn: "Support the project", downgradeBtn: "Перейти на безкоштовний", limitModalTitle: "Ліміт вичерпано", limitModalRequests: "Ви перевищили ліміт запитів на переклад. Зачекайте на оновлення таймера або перейдіть на вищий тариф.", limitModalDicts: "Ви досягли ліміту словників для вашого тарифу. Оновіть план, щоб створювати більше.", limitModalWords: "Ви досягли ліміту збережених слів. Оновіть тариф, щоб зберігати без обмежень.", btnUpgradePlan: "Оновити тариф", btnMaxPlan: "У вас максимальный тариф", btnCloseModal: "Закрити", serverBusy: "Сервери ШІ перевантажені. Спробуйте через кілька секунд.", networkError: "Помилка мережі. Перевірте з'єднання.", genericError: "Сталася помилка. Спробуйте ще раз." },
+    zh: { ...translations.zh, textTooLong: '文本太长', confirmRemoveText: '此操作将永久删除您的个人资料、所有词典，并取消您的有效订阅。', resetTimer: '重置时间：', limitReached: '达到限制。等待重置。', dictLimit: '已达到您的计划的词典限制。', wordLimit: '保存单词的限制已达到。', limitModalTitle: "达到限制", limitModalRequests: "您已达到翻译请求限制。请等待计时器重置或升级计划以获取更多请求。", limitModalDicts: "您已达到当前计划的最大词典数量。请升级以创建更多。", limitModalWords: "您已达到当前计划保存单词的最大数量。请升级以保存更多。", btnUpgradePlan: "升级计划", btnMaxPlan: "已达到最高计划", btnCloseModal: "关闭", serverBusy: "AI 服务器过载。请几秒钟后再试。", networkError: "网络错误。请检查您的连接。", genericError: "发生错误。请重试。" },
+    es: { ...translations.es, textTooLong: 'Texto demasiado largo', confirmRemoveText: 'Esta acción eliminará permanentemente su perfil, todos los diccionarios y cancelará su suscripción activa.', resetTimer: 'Se reinicia en:', limitReached: 'Límite alcanzado.', dictLimit: 'Límite de diccionarios alcanzado.', wordLimit: 'Límite de palabras guardadas alcanzado.', limitModalTitle: "Límite alcanzado", limitModalRequests: "Has alcanzado tu límite de solicitudes de traducción. Espera a que se reinicie el temporizador o actualiza tu plan.", limitModalDicts: "Has alcanzado el número máximo de diccionarios para tu plan. Actualiza para crear más.", limitModalWords: "Has alcanzado el número máximo de palabras guardadas. Actualiza tu plan para guardar más.", btnUpgradePlan: "Actualizar plan", btnMaxPlan: "Plan máximo activo", btnCloseModal: "Cerrar", serverBusy: "Los servidores de IA están sobrecargados. Inténtalo en unos segundos.", networkError: "Error de red. Comprueba tu conexión.", genericError: "Ocurrió un error. Inténtalo de nuevo." },
+    ar: { ...translations.ar, textTooLong: 'النص طويل جدًا', confirmRemoveText: 'سيؤدي هذا الإجراء إلى حذف ملفك الشخصي وجميع القواميس نهائيًا وإلغاء اشتراكك النشط.', resetTimer: 'إعادة التعيين في:', limitReached: 'تم الوصول إلى الحد.', dictLimit: 'تم الوصول إلى حد القاموس.', wordLimit: 'تم الوصول إلى حد الكلمات المحفوظة.', limitModalTitle: "تم الوصول إلى الحد", limitModalRequests: "لقد وصلت إلى حد طلبات الترجمة الخاصة بك. يرجى الانتظار حتى يتم إعادة ضبط المؤقت أو ترقية خطتك.", limitModalDicts: "لقد وصلت إلى الحد الأقصى لعدد القواميس لخطتك الحالية. يرجى الترقية لإنشاء المزيد.", limitModalWords: "لقد وصلت إلى الحد الأقصى للكلمات المحفوظة. يرجى الترقية للحفظ أكثر.", btnUpgradePlan: "ترقية الخطة", btnMaxPlan: "أقصى خطة نشطة", btnCloseModal: "إغلاق", serverBusy: "خوادم الذكاء الاصطناعي محملة بشكل زائد. يرجى المحاولة بعد بضع ثوانٍ.", networkError: "خطأ في الشبكة. تحقق من اتصالك.", genericError: "حدث خطأ. يرجى المحاولة مرة أخرى." },
+    pl: { ...translations.pl, textTooLong: 'Tekst jest za długi', confirmRemoveText: 'Ta akcja trwale usunie Twój profil, wszystkie słowniki i anuluje aktywną subskrypcję.', resetTimer: 'Reset za:', limitReached: 'Limit wyczerpany.', dictLimit: 'Osiągnięto limit słowników dla Twojego planu.', wordLimit: 'Osiągnięto limit zapisanych słów.', limitModalTitle: "Limit osiągnięty", limitModalRequests: "Osiągnąłeś limit zapytań o tłumaczenie. Poczekaj na reset timera lub zaktualizuj swój plan.", limitModalDicts: "Osiągnąłeś maksymalną liczbę słowników dla swojego planu. Zaktualizuj, aby utworzyć więcej.", limitModalWords: "Osiągnąłeś maksymalną liczbę zapisanych słów. Zaktualizuj, aby zapisać więcej.", btnUpgradePlan: "Zaktualizuj plan", btnMaxPlan: "Maksymalny plan aktywny", btnCloseModal: "Zamknij", serverBusy: "Serwery AI są przeciążone. Spróbuj ponownie za kilka sekund.", networkError: "Błąd sieci. Sprawdź swoje połączenie.", genericError: "Wystąpił błąd. Spróbuj ponownie." },
 };
 
 const planConfig = {
@@ -86,6 +86,10 @@ function Popup() {
     const [isCreateDictModalOpen, setIsCreateDictModalOpen] = useState(false);
     const [newDictName, setNewDictName] = useState('');
     const [isCreatingDict, setIsCreatingDict] = useState(false);
+
+    const [isRenameDictModalOpen, setIsRenameDictModalOpen] = useState(false);
+    const [dictRenameValue, setDictRenameValue] = useState('');
+    const [isRenamingDict, setIsRenamingDict] = useState(false);
 
     const [activeDictionary, setActiveDictionary] = useState<{ id: string, name: string } | null>(null);
     const [dictWords, setDictWords] = useState<any[]>([]);
@@ -244,6 +248,28 @@ function Popup() {
             setConfirmAction(null);
         } else { showToast("failed to create", 'error'); }
         setIsCreatingDict(false);
+    };
+
+    const handleRenameDictionary = async () => {
+        const trimmedName = dictRenameValue.trim();
+        if (!trimmedName || !activeDictionary) return;
+
+        if (trimmedName.toLowerCase() === activeDictionary.name.toLowerCase()) {
+            setIsRenameDictModalOpen(false);
+            return;
+        }
+
+        setIsRenamingDict(true);
+        const result = await renameDictionary(activeDictionary.id, trimmedName);
+        if (result && result.success) {
+            showToast("dictionary renamed", 'success');
+            setIsRenameDictModalOpen(false);
+            setActiveDictionary({ ...activeDictionary, name: trimmedName });
+            setDictionaries(dictionaries.map(d => d.id === activeDictionary.id ? { ...d, name: trimmedName } : d));
+        } else {
+            showToast("failed to rename", 'error');
+        }
+        setIsRenamingDict(false);
     };
 
     const handleSaveWord = async (dictId: string) => {
@@ -599,8 +625,15 @@ function Popup() {
     }, [wordData]);
 
     const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        const val = e.target.value;
+        let val = e.target.value;
+
+        if (val.length > 80) {
+            showToast(t.textTooLong || "text is too long", 'error');
+            val = val.substring(0, 80);
+        }
+
         setInputText(val);
+
         if (!val.trim()) { translateText(''); return; }
         if (!targetLang) { showToast(t.selectTargetWarning, 'error'); return; }
     };
@@ -679,8 +712,6 @@ function Popup() {
     }
 
     const toggleSourceLangObj = displaySourceLangObj;
-
-    // БЕЗОПАСНЫЙ ФОЛЛБЭК: Если ИИ забыл создать targetContent, берем из корня
     const currentCarouselData = contentLang === 'source' ? wordData?.sourceContent : (wordData?.targetContent || wordData);
 
     return (
@@ -763,13 +794,11 @@ function Popup() {
                         </div>
                         <div className="examples-arrows-container">
                             <div className={`examples-arrow-button left-arrow ${shakeArrow === 'left' ? 'shake-left' : ''}`} onClick={() => { if (activeTabIndex > 0) setActiveTabIndex(activeTabIndex - 1); else { setShakeArrow('left'); setTimeout(() => setShakeArrow(null), 300); } }}>
-                                {/* УВЕЛИЧИЛ СТРЕЛКИ ЗДЕСЬ */}
                                 <svg width="46" height="30" viewBox="0 0 32 24" fill="transparent" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg">
                                     <path className="custom-arrow-path" d="M20 4l8 8-8 8v-5H4v-6h16V4z" />
                                 </svg>
                             </div>
                             <div className={`examples-arrow-button right-arrow ${shakeArrow === 'right' ? 'shake-right' : ''}`} onClick={() => { if (activeTabIndex < 2) setActiveTabIndex(activeTabIndex + 1); else { setShakeArrow('right'); setTimeout(() => setShakeArrow(null), 300); } }}>
-                                {/* УВЕЛИЧИЛ СТРЕЛКИ ЗДЕСЬ */}
                                 <svg width="46" height="30" viewBox="0 0 32 24" fill="transparent" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg">
                                     <path className="custom-arrow-path" d="M20 4l8 8-8 8v-5H4v-6h16V4z" />
                                 </svg>
@@ -855,8 +884,11 @@ function Popup() {
                             <div className="dict-list">
                                 {dictionaries.map((d: { id: string, name: string, word_count?: number }) => (
                                     <button key={d.id} className="dict-item-btn" onClick={() => handleSaveWord(d.id)}>
-                                        <div className="dict-item-left"><BookIcon/><span>{d.name}</span></div>
-                                        <span className="dict-word-count">{d.word_count || 0}</span>
+                                        <div className="dict-item-left" style={{ overflow: 'hidden', display: 'flex', alignItems: 'center', gap: '8px', flex: 1 }}>
+                                            <div style={{flexShrink: 0, display: 'flex'}}><BookIcon/></div>
+                                            <span title={d.name} style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: 'block' }}>{d.name}</span>
+                                        </div>
+                                        <span className="dict-word-count" style={{flexShrink: 0}}>{d.word_count || 0}</span>
                                     </button>
                                 ))}
                             </div>
@@ -870,10 +902,22 @@ function Popup() {
                 <div className="confirm-box save-box" onClick={(e) => e.stopPropagation()}>
                     <div className="close-button absolute-close" onClick={() => setIsCreateDictModalOpen(false)}><CloseIcon/></div>
                     <h3 className="confirm-title">{t.btnCreateDict || "create dictionary"}</h3>
-                    <input type="text" className="dict-input" placeholder="dictionary name..." value={newDictName} onChange={(e) => setNewDictName(e.target.value)} autoFocus />
+                    <input type="text" className="dict-input" placeholder="dictionary name..." value={newDictName} onChange={(e) => setNewDictName(e.target.value)} autoFocus maxLength={35} />
                     <div className="confirm-actions">
                         <button className="confirm-btn cancel" onClick={() => setIsCreateDictModalOpen(false)}>{t.btnCancel}</button>
                         <button className="confirm-btn primary" onClick={() => handleCreateDictionary(false)} disabled={isCreatingDict}>{isCreatingDict ? "..." : "create"}</button>
+                    </div>
+                </div>
+            </div>
+
+            <div className={`confirm-overlay ${isRenameDictModalOpen ? 'visible' : ''}`} onClick={() => setIsRenameDictModalOpen(false)}>
+                <div className="confirm-box save-box" onClick={(e) => e.stopPropagation()}>
+                    <div className="close-button absolute-close" onClick={() => setIsRenameDictModalOpen(false)}><CloseIcon/></div>
+                    <h3 className="confirm-title">{t.btnRenameDict || "rename dictionary"}</h3>
+                    <input type="text" className="dict-input" placeholder="new name..." value={dictRenameValue} onChange={(e) => setDictRenameValue(e.target.value)} autoFocus maxLength={35} />
+                    <div className="confirm-actions">
+                        <button className="confirm-btn cancel" onClick={() => setIsRenameDictModalOpen(false)}>{t.btnCancel || "cancel"}</button>
+                        <button className="confirm-btn primary" onClick={handleRenameDictionary} disabled={isRenamingDict}>{isRenamingDict ? "..." : "rename"}</button>
                     </div>
                 </div>
             </div>
@@ -1198,8 +1242,11 @@ function Popup() {
                                         {filteredDictionaries.length > 0 ? (
                                             filteredDictionaries.map((d: { id: string, name: string, word_count?: number }) => (
                                                 <button key={d.id} className="dict-item-btn" onClick={() => handleOpenDictionary(d)}>
-                                                    <div className="dict-item-left"><BookIcon/><span>{d.name}</span></div>
-                                                    <span className="dict-word-count">{d.word_count || 0}</span>
+                                                    <div className="dict-item-left" style={{ overflow: 'hidden', display: 'flex', alignItems: 'center', gap: '8px', flex: 1 }}>
+                                                        <div style={{flexShrink: 0, display: 'flex'}}><BookIcon/></div>
+                                                        <span title={d.name} style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: 'block' }}>{d.name}</span>
+                                                    </div>
+                                                    <span className="dict-word-count" style={{flexShrink: 0}}>{d.word_count || 0}</span>
                                                 </button>
                                             ))
                                         ) : (
@@ -1217,10 +1264,13 @@ function Popup() {
                     <div className="menu-view-anim">
                         <div className="menu-header">
                             <div className="back-button" onClick={() => { setActiveMenuView('dictionaries'); setDictSearchQuery(''); }}><BackIcon/></div>
-                            <div className="header-title" style={{ fontSize: '18px', flex: 1, textAlign: 'center', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', margin: '0 10px' }}>
-                                {activeDictionary.name}
+                            <div className="header-title" style={{ fontSize: '18px', flex: 1, textAlign: 'center', margin: '0 10px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', minWidth: 0 }}>
+                                <span title={activeDictionary.name} style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: 'block' }}>{activeDictionary.name}</span>
+                                <div className="edit-button" style={{cursor: 'pointer', display: 'flex', alignItems: 'center', opacity: 0.6, flexShrink: 0}} onClick={() => { setDictRenameValue(activeDictionary.name); setIsRenameDictModalOpen(true); }}>
+                                    <EditIcon />
+                                </div>
                             </div>
-                            <div style={{ display: 'flex', gap: '5px' }}>
+                            <div style={{ display: 'flex', gap: '5px', flexShrink: 0 }}>
                                 <div className="close-button danger-btn" onClick={() => setConfirmAction('delete_dict')}><TrashIcon/></div>
                                 <div className="close-button" onClick={() => setIsMenuOpen(false)}><CloseIcon/></div>
                             </div>
@@ -1238,9 +1288,9 @@ function Popup() {
                             ) : (
                                 <div className="words-list-container">
                                     {filteredWords.map((w: any) => (
-                                        <div key={w.id} className="word-item-btn" onClick={() => { setSelectedWordDetails(w); setDetailLang('target'); }}>
-                                            <span className="word-item-orig">{w.word}</span>
-                                            <span className="word-item-trans">{w.translation}</span>
+                                        <div key={w.id} className="word-item-btn" onClick={() => { setSelectedWordDetails(w); setDetailLang('target'); }} style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                                            <span className="word-item-orig" title={w.word} style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', flex: 1, minWidth: 0 }}>{w.word}</span>
+                                            <span className="word-item-trans" title={w.translation} style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', flex: 1, textAlign: 'right', minWidth: 0, color: 'var(--text-secondary)' }}>{w.translation}</span>
                                         </div>
                                     ))}
                                 </div>

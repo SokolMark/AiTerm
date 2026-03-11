@@ -20,6 +20,9 @@ html, body {
 * {
     box-sizing: border-box !important;
     outline: none !important;
+    /* Плавный скроллбар для поддерживающих браузеров (Firefox) */
+    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+    transition: scrollbar-color 0.3s ease;
 }
 
 *, *:before, *:after {
@@ -33,7 +36,7 @@ img {
     backface-visibility: hidden;
 }
 
-:root {
+:root, .light-theme {
     --theme-scale-lg: 1;
     --theme-scale-sm: 1;
     --bg-color: #f0f2f5;
@@ -43,7 +46,7 @@ img {
     --text-color: #000000;
     --text-secondary: #333333;
     --hint-color: #555555;
-    --term-color: #737b8b; /* Сделали чуть темнее, глубокий серый */
+    --term-color: #737b8b;
 
     --accent-color: #4a90e2;
     --card-bg: #FFFFFF;
@@ -63,6 +66,10 @@ img {
     --lang-modal-start: var(--header-bg);
     --lang-modal-end: #8ab4f8;
     --bg-gradient-bottom: #d7e2f1;
+
+    /* Цвета скроллбара (Светлая тема) */
+    --scrollbar-thumb: #c1c1c1;
+    --scrollbar-track: transparent;
 }
 
 .popup-container.dark-theme {
@@ -73,7 +80,7 @@ img {
     --text-color: #FFFFFF;
     --text-secondary: #CCCCCC;
     --hint-color: #AAAAAA;
-    --term-color: #949cac; /* Пропорционально затемнили для темной темы */
+    --term-color: #949cac;
 
     --accent-color: #3a7dcb;
     --card-bg: #2a2a2a;
@@ -95,6 +102,10 @@ img {
     --lang-btn-basis: 118px;
     --translate-btn-basis: 155px;
     --bg-gradient-bottom: #253649;
+
+    /* Цвета скроллбара (Темная тема) */
+    --scrollbar-thumb: #555555;
+    --scrollbar-track: transparent;
 }
 
 .popup-container {
@@ -151,6 +162,7 @@ img {
     opacity: 1;
 }
 
+/* Настройки скроллбара для Chromium */
 .text-box::-webkit-scrollbar, .examples-content::-webkit-scrollbar,
 .prices-body::-webkit-scrollbar, .lang-list::-webkit-scrollbar,
 .dictionaries-body::-webkit-scrollbar, .words-list-container::-webkit-scrollbar,
@@ -161,7 +173,7 @@ img {
 .text-box::-webkit-scrollbar-track, .examples-content::-webkit-scrollbar-track,
 .prices-body::-webkit-scrollbar-track, .dictionaries-body::-webkit-scrollbar-track,
 .words-list-container::-webkit-scrollbar-track, .word-detail-box::-webkit-scrollbar-track, .dict-list::-webkit-scrollbar-track {
-    background: transparent;
+    background: var(--scrollbar-track);
     margin-top: 5px;
     margin-bottom: 5px;
 }
@@ -169,20 +181,9 @@ img {
 .text-box::-webkit-scrollbar-thumb, .examples-content::-webkit-scrollbar-thumb,
 .prices-body::-webkit-scrollbar-thumb, .dictionaries-body::-webkit-scrollbar-thumb,
 .words-list-container::-webkit-scrollbar-thumb, .word-detail-box::-webkit-scrollbar-thumb, .dict-list::-webkit-scrollbar-thumb {
-    background-color: var(--header-bg);
+    background-color: var(--scrollbar-thumb);
     border-radius: 10px;
-    opacity: 0.5;
-    transition: background-color 0.3s ease;
-}
-
-.popup-container.dark-theme .text-box::-webkit-scrollbar-thumb,
-.popup-container.dark-theme .examples-content::-webkit-scrollbar-thumb,
-.popup-container.dark-theme .prices-body::-webkit-scrollbar-thumb,
-.popup-container.dark-theme .dictionaries-body::-webkit-scrollbar-thumb,
-.popup-container.dark-theme .words-list-container::-webkit-scrollbar-thumb,
-.popup-container.dark-theme .word-detail-box::-webkit-scrollbar-thumb,
-.popup-container.dark-theme .dict-list::-webkit-scrollbar-thumb {
-    background-color: var(--border-color);
+    transition: background-color 0.3s ease; /* На случай будущей поддержки Chromium */
 }
 
 .examples-content::-webkit-scrollbar-thumb:hover, .prices-body::-webkit-scrollbar-thumb:hover,
