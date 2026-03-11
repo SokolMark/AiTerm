@@ -20,9 +20,7 @@ html, body {
 * {
     box-sizing: border-box !important;
     outline: none !important;
-    /* Плавный скроллбар для поддерживающих браузеров (Firefox) */
-    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
-    transition: scrollbar-color 0.3s ease;
+    /* Строку scrollbar-color мы удалили отсюда навсегда */
 }
 
 *, *:before, *:after {
@@ -142,7 +140,10 @@ img {
 .content-wrapper::after {
     content: '';
     position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     z-index: -1;
     pointer-events: none;
 }
@@ -162,38 +163,53 @@ img {
     opacity: 1;
 }
 
-/* Настройки скроллбара для Chromium */
-.text-box::-webkit-scrollbar, .examples-content::-webkit-scrollbar,
+/* =========================================
+   Настройки скроллбара
+   ========================================= */
+
+/* 1. Скроллбары для ГЛАВНОГО ОКНА (статичные серые, чтобы не было мерцания при смене темы) */
+.text-box::-webkit-scrollbar, .examples-content::-webkit-scrollbar {
+    width: 6px;
+}
+.text-box::-webkit-scrollbar-track, .examples-content::-webkit-scrollbar-track {
+    background: transparent;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.text-box::-webkit-scrollbar-thumb, .examples-content::-webkit-scrollbar-thumb {
+    background-color: #888888; /* Статичный серый цвет */
+    border-radius: 10px;
+}
+.text-box::-webkit-scrollbar-thumb:hover, .examples-content::-webkit-scrollbar-thumb:hover {
+    background-color: #666666; /* Статичный темно-серый при наведении */
+}
+
+/* 2. Скроллбары для ОСТАЛЬНЫХ ОКОН (динамические, зависят от темы расширения) */
 .prices-body::-webkit-scrollbar, .lang-list::-webkit-scrollbar,
 .dictionaries-body::-webkit-scrollbar, .words-list-container::-webkit-scrollbar,
 .word-detail-box::-webkit-scrollbar, .dict-list::-webkit-scrollbar {
     width: 6px;
 }
-
-.text-box::-webkit-scrollbar-track, .examples-content::-webkit-scrollbar-track,
-.prices-body::-webkit-scrollbar-track, .dictionaries-body::-webkit-scrollbar-track,
-.words-list-container::-webkit-scrollbar-track, .word-detail-box::-webkit-scrollbar-track, .dict-list::-webkit-scrollbar-track {
+.prices-body::-webkit-scrollbar-track, .lang-list::-webkit-scrollbar-track,
+.dictionaries-body::-webkit-scrollbar-track, .words-list-container::-webkit-scrollbar-track,
+.word-detail-box::-webkit-scrollbar-track, .dict-list::-webkit-scrollbar-track {
     background: var(--scrollbar-track);
     margin-top: 5px;
     margin-bottom: 5px;
 }
-
-.text-box::-webkit-scrollbar-thumb, .examples-content::-webkit-scrollbar-thumb,
-.prices-body::-webkit-scrollbar-thumb, .dictionaries-body::-webkit-scrollbar-thumb,
-.words-list-container::-webkit-scrollbar-thumb, .word-detail-box::-webkit-scrollbar-thumb, .dict-list::-webkit-scrollbar-thumb {
+.prices-body::-webkit-scrollbar-thumb, .lang-list::-webkit-scrollbar-thumb,
+.dictionaries-body::-webkit-scrollbar-thumb, .words-list-container::-webkit-scrollbar-thumb,
+.word-detail-box::-webkit-scrollbar-thumb, .dict-list::-webkit-scrollbar-thumb {
     background-color: var(--scrollbar-thumb);
     border-radius: 10px;
-    transition: background-color 0.3s ease; /* На случай будущей поддержки Chromium */
 }
-
-.examples-content::-webkit-scrollbar-thumb:hover, .prices-body::-webkit-scrollbar-thumb:hover,
+.prices-body::-webkit-scrollbar-thumb:hover, .lang-list::-webkit-scrollbar-thumb:hover,
 .dictionaries-body::-webkit-scrollbar-thumb:hover, .words-list-container::-webkit-scrollbar-thumb:hover,
 .word-detail-box::-webkit-scrollbar-thumb:hover, .dict-list::-webkit-scrollbar-thumb:hover {
     background-color: var(--arrow-hover);
 }
-
-.popup-container.dark-theme .examples-content::-webkit-scrollbar-thumb:hover,
 .popup-container.dark-theme .prices-body::-webkit-scrollbar-thumb:hover,
+.popup-container.dark-theme .lang-list::-webkit-scrollbar-thumb:hover,
 .popup-container.dark-theme .dictionaries-body::-webkit-scrollbar-thumb:hover,
 .popup-container.dark-theme .words-list-container::-webkit-scrollbar-thumb:hover,
 .popup-container.dark-theme .word-detail-box::-webkit-scrollbar-thumb:hover,
@@ -218,4 +234,11 @@ img {
     color: var(--accent-color);
     background: rgba(66, 133, 244, 0.1);
     box-shadow: 0 0 0 2px var(--accent-color);
+}
+
+/* Полностью скрываем стрелки прокрутки */
+::-webkit-scrollbar-button {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
 }

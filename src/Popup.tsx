@@ -532,13 +532,23 @@ function Popup() {
                 const data = await fetchWordData(currentText, sourceLang, availableLanguages.find(l => l.code === targetLang)?.name || targetLang);
                 if (controller.signal.aborted) return;
 
-                setTranslationResult(data.translation);
-                setWordData(data);
-                setContentLang('target');
+                if (data.translation && data.translation.toLowerCase().includes('gibberish')) {
+                    showToast("Не удалось распознать текст", 'error');
+                    setTranslationResult("");
+                    setWordData(null);
+                    setDisplayedLevel('?');
+                    setDisplayedFrequency(1);
+                    setDonutProgress(0);
+                    setIsContentReady(false);
+                } else {
+                    setTranslationResult(data.translation);
+                    setWordData(data);
+                    setContentLang('target');
 
-                const newLimit = Math.max(0, mainTranslationsLeft - 1);
-                setMainTranslationsLeft(newLimit);
-                localStorage.setItem('aiterm-main-limits', newLimit.toString());
+                    const newLimit = Math.max(0, mainTranslationsLeft - 1);
+                    setMainTranslationsLeft(newLimit);
+                    localStorage.setItem('aiterm-main-limits', newLimit.toString());
+                }
 
             } catch (error: any) {
                 if (error.name !== 'AbortError') {
@@ -627,9 +637,9 @@ function Popup() {
     const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         let val = e.target.value;
 
-        if (val.length > 80) {
+        if (val.length > 100) {
             showToast(t.textTooLong || "text is too long", 'error');
-            val = val.substring(0, 80);
+            return;
         }
 
         setInputText(val);
@@ -816,21 +826,21 @@ function Popup() {
                             <div className={`carousel-slide ${activeTabIndex === 0 ? 'active-slide' : ''}`}>
                                 <div className={`examples-content ${isContentReady ? 'ready' : ''}`}>
                                     <div key={contentLang} className="content-fade-wrapper">
-                                        {currentCarouselData?.examples?.length ? currentCarouselData.examples.map((ex: string, i: number) => <div key={i} className="list-item">{ex}</div>) : <span className="placeholder-text">{t.examplesContent}</span>}
+                                        {currentCarouselData?.examples?.length ? currentCarouselData.examples.map((ex: string, i: number) => <div key={i} className="list-item">{ex}</div>) : null}
                                     </div>
                                 </div>
                             </div>
                             <div className={`carousel-slide ${activeTabIndex === 1 ? 'active-slide' : ''}`}>
                                 <div className={`examples-content ${isContentReady ? 'ready' : ''}`}>
                                     <div key={contentLang} className="content-fade-wrapper">
-                                        {currentCarouselData?.synonyms?.length ? currentCarouselData.synonyms.map((syn: string, i: number) => <div key={i} className="list-item">{syn}</div>) : <span className="placeholder-text">{t.synonymsContent}</span>}
+                                        {currentCarouselData?.synonyms?.length ? currentCarouselData.synonyms.map((syn: string, i: number) => <div key={i} className="list-item">{syn}</div>) : null}
                                     </div>
                                 </div>
                             </div>
                             <div className={`carousel-slide ${activeTabIndex === 2 ? 'active-slide' : ''}`}>
                                 <div className={`examples-content ${isContentReady ? 'ready' : ''}`}>
                                     <div key={contentLang} className="content-fade-wrapper">
-                                        {currentCarouselData?.explanation || <span className="placeholder-text">{t.explanationContent}</span>}
+                                        {currentCarouselData?.explanation || null}
                                     </div>
                                 </div>
                             </div>
