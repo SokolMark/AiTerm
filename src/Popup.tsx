@@ -2,7 +2,7 @@ import {useState, useEffect, useLayoutEffect, useRef} from 'react';
 import {fetchWordData, WordData, loginWithGoogle, logoutFromGoogle, getDictionaries, createDictionary, getDictionaryWords, saveWordToDictionary, deleteDictionary, deleteWord, deleteUserProfile, renameDictionary} from './aiService';
 import {translations, availableLanguages, getLanguageName} from './languages';
 
-import { CloseIcon, SwapIcon, MenuIcon, SaveIcon, SunIcon, MoonIcon, BookIcon, CrownIcon, GlobeIcon, LogOutIcon, TrashIcon, BackIcon, InfoIcon, ProductHuntIcon, LinkedInIcon, MailIcon, CopyIcon, GithubIcon, SettingsIcon, EditIcon } from './components/Icons';
+import { CloseIcon, SwapIcon, MenuIcon, SaveIcon, SunIcon, MoonIcon, BookIcon, GlobeIcon, LogOutIcon, TrashIcon, BackIcon, InfoIcon, ProductHuntIcon, LinkedInIcon, MailIcon, CopyIcon, GithubIcon, SettingsIcon, EditIcon } from './components/Icons';
 import { AuthScreen } from './components/AuthScreen';
 
 import './styles/variables.css';
@@ -20,20 +20,17 @@ const getAutoLanguage = (): keyof typeof translations => {
 
 const localTranslations = {
     ...translations,
-    en: { ...translations.en, textTooLong: 'Text is too long', confirmRemoveText: 'This action will permanently delete your profile, all dictionaries, and cancel your active subscription.', resetTimer: 'Resets in:', limitReached: 'Limit reached. Wait for reset.', dictLimit: 'Dictionary limit reached for your plan.', wordLimit: 'Saved words limit reached.', donateText: "Want to help AiTerm get even better? In addition to our paid plans, you can support the project with a custom donation. It’s never required, but always deeply appreciated! ❤️", supportBtn: "Support the project", downgradeBtn: "Downgrade to free", limitModalTitle: "Limit Reached", limitModalRequests: "You have reached your translation requests limit. Please wait for the timer to reset or upgrade your plan for more requests.", limitModalDicts: "You have reached the maximum number of dictionaries for your current plan. Please upgrade to create more.", limitModalWords: "You have reached the maximum number of saved words for your current plan. Please upgrade to save more.", btnUpgradePlan: "Upgrade Plan", btnMaxPlan: "Maximum Plan Active", btnCloseModal: "Close", serverBusy: "AI servers are overloaded. Please try again in a few seconds.", networkError: "Network error. Check your internet connection.", genericError: "An error occurred. Please try again." },
-    ru: { ...translations.ru, textTooLong: 'Слишком длинный текст', confirmRemoveText: 'Это действие навсегда удалит ваш профиль, все словари и аннулирует подписку.', resetTimer: 'Обновление через:', limitReached: 'Лимит исчерпан. Дождитесь обновления.', dictLimit: 'Лимит словарей для вашего тарифа исчерпан.', wordLimit: 'Лимит сохраненных слов исчерпан.', donateText: "Want to help AiTerm get even better? In addition to our paid plans, you can support the project with a custom donation. It’s never required, but always deeply appreciated! ❤️", supportBtn: "Support the project", downgradeBtn: "Перейти на бесплатный", limitModalTitle: "Лимит исчерпан", limitModalRequests: "Вы превысили лимит запросов на перевод. Подождите обновления таймера или перейдите на более высокий тариф.", limitModalDicts: "Вы достигли лимита словарей для вашего тарифа. Обновите план, чтобы создавать больше.", limitModalWords: "Вы достигли лимита сохраненных слов. Обновите тариф, чтобы сохранять без ограничений.", btnUpgradePlan: "Обновить тариф", btnMaxPlan: "У вас максимальный тариф", btnCloseModal: "Закрыть", serverBusy: "Серверы ИИ перегружены. Попробуйте через пару секунд.", networkError: "Ошибка сети. Проверьте интернет.", genericError: "Произошла ошибка. Попробуйте еще раз." },
-    uk: { ...translations.uk, textTooLong: 'Занадто довгий текст', confirmRemoveText: 'Ця дія назавжди видалить ваш профіль, усі словники та анулює підписку.', resetTimer: 'Оновлення через:', limitReached: 'Ліміт вичерпано. Дочекайтесь оновлення.', dictLimit: 'Ліміт словників для вашого тарифу вичерпано.', wordLimit: 'Ліміт збережених слів вичерпано.', donateText: "Want to help AiTerm get even better? In addition to our paid plans, you can support the project with a custom donation. It’s never required, but always deeply appreciated! ❤️", supportBtn: "Support the project", downgradeBtn: "Перейти на безкоштовний", limitModalTitle: "Ліміт вичерпано", limitModalRequests: "Ви перевищили ліміт запитів на переклад. Зачекайте на оновлення таймера або перейдіть на вищий тариф.", limitModalDicts: "Ви досягли ліміту словників для вашого тарифу. Оновіть план, щоб створювати більше.", limitModalWords: "Ви досягли ліміту збережених слів. Оновіть тариф, щоб зберігати без обмежень.", btnUpgradePlan: "Оновити тариф", btnMaxPlan: "У вас максимальный тариф", btnCloseModal: "Закрити", serverBusy: "Сервери ШІ перевантажені. Спробуйте через кілька секунд.", networkError: "Помилка мережі. Перевірте з'єднання.", genericError: "Сталася помилка. Спробуйте ще раз." },
-    zh: { ...translations.zh, textTooLong: '文本太长', confirmRemoveText: '此操作将永久删除您的个人资料、所有词典，并取消您的有效订阅。', resetTimer: '重置时间：', limitReached: '达到限制。等待重置。', dictLimit: '已达到您的计划的词典限制。', wordLimit: '保存单词的限制已达到。', limitModalTitle: "达到限制", limitModalRequests: "您已达到翻译请求限制。请等待计时器重置或升级计划以获取更多请求。", limitModalDicts: "您已达到当前计划的最大词典数量。请升级以创建更多。", limitModalWords: "您已达到当前计划保存单词的最大数量。请升级以保存更多。", btnUpgradePlan: "升级计划", btnMaxPlan: "已达到最高计划", btnCloseModal: "关闭", serverBusy: "AI 服务器过载。请几秒钟后再试。", networkError: "网络错误。请检查您的连接。", genericError: "发生错误。请重试。" },
-    es: { ...translations.es, textTooLong: 'Texto demasiado largo', confirmRemoveText: 'Esta acción eliminará permanentemente su perfil, todos los diccionarios y cancelará su suscripción activa.', resetTimer: 'Se reinicia en:', limitReached: 'Límite alcanzado.', dictLimit: 'Límite de diccionarios alcanzado.', wordLimit: 'Límite de palabras guardadas alcanzado.', limitModalTitle: "Límite alcanzado", limitModalRequests: "Has alcanzado tu límite de solicitudes de traducción. Espera a que se reinicie el temporizador o actualiza tu plan.", limitModalDicts: "Has alcanzado el número máximo de diccionarios para tu plan. Actualiza para crear más.", limitModalWords: "Has alcanzado el número máximo de palabras guardadas. Actualiza tu plan para guardar más.", btnUpgradePlan: "Actualizar plan", btnMaxPlan: "Plan máximo activo", btnCloseModal: "Cerrar", serverBusy: "Los servidores de IA están sobrecargados. Inténtalo en unos segundos.", networkError: "Error de red. Comprueba tu conexión.", genericError: "Ocurrió un error. Inténtalo de nuevo." },
-    ar: { ...translations.ar, textTooLong: 'النص طويل جدًا', confirmRemoveText: 'سيؤدي هذا الإجراء إلى حذف ملفك الشخصي وجميع القواميس نهائيًا وإلغاء اشتراكك النشط.', resetTimer: 'إعادة التعيين في:', limitReached: 'تم الوصول إلى الحد.', dictLimit: 'تم الوصول إلى حد القاموس.', wordLimit: 'تم الوصول إلى حد الكلمات المحفوظة.', limitModalTitle: "تم الوصول إلى الحد", limitModalRequests: "لقد وصلت إلى حد طلبات الترجمة الخاصة بك. يرجى الانتظار حتى يتم إعادة ضبط المؤقت أو ترقية خطتك.", limitModalDicts: "لقد وصلت إلى الحد الأقصى لعدد القواميس لخطتك الحالية. يرجى الترقية لإنشاء المزيد.", limitModalWords: "لقد وصلت إلى الحد الأقصى للكلمات المحفوظة. يرجى الترقية للحفظ أكثر.", btnUpgradePlan: "ترقية الخطة", btnMaxPlan: "أقصى خطة نشطة", btnCloseModal: "إغلاق", serverBusy: "خوادم الذكاء الاصطناعي محملة بشكل زائد. يرجى المحاولة بعد بضع ثوانٍ.", networkError: "خطأ في الشبكة. تحقق من اتصالك.", genericError: "حدث خطأ. يرجى المحاولة مرة أخرى." },
-    pl: { ...translations.pl, textTooLong: 'Tekst jest za długi', confirmRemoveText: 'Ta akcja trwale usunie Twój profil, wszystkie słowniki i anuluje aktywną subskrypcję.', resetTimer: 'Reset za:', limitReached: 'Limit wyczerpany.', dictLimit: 'Osiągnięto limit słowników dla Twojego planu.', wordLimit: 'Osiągnięto limit zapisanych słów.', limitModalTitle: "Limit osiągnięty", limitModalRequests: "Osiągnąłeś limit zapytań o tłumaczenie. Poczekaj na reset timera lub zaktualizuj swój plan.", limitModalDicts: "Osiągnąłeś maksymalną liczbę słowników dla swojego planu. Zaktualizuj, aby utworzyć więcej.", limitModalWords: "Osiągnąłeś maksymalną liczbę zapisanych słów. Zaktualizuj, aby zapisać więcej.", btnUpgradePlan: "Zaktualizuj plan", btnMaxPlan: "Maksymalny plan aktywny", btnCloseModal: "Zamknij", serverBusy: "Serwery AI są przeciążone. Spróbuj ponownie za kilka sekund.", networkError: "Błąd sieci. Sprawdź swoje połączenie.", genericError: "Wystąpił błąd. Spróbuj ponownie." },
+    en: { ...translations.en, textTooLong: 'Text is too long', confirmRemoveText: 'This action will permanently delete your profile and all dictionaries.', resetTimer: 'Resets in:', limitReached: 'Limit reached. Wait for reset.', dictLimit: 'Dictionary limit reached.', wordLimit: 'Saved words limit reached.', donateText: "Want to help AiTerm get even better? You can support the project with a custom donation. It’s never required, but always deeply appreciated! ❤️", supportBtn: "Support the project", limitModalTitle: "Limit Reached", limitModalRequests: "You have reached your translation requests limit. Please wait for the timer to reset.", limitModalDicts: "You have reached the maximum number of dictionaries.", limitModalWords: "You have reached the maximum number of saved words.", btnCloseModal: "Close", serverBusy: "AI servers are overloaded. Please try again in a few seconds.", networkError: "Network error. Check your internet connection.", genericError: "An error occurred. Please try again." },
+    ru: { ...translations.ru, textTooLong: 'Слишком длинный текст', confirmRemoveText: 'Это действие навсегда удалит ваш профиль и все словари.', resetTimer: 'Обновление через:', limitReached: 'Лимит исчерпан. Дождитесь обновления.', dictLimit: 'Лимит словарей исчерпан.', wordLimit: 'Лимит сохраненных слов исчерпан.', donateText: "Want to help AiTerm get even better? You can support the project with a custom donation. It’s never required, but always deeply appreciated! ❤️", supportBtn: "Support the project", limitModalTitle: "Лимит исчерпан", limitModalRequests: "Вы превысили лимит запросов на перевод. Подождите обновления таймера.", limitModalDicts: "Вы достигли лимита словарей.", limitModalWords: "Вы достигли лимита сохраненных слов.", btnCloseModal: "Закрыть", serverBusy: "Серверы ИИ перегружены. Попробуйте через пару секунд.", networkError: "Ошибка сети. Проверьте интернет.", genericError: "Произошла ошибка. Попробуйте еще раз." },
+    uk: { ...translations.uk, textTooLong: 'Занадто довгий текст', confirmRemoveText: 'Ця дія назавжди видалить ваш профіль та усі словники.', resetTimer: 'Оновлення через:', limitReached: 'Ліміт вичерпано. Дочекайтесь оновлення.', dictLimit: 'Ліміт словників вичерпано.', wordLimit: 'Ліміт збережених слів вичерпано.', donateText: "Want to help AiTerm get even better? You can support the project with a custom donation. It’s never required, but always deeply appreciated! ❤️", supportBtn: "Support the project", limitModalTitle: "Ліміт вичерпано", limitModalRequests: "Ви перевищили ліміт запитів на переклад. Зачекайте на оновлення таймера.", limitModalDicts: "Ви досягли ліміту словників.", limitModalWords: "Ви досягли ліміту збережених слів.", btnCloseModal: "Закрити", serverBusy: "Сервери ШІ перевантажені. Спробуйте через кілька секунд.", networkError: "Помилка мережі. Перевірте з'єднання.", genericError: "Сталася помилка. Спробуйте ще раз." },
+    zh: { ...translations.zh, textTooLong: '文本太长', confirmRemoveText: '此操作将永久删除您的个人资料和所有词典。', resetTimer: '重置时间：', limitReached: '达到限制。等待重置。', dictLimit: '达到词典限制。', wordLimit: '保存单词的限制已达到。', limitModalTitle: "达到限制", limitModalRequests: "您已达到翻译请求限制。请等待计时器重置。", limitModalDicts: "您已达到最大词典数量。", limitModalWords: "您已达到保存单词的最大数量。", btnCloseModal: "关闭", serverBusy: "AI 服务器过载。请几秒钟后再试。", networkError: "网络错误。请检查您的连接。", genericError: "发生错误。请重试。" },
+    es: { ...translations.es, textTooLong: 'Texto demasiado largo', confirmRemoveText: 'Esta acción eliminará permanentemente su perfil y todos los diccionarios.', resetTimer: 'Se reinicia en:', limitReached: 'Límite alcanzado.', dictLimit: 'Límite de diccionarios alcanzado.', wordLimit: 'Límite de palabras guardadas alcanzado.', limitModalTitle: "Límite alcanzado", limitModalRequests: "Has alcanzado tu límite de solicitudes de traducción. Espera a que se reinicie el temporizador.", limitModalDicts: "Has alcanzado el número máximo de diccionarios.", limitModalWords: "Has alcanzado el número máximo de palabras guardadas.", btnCloseModal: "Cerrar", serverBusy: "Los servidores de IA están sobrecargados. Inténtalo en unos segundos.", networkError: "Error de red. Comprueba tu conexión.", genericError: "Ocurrió un error. Inténtalo de nuevo." },
+    ar: { ...translations.ar, textTooLong: 'النص طويل جدًا', confirmRemoveText: 'سيؤدي هذا الإجراء إلى حذف ملفك الشخصي وجميع القواميس نهائيًا.', resetTimer: 'إعادة التعيين في:', limitReached: 'تم الوصول إلى الحد.', dictLimit: 'تم الوصول إلى حد القاموس.', wordLimit: 'تم الوصول إلى حد الكلمات المحفوظة.', limitModalTitle: "تم الوصول إلى الحد", limitModalRequests: "لقد وصلت إلى حد طلبات الترجمة الخاصة بك. يرجى الانتظار حتى يتم إعادة ضبط المؤقت.", limitModalDicts: "لقد وصلت إلى الحد الأقصى لعدد القواميس.", limitModalWords: "لقد وصلت إلى الحد الأقصى للكلمات المحفوظة.", btnCloseModal: "إغلاق", serverBusy: "خوادم الذكاء الاصطناعي محملة بشكل زائد. يرجى المحاولة بعد بضع ثوانٍ.", networkError: "خطأ في الشبكة. تحقق من اتصالك.", genericError: "حدث خطأ. يرجى المحاولة مرة أخرى." },
+    pl: { ...translations.pl, textTooLong: 'Tekst jest za długi', confirmRemoveText: 'Ta akcja trwale usunie Twój profil i wszystkie słowniki.', resetTimer: 'Reset za:', limitReached: 'Limit wyczerpany.', dictLimit: 'Osiągnięto limit słowników.', wordLimit: 'Osiągnięto limit zapisanych słów.', limitModalTitle: "Limit osiągnięty", limitModalRequests: "Osiągnąłeś limit zapytań o tłumaczenie. Poczekaj na reset timera.", limitModalDicts: "Osiągnąłeś maksymalną liczbę słowników.", limitModalWords: "Osiągnąłeś maksymalną liczbę zapisanych słów.", btnCloseModal: "Zamknij", serverBusy: "Serwery AI są przeciążone. Spróbuj ponownie za kilka sekund.", networkError: "Błąd sieci. Sprawdź swoje połączenie.", genericError: "Wystąpił błąd. Spróbuj ponownie." },
 };
 
-const planConfig = {
-    free: { main: 15, quick: 30, dicts: 5, words: 200 },
-    pro: { main: 100, quick: 150, dicts: 50, words: 1000 },
-    super: { main: 250, quick: 300, dicts: 99999, words: 999999 }
-};
+const MAX_DICTS = 50;
+const MAX_WORDS = 5000;
 
 function Popup() {
     const [isDarkTheme, setIsDarkTheme] = useState(() => {
@@ -46,7 +43,7 @@ function Popup() {
     });
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [activeMenuView, setActiveMenuView] = useState<'main' | 'prices' | 'dictionaries' | 'dict_view' | 'about' | 'features'>('main');
+    const [activeMenuView, setActiveMenuView] = useState<'main' | 'dictionaries' | 'dict_view' | 'about' | 'features'>('main');
     const [modalMode, setModalMode] = useState<'ui' | 'source' | 'target' | null>(null);
     const [sourceLang, setSourceLang] = useState<string | null>(null);
     const [targetLang, setTargetLang] = useState<string | null>(() => localStorage.getItem('aiterm-target-language') || null);
@@ -65,17 +62,13 @@ function Popup() {
 
     const [userEmail, setUserEmail] = useState<string | null>(() => localStorage.getItem('aiterm-user-email'));
 
-    const [currentPlan, setCurrentPlan] = useState<'free' | 'pro' | 'super'>(() => {
-        return (localStorage.getItem('aiterm-plan') as 'free' | 'pro' | 'super') || 'free';
+    const [totalRequestsLeft, setTotalRequestsLeft] = useState<number>(() => {
+        const saved = localStorage.getItem('aiterm-total-requests');
+        return saved !== null ? parseInt(saved) : 80;
     });
-
-    const [mainTranslationsLeft, setMainTranslationsLeft] = useState<number>(() => {
-        const saved = localStorage.getItem('aiterm-main-limits');
-        return saved !== null ? parseInt(saved) : planConfig[currentPlan].main;
-    });
-    const [quickTranslationsLeft, setQuickTranslationsLeft] = useState<number>(() => {
-        const saved = localStorage.getItem('aiterm-quick-limits');
-        return saved !== null ? parseInt(saved) : planConfig[currentPlan].quick;
+    const [mainRequestsLeft, setMainRequestsLeft] = useState<number>(() => {
+        const saved = localStorage.getItem('aiterm-main-requests');
+        return saved !== null ? parseInt(saved) : 40;
     });
 
     const [isLoggingIn, setIsLoggingIn] = useState(false);
@@ -152,18 +145,11 @@ function Popup() {
             const diff = nextReset.getTime() - now.getTime();
 
             if (diff >= (12 * 60 * 60 * 1000) - 2000) {
-                chrome.storage.local.get(['aitermPlan'], (res) => {
-                    const plan = res.aitermPlan || localStorage.getItem('aiterm-plan') || 'free';
-                    const maxMain = planConfig[plan as keyof typeof planConfig].main;
-                    const maxQuick = planConfig[plan as keyof typeof planConfig].quick;
-
-                    setMainTranslationsLeft(maxMain);
-                    setQuickTranslationsLeft(maxQuick);
-
-                    localStorage.setItem('aiterm-main-limits', maxMain.toString());
-                    localStorage.setItem('aiterm-quick-limits', maxQuick.toString());
-                    chrome.storage.local.set({ aitermQuickLimits: maxQuick });
-                });
+                setTotalRequestsLeft(80);
+                setMainRequestsLeft(40);
+                localStorage.setItem('aiterm-total-requests', '80');
+                localStorage.setItem('aiterm-main-requests', '40');
+                chrome.storage.local.set({ aitermTotalRequests: 80, aitermMainRequests: 40 });
             }
 
             const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
@@ -176,9 +162,13 @@ function Popup() {
 
     useEffect(() => {
         const listener = (changes: { [key: string]: chrome.storage.StorageChange }) => {
-            if (changes.aitermQuickLimits) {
-                setQuickTranslationsLeft(changes.aitermQuickLimits.newValue);
-                localStorage.setItem('aiterm-quick-limits', changes.aitermQuickLimits.newValue.toString());
+            if (changes.aitermTotalRequests) {
+                setTotalRequestsLeft(changes.aitermTotalRequests.newValue);
+                localStorage.setItem('aiterm-total-requests', changes.aitermTotalRequests.newValue.toString());
+            }
+            if (changes.aitermMainRequests) {
+                setMainRequestsLeft(changes.aitermMainRequests.newValue);
+                localStorage.setItem('aiterm-main-requests', changes.aitermMainRequests.newValue.toString());
             }
         };
         chrome.storage.onChanged.addListener(listener);
@@ -186,9 +176,10 @@ function Popup() {
     }, []);
 
     useEffect(() => {
-        chrome.storage.local.get(['aitermQuickTranslate', 'aitermQuickLimits'], (res) => {
+        chrome.storage.local.get(['aitermQuickTranslate', 'aitermTotalRequests', 'aitermMainRequests'], (res) => {
             if (res.aitermQuickTranslate !== undefined) setIsQuickTranslateEnabled(res.aitermQuickTranslate);
-            if (res.aitermQuickLimits !== undefined) setQuickTranslationsLeft(res.aitermQuickLimits);
+            if (res.aitermTotalRequests !== undefined) setTotalRequestsLeft(res.aitermTotalRequests);
+            if (res.aitermMainRequests !== undefined) setMainRequestsLeft(res.aitermMainRequests);
         });
     }, []);
 
@@ -221,8 +212,7 @@ function Popup() {
         const trimmedName = newDictName.trim();
         if (!trimmedName || !userEmail) return;
 
-        const limitDicts = planConfig[currentPlan].dicts;
-        if (dictionaries.length >= limitDicts) {
+        if (dictionaries.length >= MAX_DICTS) {
             setIsCreateDictModalOpen(false);
             setLimitModalType('dicts');
             return;
@@ -278,8 +268,7 @@ function Popup() {
             return;
         }
 
-        const limitWords = planConfig[currentPlan].words;
-        if (getTotalWordsCount() >= limitWords) {
+        if (getTotalWordsCount() >= MAX_WORDS) {
             setIsSaveModalOpen(false);
             setLimitModalType('words');
             return;
@@ -322,9 +311,8 @@ function Popup() {
                 chrome.storage.local.clear();
 
                 setUserEmail(null);
-                setMainTranslationsLeft(planConfig.free.main);
-                setQuickTranslationsLeft(planConfig.free.quick);
-                setCurrentPlan('free');
+                setTotalRequestsLeft(80);
+                setMainRequestsLeft(40);
                 setDictionaries([]);
                 setDictWords([]);
                 setIsMenuOpen(false);
@@ -370,24 +358,6 @@ function Popup() {
         }
     };
 
-    const handleTestPlanChange = (plan: 'free' | 'pro' | 'super') => {
-        setCurrentPlan(plan);
-        localStorage.setItem('aiterm-plan', plan);
-        chrome.storage.local.set({ aitermPlan: plan });
-
-        const newMainLimits = planConfig[plan].main;
-        const newQuickLimits = planConfig[plan].quick;
-
-        setMainTranslationsLeft(newMainLimits);
-        setQuickTranslationsLeft(newQuickLimits);
-
-        localStorage.setItem('aiterm-main-limits', newMainLimits.toString());
-        localStorage.setItem('aiterm-quick-limits', newQuickLimits.toString());
-        chrome.storage.local.set({ aitermQuickLimits: newQuickLimits });
-
-        showToast(`${plan} plan activated`, 'success');
-    };
-
     const handleLogout = async () => {
         await logoutFromGoogle();
 
@@ -410,24 +380,20 @@ function Popup() {
             if (dbResult && dbResult.success) {
                 const user = dbResult.user;
                 setUserEmail(user.email);
-                const planToSet = user.is_premium ? 'pro' : 'free';
-                setCurrentPlan(planToSet);
-                localStorage.setItem('aiterm-plan', planToSet);
-                chrome.storage.local.set({ aitermPlan: planToSet });
 
-                let savedMainLimits = localStorage.getItem('aiterm-main-limits');
-                let savedQuickLimits = localStorage.getItem('aiterm-quick-limits');
+                let totalToSet = user.total_requests_left ?? 80;
+                let mainToSet = user.main_requests_left ?? 40;
 
-                let mainToSet = savedMainLimits ? parseInt(savedMainLimits) : planConfig[planToSet as keyof typeof planConfig].main;
-                let quickToSet = savedQuickLimits ? parseInt(savedQuickLimits) : planConfig[planToSet as keyof typeof planConfig].quick;
-
-                setMainTranslationsLeft(mainToSet);
-                setQuickTranslationsLeft(quickToSet);
+                setTotalRequestsLeft(totalToSet);
+                setMainRequestsLeft(mainToSet);
 
                 localStorage.setItem('aiterm-user-email', user.email);
-                localStorage.setItem('aiterm-main-limits', mainToSet.toString());
-                localStorage.setItem('aiterm-quick-limits', quickToSet.toString());
-                chrome.storage.local.set({ aitermQuickLimits: quickToSet });
+                localStorage.setItem('aiterm-total-requests', totalToSet.toString());
+                localStorage.setItem('aiterm-main-requests', mainToSet.toString());
+                chrome.storage.local.set({
+                    aitermTotalRequests: totalToSet,
+                    aitermMainRequests: mainToSet
+                });
 
                 setShowAuthModal(false);
                 showToast("login successful", 'success');
@@ -503,8 +469,8 @@ function Popup() {
             return;
         }
 
-        if (targetLang && (force || currentText !== lastSearchedText.current)) {
-            if (mainTranslationsLeft <= 0) {
+        if (targetLang && userEmail && (force || currentText !== lastSearchedText.current)) {
+            if (totalRequestsLeft <= 0 || mainRequestsLeft <= 0) {
                 setLimitModalType('requests');
                 return;
             }
@@ -529,7 +495,7 @@ function Popup() {
             abortControllerRef.current = controller;
 
             try {
-                const data = await fetchWordData(currentText, sourceLang, availableLanguages.find(l => l.code === targetLang)?.name || targetLang);
+                const data = await fetchWordData(currentText, sourceLang, availableLanguages.find(l => l.code === targetLang)?.name || targetLang, userEmail, 'main');
                 if (controller.signal.aborted) return;
 
                 if (data.translation && data.translation.toLowerCase().includes('gibberish')) {
@@ -545,16 +511,36 @@ function Popup() {
                     setWordData(data);
                     setContentLang('target');
 
-                    const newLimit = Math.max(0, mainTranslationsLeft - 1);
-                    setMainTranslationsLeft(newLimit);
-                    localStorage.setItem('aiterm-main-limits', newLimit.toString());
+                    const newTotal = Math.max(0, totalRequestsLeft - 1);
+                    const newMain = Math.max(0, mainRequestsLeft - 1);
+
+                    setTotalRequestsLeft(newTotal);
+                    setMainRequestsLeft(newMain);
+                    localStorage.setItem('aiterm-total-requests', newTotal.toString());
+                    localStorage.setItem('aiterm-main-requests', newMain.toString());
+                    chrome.storage.local.set({
+                        aitermTotalRequests: newTotal,
+                        aitermMainRequests: newMain
+                    });
                 }
 
             } catch (error: any) {
                 if (error.name !== 'AbortError') {
                     const msg = String(error.message || error).toLowerCase();
 
-                    if (msg.includes('503') || msg.includes('high demand') || msg.includes('overload') || msg.includes('unavailable')) {
+                    // Ловим отсутствие юзера в базе
+                    if (error.code === 'USER_NOT_FOUND' || msg.includes('user not found')) {
+                        showToast(t.genericError ? "Сессия устарела. Войдите снова." : "Session expired. Log in again.", 'error');
+
+                        // Зачищаем "сломанные" данные
+                        setUserEmail(null);
+                        localStorage.removeItem('aiterm-user-email');
+                        chrome.storage.local.remove(['aitermUserEmail']);
+
+                        // Вызываем окно авторизации
+                        setShowAuthModal(true);
+                    }
+                    else if (msg.includes('503') || msg.includes('high demand') || msg.includes('overload') || msg.includes('unavailable')) {
                         showToast(t.serverBusy || "AI servers are overloaded. Please try again.", 'error');
                     } else if (msg.includes('failed to fetch')) {
                         showToast(t.networkError || "Network error. Check your connection.", 'error');
@@ -860,20 +846,11 @@ function Popup() {
                     <div className="close-button absolute-close" onClick={() => setLimitModalType(null)}><CloseIcon/></div>
                     <h3 className="confirm-title">{t.limitModalTitle || "Limit Reached"}</h3>
                     <p className="confirm-text" style={{marginTop: '10px'}}>
-                        {limitModalType === 'dicts' ? (t.limitModalDicts || "You have reached the maximum number of dictionaries for your current plan. Please upgrade to create more.") :
-                            limitModalType === 'words' ? (t.limitModalWords || "You have reached the maximum number of saved words for your current plan. Please upgrade to save more.") :
-                                (t.limitModalRequests || "You have reached your translation requests limit. Please wait for the timer to reset or upgrade your plan for more requests.")}
+                        {limitModalType === 'dicts' ? (t.limitModalDicts || "You have reached the maximum number of dictionaries.") :
+                            limitModalType === 'words' ? (t.limitModalWords || "You have reached the maximum number of saved words.") :
+                                (t.limitModalRequests || "You have reached your translation requests limit. Please wait for the timer to reset.")}
                     </p>
                     <div className="confirm-actions" style={{marginTop: '20px', flexDirection: 'column', gap: '10px'}}>
-                        {currentPlan === 'super' ? (
-                            <button className="confirm-btn current" style={{width: '100%', cursor: 'default'}} disabled>{t.btnMaxPlan || "Maximum Plan Active"}</button>
-                        ) : (
-                            <button className="confirm-btn upgrade" style={{width: '100%', background: '#ffc107', color: '#000', opacity: 1}} onClick={() => {
-                                setLimitModalType(null);
-                                setIsMenuOpen(true);
-                                setActiveMenuView('prices');
-                            }}>{t.btnUpgradePlan || "Upgrade Plan"}</button>
-                        )}
                         <button className="confirm-btn cancel" style={{width: '100%'}} onClick={() => setLimitModalType(null)}>{t.btnCloseModal || "Close"}</button>
                     </div>
                 </div>
@@ -1040,20 +1017,21 @@ function Popup() {
                                     <div style={{ fontWeight: 'bold', fontSize: '14px', marginBottom: '10px', wordBreak: 'break-all' }}>{userEmail}</div>
 
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12px', color: 'var(--text-secondary)' }}>
-                                        <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-                                            <span>Main requests: <b style={{color: 'var(--text-color)'}}>{mainTranslationsLeft}</b></span>
-                                            <span style={{ background: currentPlan !== 'free' ? 'rgba(255, 193, 7, 0.2)' : 'rgba(150, 150, 150, 0.2)', color: currentPlan !== 'free' ? '#ffc107' : 'var(--text-color)', padding: '2px 8px', borderRadius: '6px', fontWeight: 'bold', fontSize: '10px', letterSpacing: '0.5px' }}>
-                                                {currentPlan === 'super' ? 'SUPER PLAN' : currentPlan === 'pro' ? 'PRO PLAN' : 'FREE PLAN'}
-                                            </span>
+                                        <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                                            <span>{language === 'ru' ? 'Общее количество запросов:' : language === 'uk' ? 'Загальна кількість запитів:' : 'Total requests:'} <b style={{color: 'var(--text-color)'}}>{totalRequestsLeft}</b></span>
                                         </div>
                                         <div style={{display: 'flex', justifyContent: 'space-between'}}>
-                                            <span>Quick requests: <b style={{color: 'var(--text-color)'}}>{quickTranslationsLeft}</b></span>
+                                            <span>{language === 'ru' ? 'Запросы в главном окне:' : language === 'uk' ? 'Запити в головному вікні:' : 'Main window requests:'} <b style={{color: 'var(--text-color)'}}>{mainRequestsLeft}</b></span>
+                                        </div>
+                                        <div style={{display: 'flex', justifyContent: 'space-between'}}>
+                                            <span>{language === 'ru' ? 'Запросы в мини-окне:' : language === 'uk' ? 'Запити у міні-вікні:' : 'Mini window requests:'} <b style={{color: 'var(--text-color)'}}>{totalRequestsLeft}</b></span>
+                                        </div>
+                                        <div style={{display: 'flex', justifyContent: 'flex-end', marginTop: '4px'}}>
                                             <div style={{ fontSize: '11px', color: 'var(--hint-color)' }}>
                                                 {t.resetTimer} <span style={{fontWeight: 'bold', color: 'var(--text-color)'}}>{timeUntilReset}</span>
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                             ) : (
                                 <div style={{ padding: '15px', borderBottom: '1px solid var(--border-color)', marginBottom: '10px', textAlign: 'center' }}>
@@ -1063,7 +1041,6 @@ function Popup() {
                             )}
 
                             <button className="menu-list-btn" onClick={() => requireAuth(() => { setActiveMenuView('dictionaries'); setDictSearchQuery(''); })}><BookIcon/><span>{t.menuDictionaries || "Dictionaries"}</span></button>
-                            <button className="menu-list-btn" onClick={() => requireAuth(() => setActiveMenuView('prices'))}><CrownIcon/><span>{t.menuPrices || "Prices"}</span></button>
                             <button className="menu-list-btn" onClick={() => setModalMode('ui')}>
                                 <GlobeIcon/><div className="menu-lang-text"><span>{t.menuChangeLang || "Language"}</span><span className="menu-lang-subtext">{currentUILangObj ? getLanguageName(currentUILangObj.code, language) : 'English'}</span></div>
                             </button>
@@ -1158,72 +1135,6 @@ function Popup() {
                                 <ProductHuntIcon/>
                                 <span>Product Hunt</span>
                             </a>
-                        </div>
-                    </div>
-                )}
-
-                {activeMenuView === 'prices' && (
-                    <div className="menu-view-anim">
-                        <div className="menu-header">
-                            <div className="back-button" onClick={() => setActiveMenuView('main')}><BackIcon/></div>
-                            <div className="header-title"><span className="title-ai">Ai</span><span className="title-term">Term</span></div>
-                            <div className="close-button" onClick={() => setIsMenuOpen(false)}><CloseIcon/></div>
-                        </div>
-                        <div className="prices-body">
-
-                            <div className="rules-hint-box" style={{ fontWeight: 500, letterSpacing: '0.3px' }}>
-                                <p>• Limits reset every 12 hours.</p>
-                                <p>• Main Requests = detailed translations in this app.</p>
-                                <p>• Quick Requests = fast translations on websites.</p>
-                            </div>
-
-                            <div className="plan-card">
-                                <div className="plan-name">Free Plan</div>
-                                <div className="plan-details">
-                                    <div className="plan-row"><span>AI Model:</span><span>Gemini 3.1 flash lite preview</span></div>
-                                    <div className="plan-row"><span>Main Requests:</span><span>15 / 12 hrs</span></div>
-                                    <div className="plan-row"><span>Quick Requests:</span><span>30 / 12 hrs</span></div>
-                                    <div className="plan-row"><span>Max Dictionaries:</span><span>5</span></div>
-                                    <div className="plan-row"><span>Saved Words:</span><span>200 total</span></div>
-                                </div>
-                                <button className={`plan-btn ${currentPlan === 'free' ? 'current' : 'downgrade'}`} onClick={() => { if (currentPlan !== 'free') handleTestPlanChange('free'); }}>
-                                    {currentPlan === 'free' ? t.currentPlan : (t.downgradeBtn || "Downgrade to free")}
-                                </button>
-                            </div>
-
-                            <div className="plan-card premium">
-                                <div className="plan-name">PRO ($2 / month)</div>
-                                <div className="plan-details">
-                                    <div className="plan-row"><span>AI Model:</span><span>Gemini 3.1 flash lite preview</span></div>
-                                    <div className="plan-row"><span>Main Requests:</span><span>100 / 12 hrs</span></div>
-                                    <div className="plan-row"><span>Quick Requests:</span><span>150 / 12 hrs</span></div>
-                                    <div className="plan-row"><span>Max Dictionaries:</span><span>50</span></div>
-                                    <div className="plan-row"><span>Saved Words:</span><span>1000 total</span></div>
-                                </div>
-                                <button className={`plan-btn ${currentPlan === 'pro' ? 'current' : 'upgrade'}`} onClick={() => { if (currentPlan !== 'pro') handleTestPlanChange('pro'); }}>{currentPlan === 'pro' ? t.currentPlan : t.upgradeBtn}</button>
-                            </div>
-
-                            <div className="plan-card premium">
-                                <div className="plan-name">SUPER ($5 / month)</div>
-                                <div className="plan-details">
-                                    <div className="plan-row"><span>AI Model:</span><span>Gemini 3.1 flash lite preview</span></div>
-                                    <div className="plan-row"><span>Main Requests:</span><span>250 / 12 hrs</span></div>
-                                    <div className="plan-row"><span>Quick Requests:</span><span>300 / 12 hrs</span></div>
-                                    <div className="plan-row"><span>Max Dictionaries:</span><span>Unlimited</span></div>
-                                    <div className="plan-row"><span>Saved Words:</span><span>Unlimited</span></div>
-                                </div>
-                                <button className={`plan-btn ${currentPlan === 'super' ? 'current' : 'upgrade'}`} onClick={() => { if (currentPlan !== 'super') handleTestPlanChange('super'); }}>{currentPlan === 'super' ? t.currentPlan : t.upgradeBtn}</button>
-                            </div>
-
-                            <div style={{marginTop: '15px', textAlign: 'center', padding: '15px', background: 'var(--card-bg)', border: '1px solid var(--border-color)', borderRadius: '12px'}}>
-                                <div style={{fontSize: '11.5px', color: 'var(--text-secondary)', marginBottom: '12px', lineHeight: '1.5', fontWeight: 500, letterSpacing: '0.3px'}}>
-                                    {t.donateText}
-                                </div>
-                                <a href="https://donatello.to/fenrizar" target="_blank" rel="noopener noreferrer" className="donate-btn">
-                                    {t.supportBtn}
-                                </a>
-                            </div>
-
                         </div>
                     </div>
                 )}

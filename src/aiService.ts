@@ -62,15 +62,12 @@ const saveToCache = (key: string, wordData: WordData) => {
     }
 };
 
-export const fetchWordData = async (word: string, sourceLang: string | null, targetLang: string): Promise<WordData> => {
+export const fetchWordData = async (word: string, sourceLang: string | null, targetLang: string, email: string, source: 'main' | 'mini'): Promise<WordData> => {
     const cacheKey = getCacheKey(word, sourceLang, targetLang);
     const cachedData = getFromCache(cacheKey);
     if (cachedData) return cachedData;
 
-    const currentPlan = localStorage.getItem('aiterm-plan') || 'free';
-    const isPremiumBackend = currentPlan === 'pro' || currentPlan === 'super';
-
-    const freePrompt = `
+    const unifiedPrompt = `
 Task: Translate "${word}" to ${targetLang}. Source: ${sourceLang || 'auto'}.
 
 Return strict JSON.
@@ -88,51 +85,33 @@ Rules:
 - detectedSourceLangCode: EXACT 2-letter ISO code. Even if the text is random gibberish/nonsense, strictly detect the language based on the alphabet/characters used.
 
 CRITICAL LANGUAGE ISOLATION:
-1. "sourceContent" fields (examples, synonyms, explanation) MUST be written entirely in the source language (${sourceLang || 'the detected source language'}).
-2. "targetContent" fields (examples, synonyms, explanation) MUST be written entirely in ${targetLang}.
+1. "sourceContent" fields MUST be written entirely in the source language (${sourceLang || 'the detected source language'}). Give 1-4 sentences for examples, 1-5 synonyms, and 1-3 sentences for explanation.
+2. "targetContent" fields MUST be written entirely in ${targetLang}. Give 1-4 sentences for examples, 1-5 synonyms, and 1-3 sentences for explanation.
 Do not mix languages. Explanations in targetContent MUST be strictly in ${targetLang}.
 
 JSON:
 {"translation":"","level":"","frequency":1,"detectedSourceLangCode":"","sourceContent":{"examples":[],"synonyms":[],"explanation":""},"targetContent":{"examples":[],"synonyms":[],"explanation":""}}
 `;
-
-    const premiumPrompt = `
-Task: Translate "${word}" to ${targetLang}. Source: ${sourceLang || 'auto'}.
-
-Return strict JSON.
-
-Rules:
-- translation: main translation
-- level: CEFR A1-C2 or "?"
-- frequency: 1-10 using same scale as free
-- detectedSourceLangCode: EXACT 2-letter ISO code. Even if the text is random gibberish/nonsense, strictly detect the language based on the alphabet/characters used.
-
-CRITICAL LANGUAGE ISOLATION:
-1. "sourceContent" fields MUST be written entirely in the source language (${sourceLang || 'the detected source language'}). Give 4-7 sentences for examples, 5-10 synonyms, and 3-5 sentences for explanation.
-2. "targetContent" fields MUST be written entirely in ${targetLang}. Give 4-7 sentences for examples, 5-10 synonyms, and 3-5 sentences for explanation.
-Do not mix languages. Explanations in targetContent MUST be strictly in ${targetLang}.
-
-JSON:
-{"translation":"","level":"","frequency":1,"detectedSourceLangCode":"","sourceContent":{"examples":[],"synonyms":[],"explanation":""},"targetContent":{"examples":[],"synonyms":[],"explanation":""}}
-`;
-
-    const activePrompt = isPremiumBackend ? premiumPrompt : freePrompt;
 
     try {
         const response = await fetch(`${BASE_URL}/translate`, {
             method: "POST",
             headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({prompt: activePrompt, isPremium: isPremiumBackend})
+            body: JSON.stringify({prompt: unifiedPrompt, email, source})
         });
 
         if (!response.ok) {
             let serverError = `HTTP error ${response.status}`;
+            let errorCode = null;
             try {
                 const errData = await response.json();
                 serverError = errData.error || serverError;
+                errorCode = errData.code || null;
             } catch (e) {
             }
-            throw new Error(serverError);
+            const error: any = new Error(serverError);
+            error.code = errorCode; // Прокидываем код ошибки дальше
+            throw error;
         }
 
         const data = await response.json();
