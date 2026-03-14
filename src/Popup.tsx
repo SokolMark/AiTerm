@@ -20,13 +20,13 @@ const getAutoLanguage = (): keyof typeof translations => {
 
 const localTranslations = {
     ...translations,
-    en: { ...translations.en, textTooLong: 'Text is too long', confirmRemoveText: 'This action will permanently delete your profile and all dictionaries.', fullTranslations: 'Full translations', quickTranslations: 'Quick translations', resetAt: 'Resets at', limitReached: 'Limit reached. Wait for reset.', dictLimit: 'Dictionary limit reached.', wordLimit: 'Saved words limit reached.', donateText: "Want to help AiTerm get even better? You can support the project with a custom donation. It’s never required, but always deeply appreciated! ❤️", supportBtn: "Support AiTerm", limitModalTitle: "Limit Reached", limitModalRequests: "You have reached your translation requests limit. Please wait for the timer to reset.", limitModalDicts: "You have reached the maximum number of dictionaries.", limitModalWords: "You have reached the maximum number of saved words.", btnCloseModal: "Close", serverBusy: "AI servers are overloaded. Please try again in a few seconds.", networkError: "Network error. Check your internet connection.", genericError: "An error occurred. Please try again.", duplicateWarningText: "This word already exists in the dictionary '{dictName}'. Are you sure you want to save it?", btnYesAdd: "Yes, add", btnCancel: "Cancel" },
-    ru: { ...translations.ru, textTooLong: 'Слишком длинный текст', confirmRemoveText: 'Это действие навсегда удалит ваш профиль и все словари.', fullTranslations: 'Полные переводы', quickTranslations: 'Быстрые переводы', resetAt: 'Обновление в', limitReached: 'Лимит исчерпан. Дождитесь обновления.', dictLimit: 'Лимит словарей исчерпан.', wordLimit: 'Лимит сохраненных слов исчерпан.', donateText: "Хочешь помочь AiTerm стать еще лучше? Ты можешь поддержать проект донатом. Это не обязательно, но всегда очень ценится! ❤️", supportBtn: "Поддержать AiTerm", limitModalTitle: "Лимит исчерпан", limitModalRequests: "Вы превысили лимит запросов на перевод. Подождите обновления таймера.", limitModalDicts: "Вы достигли лимита словарей.", limitModalWords: "Вы достигли лимита сохраненных слов.", btnCloseModal: "Закрыть", serverBusy: "Серверы ИИ перегружены. Попробуйте через пару секунд.", networkError: "Ошибка сети. Проверьте интернет.", genericError: "Произошла ошибка. Попробуйте еще раз.", duplicateWarningText: "Данное слово уже есть в словнике '{dictName}'. Вы точно хотите сохранить его?", btnYesAdd: "Да, добавить", btnCancel: "Отмена" },
-    uk: { ...translations.uk, textTooLong: 'Занадто довгий текст', confirmRemoveText: 'Ця дія назавжди видалить ваш профіль та усі словники.', fullTranslations: 'Повні переклади', quickTranslations: 'Швидкі переклади', resetAt: 'Оновлення о', limitReached: 'Ліміт вичерпано. Дочекайтесь оновлення.', dictLimit: 'Ліміт словників вичерпано.', wordLimit: 'Ліміт збережених слів вичерпано.', donateText: "Хочеш допомогти AiTerm стати ще краще? Ти можеш підтримати проект донатом. Це не обов'язково, але завжди дуже цінується! ❤️", supportBtn: "Підтримати AiTerm", limitModalTitle: "Ліміт вичерпано", limitModalRequests: "Ви перевищили ліміт запитів на переклад. Зачекайте на оновлення таймера.", limitModalDicts: "Ви досягли ліміту словників.", limitModalWords: "Ви досягли ліміту збережених слів.", btnCloseModal: "Закрити", serverBusy: "Сервери ШІ перевантажені. Спробуйте через кілька секунд.", networkError: "Помилка мережі. Перевірте з'єднання.", genericError: "Сталася помилка. Спробуйте ще раз.", duplicateWarningText: "Це слово вже є у словнику '{dictName}'. Ви точно хочете зберегти його?", btnYesAdd: "Так, додати", btnCancel: "Скасувати" },
-    zh: { ...translations.zh, textTooLong: '文本太长', confirmRemoveText: '此操作将永久删除您的个人资料和所有词典。', fullTranslations: '完整翻译', quickTranslations: '快速翻译', resetAt: '重置于', limitReached: '达到限制。等待重置。', dictLimit: '达到词典限制。', wordLimit: '保存单词的限制已达到。', limitModalTitle: "达到限制", limitModalRequests: "您已达到翻译请求限制。请等待计时器重置。", limitModalDicts: "您已达到最大词典数量。", limitModalWords: "您已达到保存单词的最大数量。", btnCloseModal: "关闭", serverBusy: "AI 服务器过载。请几秒钟后再试。", networkError: "网络错误。请检查您的连接。", genericError: "发生错误。请重试。", duplicateWarningText: "此单词已存在于词典 '{dictName}' 中。确定要保存吗？", btnYesAdd: "是的，添加", btnCancel: "取消" },
-    es: { ...translations.es, textTooLong: 'Texto demasiado largo', confirmRemoveText: 'Esta acción eliminará permanentemente su perfil y todos diccionarios.', fullTranslations: 'Traducciones completas', quickTranslations: 'Traducciones rápidas', resetAt: 'Se reinicia a las', limitReached: 'Límite alcanzado.', dictLimit: 'Límite de diccionarios alcanzado.', wordLimit: 'Límite de palabras guardadas alcanzado.', limitModalTitle: "Límite alcanzado", limitModalRequests: "Has alcanzado tu límite de solicitudes de traducción. Espera a que se reinicie el temporizador.", limitModalDicts: "Has alcanzado el número máximo de diccionarios.", limitModalWords: "Has alcanzado el número máximo de palabras guardadas.", btnCloseModal: "Cerrar", serverBusy: "Los servidores de IA están sobrecargados. Inténtalo en unos segundos.", networkError: "Error de red. Comprueba tu conexión.", genericError: "Ocurrió un error. Inténtalo de nuevo.", duplicateWarningText: "Esta palabra ya existe en el diccionario '{dictName}'. ¿Estás seguro de que quieres guardarla?", btnYesAdd: "Sí, añadir", btnCancel: "Cancelar" },
-    ar: { ...translations.ar, textTooLong: 'النص طويل جدًا', confirmRemoveText: 'سيؤدي هذا الإجراء إلى حذف ملفك الشخصي وجميع القواميس نهائيًا.', fullTranslations: 'ترجمات كاملة', quickTranslations: 'ترجمات سريعة', resetAt: 'تتم إعادة التعيين في', limitReached: 'تم الوصول إلى الحد.', dictLimit: 'تم الوصول إلى حد القاموس.', wordLimit: 'تم الوصول إلى حد الكلمات المحفوظة.', limitModalTitle: "تم الوصول إلى الحد", limitModalRequests: "لقد وصلت إلى حد طلبات الترجمة الخاصة بك. يرجى الانتظار حتى يتم إعادة ضبط المؤقت.", limitModalDicts: "لقد وصلت إلى الحد الأقصى لعدد القواميس.", limitModalWords: "لقد وصلت إلى الحد الأقصى للكلمات المحفوظة.", btnCloseModal: "إغلاق", serverBusy: "خوادم الذكاء الاصطناعي محملة بشكل زائد. يرجى المحاولة بعد بضع ثوانٍ.", networkError: "خطأ في الشبكة. تحقق من اتصالك.", genericError: "حدث خطأ. يرجى المحاولة مرة أخرى.", duplicateWarningText: "هذه الكلمة موجودة بالفعل في القاموس '{dictName}'. هل أنت متأكد أنك تريد حفظها؟", btnYesAdd: "نعم، أضف", btnCancel: "إلغاء" },
-    pl: { ...translations.pl, textTooLong: 'Tekst jest za długi', confirmRemoveText: 'Ta akcja trwale usunie Twój profil i wszystkie słowniki.', fullTranslations: 'Pełne tłumaczenia', quickTranslations: 'Szybkie tłumaczenia', resetAt: 'Reset o', limitReached: 'Limit wyczerpany.', dictLimit: 'Osiągnięto limit słowników.', wordLimit: 'Osiągnięto limit zapisanych słów.', limitModalTitle: "Limit osiągnięty", limitModalRequests: "Osiągnąłeś limit zapytań o tłumaczenie. Poczekaj na reset timera.", limitModalDicts: "Osiągnąłeś maksymalną liczbę słowników.", limitModalWords: "Osiągnąłeś maksymalną liczbę zapisanych słów.", btnCloseModal: "Zamknij", serverBusy: "Serwery AI są przeciążone. Spróbuj ponownie za kilka sekund.", networkError: "Błąd sieci. Sprawdź swoje połączenie.", genericError: "Wystąpił błąd. Spróbuj ponownie.", duplicateWarningText: "To słowo już istnieje w słowniku '{dictName}'. Czy na pewno chcesz je zapisać?", btnYesAdd: "Tak, dodaj", btnCancel: "Anuluj" },
+    en: { ...translations.en, textTooLong: 'Text is too long', confirmRemoveText: 'This action will permanently delete your profile and all dictionaries.', fullTranslations: 'Full translations', quickTranslations: 'Quick translations', resetAt: 'Resets at', limitReached: 'Limit reached. Wait for reset.', dictLimit: 'Dictionary limit reached.', wordLimit: 'Saved words limit reached.', donateText: "Want to help AiTerm get even better? You can support the project with a custom donation. It’s never required, but always deeply appreciated! ❤️", supportBtn: "Support AiTerm", limitModalTitle: "Limit Reached", limitModalRequests: "You have reached your translation requests limit. Please wait for the timer to reset.", limitModalDicts: "You have reached the maximum number of dictionaries.", limitModalWords: "You have reached the maximum number of saved words.", btnCloseModal: "Close", serverBusy: "AI servers are overloaded. Please try again in a few seconds.", networkError: "Network error. Check your internet connection.", genericError: "An error occurred. Please try again.", duplicateWarningText: "This word already exists in the dictionary '{dictName}'. Are you sure you want to save it?", btnYesAdd: "Yes, add", btnCancel: "Cancel", welcomeTitle: "Welcome to AiTerm 1.0! 🎉", welcomeText1: "This is a completely free extension. You get 30 requests daily for the main window and 30 for the mini-window.", welcomeText2: "The project is built with passion. If you find it useful, you can support the author in the menu!", welcomeBtn: "Let's Go!" },
+    ru: { ...translations.ru, textTooLong: 'Слишком длинный текст', confirmRemoveText: 'Это действие навсегда удалит ваш профиль и все словари.', fullTranslations: 'Полные переводы', quickTranslations: 'Быстрые переводы', resetAt: 'Обновление в', limitReached: 'Лимит исчерпан. Дождитесь обновления.', dictLimit: 'Лимит словарей исчерпан.', wordLimit: 'Лимит сохраненных слов исчерпан.', donateText: "Хочешь помочь AiTerm стать еще лучше? Ты можешь поддержать проект донатом. Это не обязательно, но всегда очень ценится! ❤️", supportBtn: "Поддержать AiTerm", limitModalTitle: "Лимит исчерпан", limitModalRequests: "Вы превысили лимит запросов на перевод. Подождите обновления таймера.", limitModalDicts: "Вы достигли лимита словарей.", limitModalWords: "Вы достигли лимита сохраненных слов.", btnCloseModal: "Закрыть", serverBusy: "Серверы ИИ перегружены. Попробуйте через пару секунд.", networkError: "Ошибка сети. Проверьте интернет.", genericError: "Произошла ошибка. Попробуйте еще раз.", duplicateWarningText: "Данное слово уже есть в словнике '{dictName}'. Вы точно хотите сохранить его?", btnYesAdd: "Да, добавить", btnCancel: "Отмена", welcomeTitle: "Добро пожаловать в AiTerm 1.0! 🎉", welcomeText1: "Это полностью бесплатное расширение. Каждый день вам доступно по 30 запросов для главного и мини-окна.", welcomeText2: "Проект развивается на энтузиазме. Если хотите, вы можете поддержать автора в настройках!", welcomeBtn: "Погнали!" },
+    uk: { ...translations.uk, textTooLong: 'Занадто довгий текст', confirmRemoveText: 'Ця дія назавжди видалить ваш профіль та усі словники.', fullTranslations: 'Повні переклади', quickTranslations: 'Швидкі переклади', resetAt: 'Оновлення о', limitReached: 'Ліміт вичерпано. Дочекайтесь оновлення.', dictLimit: 'Ліміт словників вичерпано.', wordLimit: 'Ліміт збережених слів вичерпано.', donateText: "Хочеш допомогти AiTerm стати ще краще? Ти можеш підтримати проект донатом. Це не обов'язково, але завжди дуже цінується! ❤️", supportBtn: "Підтримати AiTerm", limitModalTitle: "Ліміт вичерпано", limitModalRequests: "Ви перевищили ліміт запитів на переклад. Зачекайте на оновлення таймера.", limitModalDicts: "Ви досягли ліміту словників.", limitModalWords: "Ви досягли ліміту збережених слів.", btnCloseModal: "Закрити", serverBusy: "Сервери ШІ перевантажені. Спробуйте через кілька секунд.", networkError: "Помилка мережі. Перевірте з'єднання.", genericError: "Сталася помилка. Спробуйте ще раз.", duplicateWarningText: "Це слово вже є у словнику '{dictName}'. Ви точно хочете зберегти його?", btnYesAdd: "Так, додати", btnCancel: "Скасувати", welcomeTitle: "Ласкаво просимо до AiTerm 1.0! 🎉", welcomeText1: "Це повністю безкоштовне розширення. Кожного дня вам доступно по 30 запитів для головного та міні-вікна.", welcomeText2: "Проєкт розвивається на ентузіазмі. Якщо бажаєте, ви можете підтримати автора в налаштуваннях!", welcomeBtn: "Поїхали!" },
+    zh: { ...translations.zh, textTooLong: '文本太长', confirmRemoveText: '此操作将永久删除您的个人资料和所有词典。', fullTranslations: '完整翻译', quickTranslations: '快速翻译', resetAt: '重置于', limitReached: '达到限制。等待重置。', dictLimit: '达到词典限制。', wordLimit: '保存单词的限制已达到。', limitModalTitle: "达到限制", limitModalRequests: "您已达到翻译请求限制。请等待计时器重置。", limitModalDicts: "您已达到最大词典数量。", limitModalWords: "您已达到保存单词的最大数量。", btnCloseModal: "关闭", serverBusy: "AI 服务器过载。请几秒钟后再试。", networkError: "网络错误。请检查您的连接。", genericError: "发生错误。请重试。", duplicateWarningText: "此单词已存在于词典 '{dictName}' 中。确定要保存吗？", btnYesAdd: "是的，添加", btnCancel: "取消", welcomeTitle: "Welcome to AiTerm 1.0! 🎉", welcomeText1: "This is a completely free extension. You get 30 requests daily for the main window and 30 for the mini-window.", welcomeText2: "The project is built with passion. If you find it useful, you can support the author in the menu!", welcomeBtn: "Let's Go!" },
+    es: { ...translations.es, textTooLong: 'Texto demasiado largo', confirmRemoveText: 'Esta acción eliminará permanentemente su perfil y todos diccionarios.', fullTranslations: 'Traducciones completas', quickTranslations: 'Traducciones rápidas', resetAt: 'Se reinicia a las', limitReached: 'Límite alcanzado.', dictLimit: 'Límite de diccionarios alcanzado.', wordLimit: 'Límite de palabras guardadas alcanzado.', limitModalTitle: "Límite alcanzado", limitModalRequests: "Has alcanzado tu límite de solicitudes de traducción. Espera a que se reinicie el temporizador.", limitModalDicts: "Has alcanzado el número máximo de diccionarios.", limitModalWords: "Has alcanzado el número máximo de palabras guardadas.", btnCloseModal: "Cerrar", serverBusy: "Los servidores de IA están sobrecargados. Inténtalo en unos segundos.", networkError: "Error de red. Comprueba tu conexión.", genericError: "Ocurrió un error. Inténtalo de nuevo.", duplicateWarningText: "Esta palabra ya existe en el diccionario '{dictName}'. ¿Estás seguro de que quieres guardarla?", btnYesAdd: "Sí, añadir", btnCancel: "Cancelar", welcomeTitle: "Welcome to AiTerm 1.0! 🎉", welcomeText1: "This is a completely free extension. You get 30 requests daily for the main window and 30 for the mini-window.", welcomeText2: "The project is built with passion. If you find it useful, you can support the author in the menu!", welcomeBtn: "Let's Go!" },
+    ar: { ...translations.ar, textTooLong: 'النص طويل جدًا', confirmRemoveText: 'سيؤدي هذا الإجراء إلى حذف ملفك الشخصي وجميع القواميس نهائيًا.', fullTranslations: 'ترجمات كاملة', quickTranslations: 'ترجمات سريعة', resetAt: 'تتم إعادة التعيين في', limitReached: 'تم الوصول إلى الحد.', dictLimit: 'تم الوصول إلى حد القاموس.', wordLimit: 'تم الوصول إلى حد الكلمات المحفوظة.', limitModalTitle: "تم الوصول إلى الحد", limitModalRequests: "لقد وصلت إلى حد طلبات الترجمة الخاصة بك. يرجى الانتظار حتى يتم إعادة ضبط المؤقت.", limitModalDicts: "لقد وصلت إلى الحد الأقصى لعدد القواميس.", limitModalWords: "لقد وصلت إلى الحد الأقصى للكلمات المحفوظة.", btnCloseModal: "إغلاق", serverBusy: "خوادم الذكاء الاصطناعي محملة بشكل زائد. يرجى المحاولة بعد بضع ثوانٍ.", networkError: "خطأ في الشبكة. تحقق من اتصالك.", genericError: "حدث خطأ. يرجى المحاولة مرة أخرى.", duplicateWarningText: "هذه الكلمة موجودة بالفعل في القاموس '{dictName}'. هل أنت متأكد أنك تريد حفظها؟", btnYesAdd: "نعم، أضف", btnCancel: "إلغاء", welcomeTitle: "Welcome to AiTerm 1.0! 🎉", welcomeText1: "This is a completely free extension. You get 30 requests daily for the main window and 30 for the mini-window.", welcomeText2: "The project is built with passion. If you find it useful, you can support the author in the menu!", welcomeBtn: "Let's Go!" },
+    pl: { ...translations.pl, textTooLong: 'Tekst jest za długi', confirmRemoveText: 'Ta akcja trwale usunie Twój profil i wszystkie słowniki.', fullTranslations: 'Pełne tłumaczenia', quickTranslations: 'Szybkie tłumaczenia', resetAt: 'Reset o', limitReached: 'Limit wyczerpany.', dictLimit: 'Osiągnięto limit słowników.', wordLimit: 'Osiągnięto limit zapisanych słów.', limitModalTitle: "Limit osiągnięty", limitModalRequests: "Osiągnąłeś limit zapytań o tłumaczenie. Poczekaj na reset timera.", limitModalDicts: "Osiągnąłeś maksymalną liczbę słowników.", limitModalWords: "Osiągnąłeś maksymalną liczbę zapisanych słów.", btnCloseModal: "Zamknij", serverBusy: "Serwery AI są przeciążone. Spróbuj ponownie za kilka sekund.", networkError: "Błąd sieci. Sprawdź swoje połączenie.", genericError: "Wystąpił błąd. Spróbuj ponownie.", duplicateWarningText: "To słowo już istnieje w słowniku '{dictName}'. Czy na pewno chcesz je zapisać?", btnYesAdd: "Tak, dodaj", btnCancel: "Anuluj", welcomeTitle: "Welcome to AiTerm 1.0! 🎉", welcomeText1: "This is a completely free extension. You get 30 requests daily for the main window and 30 for the mini-window.", welcomeText2: "The project is built with passion. If you find it useful, you can support the author in the menu!", welcomeBtn: "Let's Go!" },
 };
 
 const MAX_DICTS = 50;
@@ -51,6 +51,7 @@ function Popup() {
 
     const [toastState, setToastState] = useState<{ visible: boolean, message: string, type: 'error' | 'success' }>({visible: false, message: '', type: 'error'});
     const [showAuthModal, setShowAuthModal] = useState(false);
+    const [showWelcomeModal, setShowWelcomeModal] = useState(false);
 
     const [limitModalType, setLimitModalType] = useState<'requests' | 'dicts' | 'words' | null>(null);
     const [duplicateWarning, setDuplicateWarning] = useState<{dictId: string, dictName: string} | null>(null);
@@ -158,12 +159,21 @@ function Popup() {
 
             const diff = nextReset.getTime() - now.getTime();
 
-            if (diff >= (12 * 60 * 60 * 1000) - 2000 && diff <= (12 * 60 * 60 * 1000) + 2000) {
-                setTotalRequestsLeft(30);
-                setMainRequestsLeft(30);
-                localStorage.setItem('aiterm-total-requests', '30');
-                localStorage.setItem('aiterm-main-requests', '30');
-                chrome.storage.local.set({ aitermTotalRequests: 30, aitermMainRequests: 30 });
+            // Безопасное обновление: запрашиваем реальные лимиты с бэкенда, вместо слепого локального начисления
+            if (diff <= 10000 && diff >= 0) {
+                if (userEmail) {
+                    loginWithGoogle().then(dbResult => {
+                        if (dbResult && dbResult.success) {
+                            const newTotal = dbResult.user.total_requests_left ?? 30;
+                            const newMain = dbResult.user.main_requests_left ?? 30;
+                            setTotalRequestsLeft(newTotal);
+                            setMainRequestsLeft(newMain);
+                            localStorage.setItem('aiterm-total-requests', newTotal.toString());
+                            localStorage.setItem('aiterm-main-requests', newMain.toString());
+                            chrome.storage.local.set({ aitermTotalRequests: newTotal, aitermMainRequests: newMain });
+                        }
+                    });
+                }
             }
 
             const formattedTime = nextReset.toLocaleTimeString(navigator.language, { hour: '2-digit', minute: '2-digit' });
@@ -174,7 +184,7 @@ function Popup() {
         const interval = setInterval(calculateTime, 10000);
 
         return () => clearInterval(interval);
-    }, []);
+    }, [userEmail]); // Зависимость от userEmail, чтобы функция имела к нему доступ
 
     useEffect(() => {
         const listener = (changes: { [key: string]: chrome.storage.StorageChange }) => {
@@ -209,6 +219,12 @@ function Popup() {
         if (userEmail) {
             chrome.storage.local.set({ aitermUserEmail: userEmail });
             getDictionaries(userEmail).then(data => setDictionaries(data));
+
+            // Показываем окно при загрузке расширения, если еще не было показано
+            const hasSeenWelcome = localStorage.getItem(`hasSeenWelcome_${userEmail}`);
+            if (!hasSeenWelcome) {
+                setShowWelcomeModal(true);
+            }
         } else {
             chrome.storage.local.remove(['aitermUserEmail']);
         }
@@ -350,7 +366,6 @@ function Popup() {
             if (res && res.success) {
                 showToast("profile deleted", "success");
 
-                // Выход и очистка локальных данных (в базе запросы остались)
                 await logoutFromGoogle();
                 localStorage.clear();
                 chrome.storage.local.clear();
@@ -439,6 +454,11 @@ function Popup() {
                     aitermMainRequests: mainToSet
                 });
 
+                const hasSeenWelcome = localStorage.getItem(`hasSeenWelcome_${user.email}`);
+                if (!hasSeenWelcome) {
+                    setShowWelcomeModal(true);
+                }
+
                 setShowAuthModal(false);
                 showToast("login successful", 'success');
             } else { showToast("server error", 'error'); }
@@ -446,6 +466,12 @@ function Popup() {
         finally { setIsLoggingIn(false); }
     };
 
+    const handleCloseWelcomeModal = () => {
+        setShowWelcomeModal(false);
+        if (userEmail) {
+            localStorage.setItem(`hasSeenWelcome_${userEmail}`, 'true');
+        }
+    };
 
     useLayoutEffect(() => {
         localStorage.setItem('aiterm-theme', isDarkTheme ? 'dark' : 'light');
@@ -1190,6 +1216,10 @@ function Popup() {
                         </div>
 
                         <div className="about-scroll-area">
+                            <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+                                <span style={{ backgroundColor: 'rgba(128, 128, 128, 0.1)', color: 'var(--text-secondary)', padding: '6px 12px', borderRadius: '20px', fontSize: '13px', fontWeight: 'bold' }}>Version 1.0</span>
+                            </div>
+
                             <div className="about-title">What is AiTerm?</div>
                             <div className="about-text">
                                 AiTerm is an advanced, AI-powered translation assistant designed for deep contextual analysis and accelerated language learning. Unlike traditional dictionaries, AiTerm leverages Large Language Models (LLMs) to provide nuanced explanations, real-world usage examples, and precise proficiency assessments.
@@ -1321,6 +1351,22 @@ function Popup() {
             </div>
 
             <AuthScreen showAuthModal={showAuthModal} setShowAuthModal={setShowAuthModal} handleGoogleAuth={handleGoogleAuth} isLoggingIn={isLoggingIn} t={t} />
+
+            <div className={`confirm-overlay ${showWelcomeModal ? 'visible' : ''}`} style={{zIndex: 10000}} onClick={handleCloseWelcomeModal}>
+                <div className="confirm-box" style={{padding: '40px 24px 30px', maxWidth: '340px', position: 'relative'}} onClick={(e) => e.stopPropagation()}>
+                    <div className="close-button absolute-close" onClick={handleCloseWelcomeModal} style={{top: '12px', right: '12px', zIndex: 10}}><CloseIcon/></div>
+                    <h3 className="confirm-title" style={{fontSize: '22px', marginBottom: '15px', marginTop: '10px'}}>{t.welcomeTitle}</h3>
+                    <p className="confirm-text" style={{fontSize: '14.5px', marginBottom: '12px', color: 'var(--text-color)'}}>
+                        {t.welcomeText1}
+                    </p>
+                    <p className="confirm-text" style={{fontSize: '14px', marginBottom: '24px'}}>
+                        {t.welcomeText2}
+                    </p>
+                    <button className="confirm-btn primary" style={{width: '100%', fontSize: '16px', padding: '12px 0'}} onClick={handleCloseWelcomeModal}>
+                        {t.welcomeBtn}
+                    </button>
+                </div>
+            </div>
 
             {renderLangModal('source', 'left', availableLanguages)}
             {renderLangModal('target', 'right', availableLanguages)}
