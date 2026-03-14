@@ -20,9 +20,9 @@ const getAutoLanguage = (): keyof typeof translations => {
 
 const localTranslations = {
     ...translations,
-    en: { ...translations.en, textTooLong: 'Text is too long', confirmRemoveText: 'This action will permanently delete your profile and all dictionaries.', resetTimer: 'Resets in:', limitReached: 'Limit reached. Wait for reset.', dictLimit: 'Dictionary limit reached.', wordLimit: 'Saved words limit reached.', donateText: "Want to help AiTerm get even better? You can support the project with a custom donation. It’s never required, but always deeply appreciated! ❤️", supportBtn: "Support the project", limitModalTitle: "Limit Reached", limitModalRequests: "You have reached your translation requests limit. Please wait for the timer to reset.", limitModalDicts: "You have reached the maximum number of dictionaries.", limitModalWords: "You have reached the maximum number of saved words.", btnCloseModal: "Close", serverBusy: "AI servers are overloaded. Please try again in a few seconds.", networkError: "Network error. Check your internet connection.", genericError: "An error occurred. Please try again." },
-    ru: { ...translations.ru, textTooLong: 'Слишком длинный текст', confirmRemoveText: 'Это действие навсегда удалит ваш профиль и все словари.', resetTimer: 'Обновление через:', limitReached: 'Лимит исчерпан. Дождитесь обновления.', dictLimit: 'Лимит словарей исчерпан.', wordLimit: 'Лимит сохраненных слов исчерпан.', donateText: "Want to help AiTerm get even better? You can support the project with a custom donation. It’s never required, but always deeply appreciated! ❤️", supportBtn: "Support the project", limitModalTitle: "Лимит исчерпан", limitModalRequests: "Вы превысили лимит запросов на перевод. Подождите обновления таймера.", limitModalDicts: "Вы достигли лимита словарей.", limitModalWords: "Вы достигли лимита сохраненных слов.", btnCloseModal: "Закрыть", serverBusy: "Серверы ИИ перегружены. Попробуйте через пару секунд.", networkError: "Ошибка сети. Проверьте интернет.", genericError: "Произошла ошибка. Попробуйте еще раз." },
-    uk: { ...translations.uk, textTooLong: 'Занадто довгий текст', confirmRemoveText: 'Ця дія назавжди видалить ваш профіль та усі словники.', resetTimer: 'Оновлення через:', limitReached: 'Ліміт вичерпано. Дочекайтесь оновлення.', dictLimit: 'Ліміт словників вичерпано.', wordLimit: 'Ліміт збережених слів вичерпано.', donateText: "Want to help AiTerm get even better? You can support the project with a custom donation. It’s never required, but always deeply appreciated! ❤️", supportBtn: "Support the project", limitModalTitle: "Ліміт вичерпано", limitModalRequests: "Ви перевищили ліміт запитів на переклад. Зачекайте на оновлення таймера.", limitModalDicts: "Ви досягли ліміту словників.", limitModalWords: "Ви досягли ліміту збережених слів.", btnCloseModal: "Закрити", serverBusy: "Сервери ШІ перевантажені. Спробуйте через кілька секунд.", networkError: "Помилка мережі. Перевірте з'єднання.", genericError: "Сталася помилка. Спробуйте ще раз." },
+    en: { ...translations.en, textTooLong: 'Text is too long', confirmRemoveText: 'This action will permanently delete your profile and all dictionaries.', resetTimer: 'Resets in:', limitReached: 'Limit reached. Wait for reset.', dictLimit: 'Dictionary limit reached.', wordLimit: 'Saved words limit reached.', donateText: "Want to help AiTerm get even better? You can support the project with a custom donation. It’s never required, but always deeply appreciated! ❤️", supportBtn: "Support AiTerm", limitModalTitle: "Limit Reached", limitModalRequests: "You have reached your translation requests limit. Please wait for the timer to reset.", limitModalDicts: "You have reached the maximum number of dictionaries.", limitModalWords: "You have reached the maximum number of saved words.", btnCloseModal: "Close", serverBusy: "AI servers are overloaded. Please try again in a few seconds.", networkError: "Network error. Check your internet connection.", genericError: "An error occurred. Please try again." },
+    ru: { ...translations.ru, textTooLong: 'Слишком длинный текст', confirmRemoveText: 'Это действие навсегда удалит ваш профиль и все словари.', resetTimer: 'Обновление через:', limitReached: 'Лимит исчерпан. Дождитесь обновления.', dictLimit: 'Лимит словарей исчерпан.', wordLimit: 'Лимит сохраненных слов исчерпан.', donateText: "Хочешь помочь AiTerm стать еще лучше? Ты можешь поддержать проект донатом. Это не обязательно, но всегда очень ценится! ❤️", supportBtn: "Поддержать AiTerm", limitModalTitle: "Лимит исчерпан", limitModalRequests: "Вы превысили лимит запросов на перевод. Подождите обновления таймера.", limitModalDicts: "Вы достигли лимита словарей.", limitModalWords: "Вы достигли лимита сохраненных слов.", btnCloseModal: "Закрыть", serverBusy: "Серверы ИИ перегружены. Попробуйте через пару секунд.", networkError: "Ошибка сети. Проверьте интернет.", genericError: "Произошла ошибка. Попробуйте еще раз." },
+    uk: { ...translations.uk, textTooLong: 'Занадто довгий текст', confirmRemoveText: 'Ця дія назавжди видалить ваш профіль та усі словники.', resetTimer: 'Оновлення через:', limitReached: 'Ліміт вичерпано. Дочекайтесь оновлення.', dictLimit: 'Ліміт словників вичерпано.', wordLimit: 'Ліміт збережених слів вичерпано.', donateText: "Хочеш допомогти AiTerm стати ще краще? Ти можеш підтримати проект донатом. Це не обов'язково, але завжди дуже цінується! ❤️", supportBtn: "Підтримати AiTerm", limitModalTitle: "Ліміт вичерпано", limitModalRequests: "Ви перевищили ліміт запитів на переклад. Зачекайте на оновлення таймера.", limitModalDicts: "Ви досягли ліміту словників.", limitModalWords: "Ви досягли ліміту збережених слів.", btnCloseModal: "Закрити", serverBusy: "Сервери ШІ перевантажені. Спробуйте через кілька секунд.", networkError: "Помилка мережі. Перевірте з'єднання.", genericError: "Сталася помилка. Спробуйте ще раз." },
     zh: { ...translations.zh, textTooLong: '文本太长', confirmRemoveText: '此操作将永久删除您的个人资料和所有词典。', resetTimer: '重置时间：', limitReached: '达到限制。等待重置。', dictLimit: '达到词典限制。', wordLimit: '保存单词的限制已达到。', limitModalTitle: "达到限制", limitModalRequests: "您已达到翻译请求限制。请等待计时器重置。", limitModalDicts: "您已达到最大词典数量。", limitModalWords: "您已达到保存单词的最大数量。", btnCloseModal: "关闭", serverBusy: "AI 服务器过载。请几秒钟后再试。", networkError: "网络错误。请检查您的连接。", genericError: "发生错误。请重试。" },
     es: { ...translations.es, textTooLong: 'Texto demasiado largo', confirmRemoveText: 'Esta acción eliminará permanentemente su perfil y todos los diccionarios.', resetTimer: 'Se reinicia en:', limitReached: 'Límite alcanzado.', dictLimit: 'Límite de diccionarios alcanzado.', wordLimit: 'Límite de palabras guardadas alcanzado.', limitModalTitle: "Límite alcanzado", limitModalRequests: "Has alcanzado tu límite de solicitudes de traducción. Espera a que se reinicie el temporizador.", limitModalDicts: "Has alcanzado el número máximo de diccionarios.", limitModalWords: "Has alcanzado el número máximo de palabras guardadas.", btnCloseModal: "Cerrar", serverBusy: "Los servidores de IA están sobrecargados. Inténtalo en unos segundos.", networkError: "Error de red. Comprueba tu conexión.", genericError: "Ocurrió un error. Inténtalo de nuevo." },
     ar: { ...translations.ar, textTooLong: 'النص طويل جدًا', confirmRemoveText: 'سيؤدي هذا الإجراء إلى حذف ملفك الشخصي وجميع القواميس نهائيًا.', resetTimer: 'إعادة التعيين في:', limitReached: 'تم الوصول إلى الحد.', dictLimit: 'تم الوصول إلى حد القاموس.', wordLimit: 'تم الوصول إلى حد الكلمات المحفوظة.', limitModalTitle: "تم الوصول إلى الحد", limitModalRequests: "لقد وصلت إلى حد طلبات الترجمة الخاصة بك. يرجى الانتظار حتى يتم إعادة ضبط المؤقت.", limitModalDicts: "لقد وصلت إلى الحد الأقصى لعدد القواميس.", limitModalWords: "لقد وصلت إلى الحد الأقصى للكلمات المحفوظة.", btnCloseModal: "إغلاق", serverBusy: "خوادم الذكاء الاصطناعي محملة بشكل زائد. يرجى المحاولة بعد بضع ثوانٍ.", networkError: "خطأ في الشبكة. تحقق من اتصالك.", genericError: "حدث خطأ. يرجى المحاولة مرة أخرى." },
@@ -43,7 +43,7 @@ function Popup() {
     });
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [activeMenuView, setActiveMenuView] = useState<'main' | 'dictionaries' | 'dict_view' | 'about' | 'features'>('main');
+    const [activeMenuView, setActiveMenuView] = useState<'main' | 'dictionaries' | 'dict_view' | 'about' | 'features' | 'support'>('main');
     const [modalMode, setModalMode] = useState<'ui' | 'source' | 'target' | null>(null);
     const [sourceLang, setSourceLang] = useState<string | null>(null);
     const [targetLang, setTargetLang] = useState<string | null>(() => localStorage.getItem('aiterm-target-language') || null);
@@ -528,16 +528,11 @@ function Popup() {
                 if (error.name !== 'AbortError') {
                     const msg = String(error.message || error).toLowerCase();
 
-                    // Ловим отсутствие юзера в базе
                     if (error.code === 'USER_NOT_FOUND' || msg.includes('user not found')) {
                         showToast(t.genericError ? "Сессия устарела. Войдите снова." : "Session expired. Log in again.", 'error');
-
-                        // Зачищаем "сломанные" данные
                         setUserEmail(null);
                         localStorage.removeItem('aiterm-user-email');
                         chrome.storage.local.remove(['aitermUserEmail']);
-
-                        // Вызываем окно авторизации
                         setShowAuthModal(true);
                     }
                     else if (msg.includes('503') || msg.includes('high demand') || msg.includes('overload') || msg.includes('unavailable')) {
@@ -1047,6 +1042,13 @@ function Popup() {
 
                             <button className="menu-list-btn" onClick={() => setActiveMenuView('features')}><SettingsIcon/><span>Settings & Features</span></button>
                             <button className="menu-list-btn" onClick={() => setActiveMenuView('about')}><InfoIcon/><span>{t.about_menu || "About AiTerm"}</span></button>
+
+                            <button className="menu-list-btn" onClick={() => setActiveMenuView('support')}>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                </svg>
+                                <span>{t.supportBtn || "Support AiTerm"}</span>
+                            </button>
                         </div>
                         {userEmail && (
                             <div className="menu-footer">
@@ -1054,6 +1056,46 @@ function Popup() {
                                 <button className="menu-list-btn danger-btn" onClick={() => setConfirmAction('remove')}><TrashIcon/><span>{t.menuRemoveProfile}</span></button>
                             </div>
                         )}
+                    </div>
+                )}
+
+                {/* Экран поддержки (донаты) */}
+                {activeMenuView === 'support' && (
+                    <div className="menu-view-anim about-body" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+                        <div className="menu-header">
+                            <div className="back-button" onClick={() => setActiveMenuView('main')}><BackIcon/></div>
+                            <div className="header-title"><span className="title-ai">Ai</span><span className="title-term">Term</span></div>
+                            <div className="close-button" onClick={() => setIsMenuOpen(false)}><CloseIcon/></div>
+                        </div>
+
+                        <div className="about-scroll-area" style={{ padding: '0', display: 'flex', flexDirection: 'column', alignItems: 'center', overflowY: 'auto', flex: 1, width: '100%', WebkitMaskImage: 'none', maskImage: 'none' }}>
+                            <div style={{ padding: '15px', textAlign: 'center', width: '100%', boxSizing: 'border-box' }}>
+                                <div className="about-text" style={{ fontSize: '14px', lineHeight: '1.5', marginTop: '10px' }}>
+                                    {t.donateText || "Want to help AiTerm get even better? You can support the project with a custom donation. It’s never required, but always deeply appreciated! ❤️"}
+                                </div>
+                            </div>
+
+                            <div style={{ padding: '0 15px', width: '100%', boxSizing: 'border-box', marginBottom: '15px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginBottom: '8px', textAlign: 'center' }}>
+                                    Оплата картами со всего мира: Visa, Mastercard, Apple Pay, Google Pay
+                                </div>
+                                <a href="https://send.monobank.ua/jar/ТВОЯ_БАНКА" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', width: '100%', padding: '12px 0', backgroundColor: '#000', color: '#fff', borderRadius: '8px', textDecoration: 'none', fontWeight: 'bold', cursor: 'pointer', transition: 'opacity 0.2s' }} onMouseOver={(e) => e.currentTarget.style.opacity = '0.8'} onMouseOut={(e) => e.currentTarget.style.opacity = '1'}>
+                                    <span style={{ fontSize: '20px' }}>🐈‍⬛</span> Monobank
+                                </a>
+                            </div>
+
+                            <div className="separator-line" style={{ width: 'calc(100% - 30px)', margin: '0 15px 15px 15px' }}></div>
+
+                            {/* Новая стилизованная кнопка Крипты */}
+                            <div style={{ padding: '0 15px', width: '100%', boxSizing: 'border-box', marginBottom: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginBottom: '8px', textAlign: 'center' }}>
+                                    Оплата любой криптовалютой со своего кошелька через безопасный шлюз NOWPayments
+                                </div>
+                                <a href="https://nowpayments.io/donation?api_key=7a13f050-cac5-4070-bed0-399343b52071" target="_blank" rel="noreferrer noopener" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', width: '100%', padding: '12px 0', backgroundColor: '#000', color: '#fff', borderRadius: '8px', textDecoration: 'none', fontWeight: 'bold', cursor: 'pointer', transition: 'opacity 0.2s' }} onMouseOver={(e) => e.currentTarget.style.opacity = '0.8'} onMouseOut={(e) => e.currentTarget.style.opacity = '1'}>
+                                    <span style={{ fontSize: '20px' }}>🪙</span> Crypto
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 )}
 
