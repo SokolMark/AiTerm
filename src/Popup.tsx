@@ -20,13 +20,13 @@ const getAutoLanguage = (): keyof typeof translations => {
 
 const localTranslations = {
     ...translations,
-    en: { ...translations.en, textTooLong: 'Text is too long', confirmRemoveText: 'This action will permanently delete your profile and all dictionaries.', resetTimer: 'Resets in:', limitReached: 'Limit reached. Wait for reset.', dictLimit: 'Dictionary limit reached.', wordLimit: 'Saved words limit reached.', donateText: "Want to help AiTerm get even better? You can support the project with a custom donation. It’s never required, but always deeply appreciated! ❤️", supportBtn: "Support AiTerm", limitModalTitle: "Limit Reached", limitModalRequests: "You have reached your translation requests limit. Please wait for the timer to reset.", limitModalDicts: "You have reached the maximum number of dictionaries.", limitModalWords: "You have reached the maximum number of saved words.", btnCloseModal: "Close", serverBusy: "AI servers are overloaded. Please try again in a few seconds.", networkError: "Network error. Check your internet connection.", genericError: "An error occurred. Please try again." },
-    ru: { ...translations.ru, textTooLong: 'Слишком длинный текст', confirmRemoveText: 'Это действие навсегда удалит ваш профиль и все словари.', resetTimer: 'Обновление через:', limitReached: 'Лимит исчерпан. Дождитесь обновления.', dictLimit: 'Лимит словарей исчерпан.', wordLimit: 'Лимит сохраненных слов исчерпан.', donateText: "Хочешь помочь AiTerm стать еще лучше? Ты можешь поддержать проект донатом. Это не обязательно, но всегда очень ценится! ❤️", supportBtn: "Поддержать AiTerm", limitModalTitle: "Лимит исчерпан", limitModalRequests: "Вы превысили лимит запросов на перевод. Подождите обновления таймера.", limitModalDicts: "Вы достигли лимита словарей.", limitModalWords: "Вы достигли лимита сохраненных слов.", btnCloseModal: "Закрыть", serverBusy: "Серверы ИИ перегружены. Попробуйте через пару секунд.", networkError: "Ошибка сети. Проверьте интернет.", genericError: "Произошла ошибка. Попробуйте еще раз." },
-    uk: { ...translations.uk, textTooLong: 'Занадто довгий текст', confirmRemoveText: 'Ця дія назавжди видалить ваш профіль та усі словники.', resetTimer: 'Оновлення через:', limitReached: 'Ліміт вичерпано. Дочекайтесь оновлення.', dictLimit: 'Ліміт словників вичерпано.', wordLimit: 'Ліміт збережених слів вичерпано.', donateText: "Хочеш допомогти AiTerm стати ще краще? Ти можеш підтримати проект донатом. Це не обов'язково, але завжди дуже цінується! ❤️", supportBtn: "Підтримати AiTerm", limitModalTitle: "Ліміт вичерпано", limitModalRequests: "Ви перевищили ліміт запитів на переклад. Зачекайте на оновлення таймера.", limitModalDicts: "Ви досягли ліміту словників.", limitModalWords: "Ви досягли ліміту збережених слів.", btnCloseModal: "Закрити", serverBusy: "Сервери ШІ перевантажені. Спробуйте через кілька секунд.", networkError: "Помилка мережі. Перевірте з'єднання.", genericError: "Сталася помилка. Спробуйте ще раз." },
-    zh: { ...translations.zh, textTooLong: '文本太长', confirmRemoveText: '此操作将永久删除您的个人资料和所有词典。', resetTimer: '重置时间：', limitReached: '达到限制。等待重置。', dictLimit: '达到词典限制。', wordLimit: '保存单词的限制已达到。', limitModalTitle: "达到限制", limitModalRequests: "您已达到翻译请求限制。请等待计时器重置。", limitModalDicts: "您已达到最大词典数量。", limitModalWords: "您已达到保存单词的最大数量。", btnCloseModal: "关闭", serverBusy: "AI 服务器过载。请几秒钟后再试。", networkError: "网络错误。请检查您的连接。", genericError: "发生错误。请重试。" },
-    es: { ...translations.es, textTooLong: 'Texto demasiado largo', confirmRemoveText: 'Esta acción eliminará permanentemente su perfil y todos los diccionarios.', resetTimer: 'Se reinicia en:', limitReached: 'Límite alcanzado.', dictLimit: 'Límite de diccionarios alcanzado.', wordLimit: 'Límite de palabras guardadas alcanzado.', limitModalTitle: "Límite alcanzado", limitModalRequests: "Has alcanzado tu límite de solicitudes de traducción. Espera a que se reinicie el temporizador.", limitModalDicts: "Has alcanzado el número máximo de diccionarios.", limitModalWords: "Has alcanzado el número máximo de palabras guardadas.", btnCloseModal: "Cerrar", serverBusy: "Los servidores de IA están sobrecargados. Inténtalo en unos segundos.", networkError: "Error de red. Comprueba tu conexión.", genericError: "Ocurrió un error. Inténtalo de nuevo." },
-    ar: { ...translations.ar, textTooLong: 'النص طويل جدًا', confirmRemoveText: 'سيؤدي هذا الإجراء إلى حذف ملفك الشخصي وجميع القواميس نهائيًا.', resetTimer: 'إعادة التعيين في:', limitReached: 'تم الوصول إلى الحد.', dictLimit: 'تم الوصول إلى حد القاموس.', wordLimit: 'تم الوصول إلى حد الكلمات المحفوظة.', limitModalTitle: "تم الوصول إلى الحد", limitModalRequests: "لقد وصلت إلى حد طلبات الترجمة الخاصة بك. يرجى الانتظار حتى يتم إعادة ضبط المؤقت.", limitModalDicts: "لقد وصلت إلى الحد الأقصى لعدد القواميس.", limitModalWords: "لقد وصلت إلى الحد الأقصى للكلمات المحفوظة.", btnCloseModal: "إغلاق", serverBusy: "خوادم الذكاء الاصطناعي محملة بشكل زائد. يرجى المحاولة بعد بضع ثوانٍ.", networkError: "خطأ في الشبكة. تحقق من اتصالك.", genericError: "حدث خطأ. يرجى المحاولة مرة أخرى." },
-    pl: { ...translations.pl, textTooLong: 'Tekst jest za długi', confirmRemoveText: 'Ta akcja trwale usunie Twój profil i wszystkie słowniki.', resetTimer: 'Reset za:', limitReached: 'Limit wyczerpany.', dictLimit: 'Osiągnięto limit słowników.', wordLimit: 'Osiągnięto limit zapisanych słów.', limitModalTitle: "Limit osiągnięty", limitModalRequests: "Osiągnąłeś limit zapytań o tłumaczenie. Poczekaj na reset timera.", limitModalDicts: "Osiągnąłeś maksymalną liczbę słowników.", limitModalWords: "Osiągnąłeś maksymalną liczbę zapisanych słów.", btnCloseModal: "Zamknij", serverBusy: "Serwery AI są przeciążone. Spróbuj ponownie za kilka sekund.", networkError: "Błąd sieci. Sprawdź swoje połączenie.", genericError: "Wystąpił błąd. Spróbuj ponownie." },
+    en: { ...translations.en, textTooLong: 'Text is too long', confirmRemoveText: 'This action will permanently delete your profile and all dictionaries.', fullTranslations: 'Full translations', quickTranslations: 'Quick translations', resetAt: 'Resets at', limitReached: 'Limit reached. Wait for reset.', dictLimit: 'Dictionary limit reached.', wordLimit: 'Saved words limit reached.', donateText: "Want to help AiTerm get even better? You can support the project with a custom donation. It’s never required, but always deeply appreciated! ❤️", supportBtn: "Support AiTerm", limitModalTitle: "Limit Reached", limitModalRequests: "You have reached your translation requests limit. Please wait for the timer to reset.", limitModalDicts: "You have reached the maximum number of dictionaries.", limitModalWords: "You have reached the maximum number of saved words.", btnCloseModal: "Close", serverBusy: "AI servers are overloaded. Please try again in a few seconds.", networkError: "Network error. Check your internet connection.", genericError: "An error occurred. Please try again." },
+    ru: { ...translations.ru, textTooLong: 'Слишком длинный текст', confirmRemoveText: 'Это действие навсегда удалит ваш профиль и все словари.', fullTranslations: 'Полные переводы', quickTranslations: 'Быстрые переводы', resetAt: 'Обновление в', limitReached: 'Лимит исчерпан. Дождитесь обновления.', dictLimit: 'Лимит словарей исчерпан.', wordLimit: 'Лимит сохраненных слов исчерпан.', donateText: "Хочешь помочь AiTerm стать еще лучше? Ты можешь поддержать проект донатом. Это не обязательно, но всегда очень ценится! ❤️", supportBtn: "Поддержать AiTerm", limitModalTitle: "Лимит исчерпан", limitModalRequests: "Вы превысили лимит запросов на перевод. Подождите обновления таймера.", limitModalDicts: "Вы достигли лимита словарей.", limitModalWords: "Вы достигли лимита сохраненных слов.", btnCloseModal: "Закрыть", serverBusy: "Серверы ИИ перегружены. Попробуйте через пару секунд.", networkError: "Ошибка сети. Проверьте интернет.", genericError: "Произошла ошибка. Попробуйте еще раз." },
+    uk: { ...translations.uk, textTooLong: 'Занадто довгий текст', confirmRemoveText: 'Ця дія назавжди видалить ваш профіль та усі словники.', fullTranslations: 'Повні переклади', quickTranslations: 'Швидкі переклади', resetAt: 'Оновлення о', limitReached: 'Ліміт вичерпано. Дочекайтесь оновлення.', dictLimit: 'Ліміт словників вичерпано.', wordLimit: 'Ліміт збережених слів вичерпано.', donateText: "Хочеш допомогти AiTerm стати ще краще? Ти можеш підтримати проект донатом. Це не обов'язково, але завжди дуже цінується! ❤️", supportBtn: "Підтримати AiTerm", limitModalTitle: "Ліміт вичерпано", limitModalRequests: "Ви перевищили ліміт запитів на переклад. Зачекайте на оновлення таймера.", limitModalDicts: "Ви досягли ліміту словників.", limitModalWords: "Ви досягли ліміту збережених слів.", btnCloseModal: "Закрити", serverBusy: "Сервери ШІ перевантажені. Спробуйте через кілька секунд.", networkError: "Помилка мережі. Перевірте з'єднання.", genericError: "Сталася помилка. Спробуйте ще раз." },
+    zh: { ...translations.zh, textTooLong: '文本太长', confirmRemoveText: '此操作将永久删除您的个人资料和所有词典。', fullTranslations: '完整翻译', quickTranslations: '快速翻译', resetAt: '重置于', limitReached: '达到限制。等待重置。', dictLimit: '达到词典限制。', wordLimit: '保存单词的限制已达到。', limitModalTitle: "达到限制", limitModalRequests: "您已达到翻译请求限制。请等待计时器重置。", limitModalDicts: "您已达到最大词典数量。", limitModalWords: "您已达到保存单词的最大数量。", btnCloseModal: "关闭", serverBusy: "AI 服务器过载。请几秒钟后再试。", networkError: "网络错误。请检查您的连接。", genericError: "发生错误。请重试。" },
+    es: { ...translations.es, textTooLong: 'Texto demasiado largo', confirmRemoveText: 'Esta acción eliminará permanentemente su perfil y todos los diccionarios.', fullTranslations: 'Traducciones completas', quickTranslations: 'Traducciones rápidas', resetAt: 'Se reinicia a las', limitReached: 'Límite alcanzado.', dictLimit: 'Límite de diccionarios alcanzado.', wordLimit: 'Límite de palabras guardadas alcanzado.', limitModalTitle: "Límite alcanzado", limitModalRequests: "Has alcanzado tu límite de solicitudes de traducción. Espera a que se reinicie el temporizador.", limitModalDicts: "Has alcanzado el número máximo de diccionarios.", limitModalWords: "Has alcanzado el número máximo de palabras guardadas.", btnCloseModal: "Cerrar", serverBusy: "Los servidores de IA están sobrecargados. Inténtalo en unos segundos.", networkError: "Error de red. Comprueba tu conexión.", genericError: "Ocurrió un error. Inténtalo de nuevo." },
+    ar: { ...translations.ar, textTooLong: 'النص طويل جدًا', confirmRemoveText: 'سيؤدي هذا الإجراء إلى حذف ملفك الشخصي وجميع القواميس نهائيًا.', fullTranslations: 'ترجمات كاملة', quickTranslations: 'ترجمات سريعة', resetAt: 'تتم إعادة التعيين في', limitReached: 'تم الوصول إلى الحد.', dictLimit: 'تم الوصول إلى حد القاموس.', wordLimit: 'تم الوصول إلى حد الكلمات المحفوظة.', limitModalTitle: "تم الوصول إلى الحد", limitModalRequests: "لقد وصلت إلى حد طلبات الترجمة الخاصة بك. يرجى الانتظار حتى يتم إعادة ضبط المؤقت.", limitModalDicts: "لقد وصلت إلى الحد الأقصى لعدد القواميس.", limitModalWords: "لقد وصلت إلى الحد الأقصى للكلمات المحفوظة.", btnCloseModal: "إغلاق", serverBusy: "خوادم الذكاء الاصطناعي محملة بشكل زائد. يرجى المحاولة بعد بضع ثوانٍ.", networkError: "خطأ في الشبكة. تحقق من اتصالك.", genericError: "حدث خطأ. يرجى المحاولة مرة أخرى." },
+    pl: { ...translations.pl, textTooLong: 'Tekst jest za długi', confirmRemoveText: 'Ta akcja trwale usunie Twój profil i wszystkie słowniki.', fullTranslations: 'Pełne tłumaczenia', quickTranslations: 'Szybkie tłumaczenia', resetAt: 'Reset o', limitReached: 'Limit wyczerpany.', dictLimit: 'Osiągnięto limit słowników.', wordLimit: 'Osiągnięto limit zapisanych słów.', limitModalTitle: "Limit osiągnięty", limitModalRequests: "Osiągnąłeś limit zapytań o tłumaczenie. Poczekaj na reset timera.", limitModalDicts: "Osiągnąłeś maksymalną liczbę słowników.", limitModalWords: "Osiągnąłeś maksymalną liczbę zapisanych słów.", btnCloseModal: "Zamknij", serverBusy: "Serwery AI są przeciążone. Spróbuj ponownie za kilka sekund.", networkError: "Błąd sieci. Sprawdź swoje połączenie.", genericError: "Wystąpił błąd. Spróbuj ponownie." },
 };
 
 const MAX_DICTS = 50;
@@ -132,9 +132,8 @@ function Popup() {
     };
 
     useEffect(() => {
-        const interval = setInterval(() => {
+        const calculateTime = () => {
             const now = new Date();
-
             const nextReset = new Date(Date.UTC(
                 now.getUTCFullYear(),
                 now.getUTCMonth(),
@@ -144,7 +143,7 @@ function Popup() {
 
             const diff = nextReset.getTime() - now.getTime();
 
-            if (diff >= (12 * 60 * 60 * 1000) - 2000) {
+            if (diff >= (12 * 60 * 60 * 1000) - 2000 && diff <= (12 * 60 * 60 * 1000) + 2000) {
                 setTotalRequestsLeft(80);
                 setMainRequestsLeft(40);
                 localStorage.setItem('aiterm-total-requests', '80');
@@ -152,11 +151,13 @@ function Popup() {
                 chrome.storage.local.set({ aitermTotalRequests: 80, aitermMainRequests: 40 });
             }
 
-            const h = Math.floor((diff / (1000 * 60 * 60)) % 24);
-            const m = Math.floor((diff / 1000 / 60) % 60);
-            const s = Math.floor((diff / 1000) % 60);
-            setTimeUntilReset(`${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`);
-        }, 1000);
+            const formattedTime = nextReset.toLocaleTimeString(navigator.language, { hour: '2-digit', minute: '2-digit' });
+            setTimeUntilReset(formattedTime);
+        };
+
+        calculateTime();
+        const interval = setInterval(calculateTime, 10000);
+
         return () => clearInterval(interval);
     }, []);
 
@@ -1001,99 +1002,103 @@ function Popup() {
 
             <div className={`menu-panel ${isMenuOpen ? 'open' : ''}`} onClick={(e) => e.stopPropagation()}>
                 {activeMenuView === 'main' && (
-                    <div className="menu-view-anim">
-                        <div className="menu-header">
+                    <div className="menu-view-anim" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+                        <div className="menu-header" style={{ paddingRight: '4px', flexShrink: 0 }}>
                             <div className="header-title"><span className="title-ai">Ai</span><span className="title-term">Term</span></div>
-                            <div className="close-button" onClick={() => setIsMenuOpen(false)}><CloseIcon/></div>
+                            <div className="close-button" onClick={() => setIsMenuOpen(false)} style={{ marginRight: '2px' }}><CloseIcon/></div>
                         </div>
-                        <div className="menu-body">
+                        <div className="menu-body" style={{ display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden' }}>
                             {userEmail ? (
-                                <div style={{ padding: '5px 0 15px 0', borderBottom: '1px solid var(--border-color)', marginBottom: '5px' }}>
-                                    <div style={{ fontWeight: 'bold', fontSize: '14px', marginBottom: '10px', wordBreak: 'break-all' }}>{userEmail}</div>
+                                <div style={{ padding: '5px 0 15px 0', borderBottom: '1px solid var(--border-color)', marginBottom: 0, flexShrink: 0 }}>
+                                    <div style={{ fontWeight: 'bold', fontSize: '14px', marginBottom: '15px', wordBreak: 'break-all', textAlign: 'center' }}>{userEmail}</div>
 
-                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12px', color: 'var(--text-secondary)' }}>
-                                        <div style={{display: 'flex', justifyContent: 'space-between'}}>
-                                            <span>{language === 'ru' ? 'Общее количество запросов:' : language === 'uk' ? 'Загальна кількість запитів:' : 'Total requests:'} <b style={{color: 'var(--text-color)'}}>{totalRequestsLeft}</b></span>
+                                    <div style={{ display: 'flex', gap: '10px', marginBottom: '12px' }}>
+                                        <div style={{ flex: 1, backgroundColor: 'rgba(128, 128, 128, 0.08)', padding: '12px 8px', borderRadius: '12px', textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'center', border: '1px solid var(--border-color)' }}>
+                                            <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginBottom: '6px', lineHeight: '1.2' }}>{t.fullTranslations || 'Full translations'}</div>
+                                            <div style={{ fontSize: '20px', fontWeight: 'bold', color: 'var(--header-bg)' }}>{mainRequestsLeft}</div>
                                         </div>
-                                        <div style={{display: 'flex', justifyContent: 'space-between'}}>
-                                            <span>{language === 'ru' ? 'Запросы в главном окне:' : language === 'uk' ? 'Запити в головному вікні:' : 'Main window requests:'} <b style={{color: 'var(--text-color)'}}>{mainRequestsLeft}</b></span>
+                                        <div style={{ flex: 1, backgroundColor: 'rgba(128, 128, 128, 0.08)', padding: '12px 8px', borderRadius: '12px', textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'center', border: '1px solid var(--border-color)' }}>
+                                            <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginBottom: '6px', lineHeight: '1.2' }}>{t.quickTranslations || 'Quick translations'}</div>
+                                            <div style={{ fontSize: '20px', fontWeight: 'bold', color: 'var(--header-bg)' }}>{totalRequestsLeft}</div>
                                         </div>
-                                        <div style={{display: 'flex', justifyContent: 'space-between'}}>
-                                            <span>{language === 'ru' ? 'Запросы в мини-окне:' : language === 'uk' ? 'Запити у міні-вікні:' : 'Mini window requests:'} <b style={{color: 'var(--text-color)'}}>{totalRequestsLeft}</b></span>
-                                        </div>
-                                        <div style={{display: 'flex', justifyContent: 'flex-end', marginTop: '4px'}}>
-                                            <div style={{ fontSize: '11px', color: 'var(--hint-color)' }}>
-                                                {t.resetTimer} <span style={{fontWeight: 'bold', color: 'var(--text-color)'}}>{timeUntilReset}</span>
-                                            </div>
+                                    </div>
+
+                                    <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                        <div style={{ fontSize: '12px', color: 'var(--text-secondary)', backgroundColor: 'rgba(128, 128, 128, 0.08)', padding: '4px 12px', borderRadius: '20px' }}>
+                                            {t.resetAt || 'Resets at'} <span style={{fontWeight: 'bold', color: 'var(--text-color)'}}>{timeUntilReset}</span>
                                         </div>
                                     </div>
                                 </div>
                             ) : (
-                                <div style={{ padding: '15px', borderBottom: '1px solid var(--border-color)', marginBottom: '10px', textAlign: 'center' }}>
+                                <div style={{ padding: '15px', borderBottom: '1px solid var(--border-color)', marginBottom: 0, textAlign: 'center', flexShrink: 0 }}>
                                     <div style={{ fontWeight: 'bold', fontSize: '14px', marginBottom: '12px' }}>not logged in</div>
                                     <button className="confirm-btn primary" style={{width: '100%', padding: '10px 0'}} onClick={() => setShowAuthModal(true)}>log in</button>
                                 </div>
                             )}
 
-                            <button className="menu-list-btn" onClick={() => requireAuth(() => { setActiveMenuView('dictionaries'); setDictSearchQuery(''); })}><BookIcon/><span>{t.menuDictionaries || "Dictionaries"}</span></button>
-                            <button className="menu-list-btn" onClick={() => setModalMode('ui')}>
-                                <GlobeIcon/><div className="menu-lang-text"><span>{t.menuChangeLang || "Language"}</span><span className="menu-lang-subtext">{currentUILangObj ? getLanguageName(currentUILangObj.code, language) : 'English'}</span></div>
-                            </button>
+                            <div className="about-scroll-area" style={{ display: 'flex', flexDirection: 'column', flex: 1, overflowY: 'auto', paddingRight: '4px' }}>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', padding: '16px 0' }}>
+                                    <button className="menu-list-btn" style={{ margin: 0 }} onClick={() => requireAuth(() => { setActiveMenuView('dictionaries'); setDictSearchQuery(''); })}><BookIcon/><span>{t.menuDictionaries || "Dictionaries"}</span></button>
+                                    <button className="menu-list-btn" style={{ margin: 0 }} onClick={() => setModalMode('ui')}>
+                                        <GlobeIcon/><div className="menu-lang-text"><span>{t.menuChangeLang || "Language"}</span><span className="menu-lang-subtext">{currentUILangObj ? getLanguageName(currentUILangObj.code, language) : 'English'}</span></div>
+                                    </button>
+                                    <button className="menu-list-btn" style={{ margin: 0 }} onClick={() => setActiveMenuView('features')}><SettingsIcon/><span>Settings & Features</span></button>
+                                    <button className="menu-list-btn" style={{ margin: 0 }} onClick={() => setActiveMenuView('about')}><InfoIcon/><span>{t.about_menu || "About AiTerm"}</span></button>
+                                    <button className="menu-list-btn" style={{ margin: 0 }} onClick={() => setActiveMenuView('support')}>
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                                        </svg>
+                                        <span>{t.supportBtn || "Support AiTerm"}</span>
+                                    </button>
+                                </div>
 
-                            <button className="menu-list-btn" onClick={() => setActiveMenuView('features')}><SettingsIcon/><span>Settings & Features</span></button>
-                            <button className="menu-list-btn" onClick={() => setActiveMenuView('about')}><InfoIcon/><span>{t.about_menu || "About AiTerm"}</span></button>
-
-                            <button className="menu-list-btn" onClick={() => setActiveMenuView('support')}>
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
-                                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-                                </svg>
-                                <span>{t.supportBtn || "Support AiTerm"}</span>
-                            </button>
-                        </div>
-                        {userEmail && (
-                            <div className="menu-footer">
-                                <button className="menu-list-btn logout-btn" onClick={() => setConfirmAction('logout')}><LogOutIcon/><span>{t.menuLogout}</span></button>
-                                <button className="menu-list-btn danger-btn" onClick={() => setConfirmAction('remove')}><TrashIcon/><span>{t.menuRemoveProfile}</span></button>
+                                {userEmail && (
+                                    <div className="menu-footer" style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '14px', paddingBottom: '16px' }}>
+                                        <button className="menu-list-btn logout-btn" style={{ margin: 0 }} onClick={() => setConfirmAction('logout')}><LogOutIcon/><span>{t.menuLogout}</span></button>
+                                        <button className="menu-list-btn danger-btn" style={{ margin: 0 }} onClick={() => setConfirmAction('remove')}><TrashIcon/><span>{t.menuRemoveProfile}</span></button>
+                                    </div>
+                                )}
                             </div>
-                        )}
+                        </div>
                     </div>
                 )}
 
                 {/* Экран поддержки (донаты) */}
                 {activeMenuView === 'support' && (
                     <div className="menu-view-anim about-body" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-                        <div className="menu-header">
+                        <div className="menu-header" style={{ paddingRight: '4px' }}>
                             <div className="back-button" onClick={() => setActiveMenuView('main')}><BackIcon/></div>
                             <div className="header-title"><span className="title-ai">Ai</span><span className="title-term">Term</span></div>
-                            <div className="close-button" onClick={() => setIsMenuOpen(false)}><CloseIcon/></div>
+                            <div className="close-button" onClick={() => setIsMenuOpen(false)} style={{ marginRight: '2px' }}><CloseIcon/></div>
                         </div>
 
                         <div className="about-scroll-area" style={{ padding: '0', display: 'flex', flexDirection: 'column', alignItems: 'center', overflowY: 'auto', flex: 1, width: '100%', WebkitMaskImage: 'none', maskImage: 'none' }}>
-                            <div style={{ padding: '15px', textAlign: 'center', width: '100%', boxSizing: 'border-box' }}>
-                                <div className="about-text" style={{ fontSize: '14px', lineHeight: '1.5', marginTop: '10px' }}>
-                                    {t.donateText || "Want to help AiTerm get even better? You can support the project with a custom donation. It’s never required, but always deeply appreciated! ❤️"}
+                            <div style={{ padding: '15px 15px 0 15px', width: '100%', boxSizing: 'border-box', marginBottom: '15px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                <div className="about-text" style={{ fontSize: '14px', lineHeight: '1.5', marginBottom: '12px', textAlign: 'center', color: 'var(--text-color)' }}>
+                                    Pay with cards from anywhere in the world: Visa, Mastercard, Apple Pay, Google Pay
                                 </div>
-                            </div>
-
-                            <div style={{ padding: '0 15px', width: '100%', boxSizing: 'border-box', marginBottom: '15px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                                <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginBottom: '8px', textAlign: 'center' }}>
-                                    Оплата картами со всего мира: Visa, Mastercard, Apple Pay, Google Pay
-                                </div>
-                                <a href="https://send.monobank.ua/jar/ТВОЯ_БАНКА" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', width: '100%', padding: '12px 0', backgroundColor: '#000', color: '#fff', borderRadius: '8px', textDecoration: 'none', fontWeight: 'bold', cursor: 'pointer', transition: 'opacity 0.2s' }} onMouseOver={(e) => e.currentTarget.style.opacity = '0.8'} onMouseOut={(e) => e.currentTarget.style.opacity = '1'}>
-                                    <span style={{ fontSize: '20px' }}>🐈‍⬛</span> Monobank
+                                <a href="https://send.monobank.ua/jar/9wyS9jdUi2" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', padding: '12px 0', backgroundColor: 'var(--header-bg)', color: '#fff', borderRadius: '8px', textDecoration: 'none', fontWeight: 'bold', fontSize: '18px', cursor: 'pointer', transition: 'opacity 0.2s' }} onMouseOver={(e) => e.currentTarget.style.opacity = '0.8'} onMouseOut={(e) => e.currentTarget.style.opacity = '1'}>
+                                    Monobank
                                 </a>
                             </div>
 
                             <div className="separator-line" style={{ width: 'calc(100% - 30px)', margin: '0 15px 15px 15px' }}></div>
 
-                            {/* Новая стилизованная кнопка Крипты */}
                             <div style={{ padding: '0 15px', width: '100%', boxSizing: 'border-box', marginBottom: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                                <div style={{ fontSize: '12px', color: 'var(--text-secondary)', marginBottom: '8px', textAlign: 'center' }}>
-                                    Оплата любой криптовалютой со своего кошелька через безопасный шлюз NOWPayments
+                                <div className="about-text" style={{ fontSize: '14px', lineHeight: '1.5', marginBottom: '12px', textAlign: 'center', color: 'var(--text-color)' }}>
+                                    Pay with any cryptocurrency from your wallet via the secure NOWPayments gateway
                                 </div>
-                                <a href="https://nowpayments.io/donation?api_key=7a13f050-cac5-4070-bed0-399343b52071" target="_blank" rel="noreferrer noopener" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', width: '100%', padding: '12px 0', backgroundColor: '#000', color: '#fff', borderRadius: '8px', textDecoration: 'none', fontWeight: 'bold', cursor: 'pointer', transition: 'opacity 0.2s' }} onMouseOver={(e) => e.currentTarget.style.opacity = '0.8'} onMouseOut={(e) => e.currentTarget.style.opacity = '1'}>
-                                    <span style={{ fontSize: '20px' }}>🪙</span> Crypto
+                                <a href="https://nowpayments.io/donation?api_key=7a13f050-cac5-4070-bed0-399343b52071" target="_blank" rel="noreferrer noopener" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', padding: '12px 0', backgroundColor: 'var(--header-bg)', color: '#fff', borderRadius: '8px', textDecoration: 'none', fontWeight: 'bold', fontSize: '18px', cursor: 'pointer', transition: 'opacity 0.2s' }} onMouseOver={(e) => e.currentTarget.style.opacity = '0.8'} onMouseOut={(e) => e.currentTarget.style.opacity = '1'}>
+                                    Crypto
                                 </a>
+                            </div>
+
+                            <div style={{ width: 'calc(100% - 30px)', height: '2px', backgroundColor: 'var(--header-bg)', margin: '0 15px', borderRadius: '2px', opacity: 0.8 }}></div>
+
+                            <div style={{ padding: '15px 25px', textAlign: 'center', width: '100%', boxSizing: 'border-box', marginTop: 'auto', flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                <div className="about-text" style={{ fontSize: '18px', lineHeight: '1.6', fontWeight: 'bold', color: 'var(--text-color)' }}>
+                                    {t.donateText || "Want to help AiTerm get even better? You can support the project with a custom donation. It’s never required, but always deeply appreciated! ❤️"}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1101,10 +1106,10 @@ function Popup() {
 
                 {activeMenuView === 'features' && (
                     <div className="menu-view-anim">
-                        <div className="menu-header">
+                        <div className="menu-header" style={{ paddingRight: '4px' }}>
                             <div className="back-button" onClick={() => setActiveMenuView('main')}><BackIcon/></div>
                             <div className="header-title"><span className="title-ai">Ai</span><span className="title-term">Term</span></div>
-                            <div className="close-button" onClick={() => setIsMenuOpen(false)}><CloseIcon/></div>
+                            <div className="close-button" onClick={() => setIsMenuOpen(false)} style={{ marginRight: '2px' }}><CloseIcon/></div>
                         </div>
                         <div className="prices-body" style={{padding: '5px'}}>
                             <div className="feature-card">
@@ -1126,10 +1131,10 @@ function Popup() {
 
                 {activeMenuView === 'about' && (
                     <div className="menu-view-anim about-body">
-                        <div className="menu-header">
+                        <div className="menu-header" style={{ paddingRight: '4px' }}>
                             <div className="back-button" onClick={() => setActiveMenuView('main')}><BackIcon/></div>
                             <div className="header-title"><span className="title-ai">Ai</span><span className="title-term">Term</span></div>
-                            <div className="close-button" onClick={() => setIsMenuOpen(false)}><CloseIcon/></div>
+                            <div className="close-button" onClick={() => setIsMenuOpen(false)} style={{ marginRight: '2px' }}><CloseIcon/></div>
                         </div>
 
                         <div className="about-scroll-area">
@@ -1183,10 +1188,10 @@ function Popup() {
 
                 {activeMenuView === 'dictionaries' && (
                     <div className="menu-view-anim">
-                        <div className="menu-header">
+                        <div className="menu-header" style={{ paddingRight: '4px' }}>
                             <div className="back-button" onClick={() => setActiveMenuView('main')}><BackIcon/></div>
                             <div className="header-title"><span className="title-ai">Ai</span><span className="title-term">Term</span></div>
-                            <div className="close-button" onClick={() => setIsMenuOpen(false)}><CloseIcon/></div>
+                            <div className="close-button" onClick={() => setIsMenuOpen(false)} style={{ marginRight: '2px' }}><CloseIcon/></div>
                         </div>
 
                         {dictionaries.length > 0 && (
@@ -1225,7 +1230,7 @@ function Popup() {
 
                 {activeMenuView === 'dict_view' && activeDictionary && (
                     <div className="menu-view-anim">
-                        <div className="menu-header">
+                        <div className="menu-header" style={{ paddingRight: '4px' }}>
                             <div className="back-button" onClick={() => { setActiveMenuView('dictionaries'); setDictSearchQuery(''); }}><BackIcon/></div>
                             <div className="header-title" style={{ fontSize: '18px', flex: 1, textAlign: 'center', margin: '0 10px', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', minWidth: 0 }}>
                                 <span title={activeDictionary.name} style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: 'block' }}>{activeDictionary.name}</span>
@@ -1235,7 +1240,7 @@ function Popup() {
                             </div>
                             <div style={{ display: 'flex', gap: '5px', flexShrink: 0 }}>
                                 <div className="close-button danger-btn" onClick={() => setConfirmAction('delete_dict')}><TrashIcon/></div>
-                                <div className="close-button" onClick={() => setIsMenuOpen(false)}><CloseIcon/></div>
+                                <div className="close-button" onClick={() => setIsMenuOpen(false)} style={{ marginRight: '2px' }}><CloseIcon/></div>
                             </div>
                         </div>
 
