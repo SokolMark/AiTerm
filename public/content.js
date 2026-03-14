@@ -197,6 +197,39 @@ const uiTranslations = {
         authTitle: "لم يتم تسجيل الدخول",
         authSub: "الرجاء النقر فوق أيقونة إضافة AiTerm لتسجيل الدخول.",
         limitReached: "تم الوصول إلى الحد."
+    },
+    fr: {
+        translateBtn: "Traduire",
+        loading: "Chargement...",
+        error: "Erreur...",
+        auto: "AUTO",
+        saveHint: "Pour enregistrer ce mot, traduisez-le dans le menu principal de l'extension.",
+        disableHint: "Pour désactiver cette fenêtre, allez dans les Paramètres du menu principal.",
+        authTitle: "Non connecté",
+        authSub: "Veuillez cliquer sur l'icône de l'extension AiTerm dans la barre de votre navigateur pour vous connecter.",
+        limitReached: "Limite atteinte."
+    },
+    pt: {
+        translateBtn: "Traduzir",
+        loading: "Carregando...",
+        error: "Erro...",
+        auto: "AUTO",
+        saveHint: "Para salvar esta palavra, traduza-a no menu principal da extensão.",
+        disableHint: "Para desativar este popup, vá para Configurações no menu principal.",
+        authTitle: "Não conectado",
+        authSub: "Por favor, clique no ícone da extensão AiTerm na barra do navegador para fazer login.",
+        limitReached: "Limite atingido."
+    },
+    hi: {
+        translateBtn: "अनुवाद",
+        loading: "लोड हो रहा है...",
+        error: "त्रुटि...",
+        auto: "स्वत:",
+        saveHint: "इस शब्द को सहेजने के लिए, इसे मुख्य एक्सटेंशन मेनू में अनुवाद करें।",
+        disableHint: "इस पॉपअप को अक्षम करने के लिए, मुख्य मेनू में सेटिंग्स पर जाएं।",
+        authTitle: "लॉग इन नहीं है",
+        authSub: "लॉग इन करने के लिए कृपया अपने ब्राउज़र टूलबार में AiTerm एक्सटेंशन आइकन पर क्लिक करें।",
+        limitReached: "सीमा पूरी हो गई।"
     }
 };
 
@@ -208,11 +241,38 @@ function openFloatingWindow() {
 
     chrome.storage.local.get(['aitermTargetLangName', 'aitermUILanguage', 'aitermTheme', 'aitermUserEmail'], (result) => {
         const targetLangName = result.aitermTargetLangName || 'English';
-        const shortLang = targetLangName.substring(0, 3).toUpperCase();
         const uiLangCode = result.aitermUILanguage || 'en';
         const t = uiTranslations[uiLangCode] || uiTranslations['en'];
         const theme = result.aitermTheme || 'light';
         const isLoggedIn = !!result.aitermUserEmail;
+
+        // Карта для маппинга английских названий в коды
+        const langMap = {
+            'Arabic': 'ar', 'Bengali': 'bn', 'Chinese': 'zh', 'Czech': 'cs', 'Danish': 'da',
+            'Dutch': 'nl', 'English': 'en', 'Finnish': 'fi', 'French': 'fr', 'German': 'de',
+            'Greek': 'el', 'Hebrew': 'he', 'Hindi': 'hi', 'Hungarian': 'hu', 'Indonesian': 'id',
+            'Italian': 'it', 'Japanese': 'ja', 'Korean': 'ko', 'Norwegian': 'no', 'Persian': 'fa',
+            'Polish': 'pl', 'Portuguese': 'pt', 'Romanian': 'ro', 'Russian': 'ru', 'Spanish': 'es',
+            'Swedish': 'sv', 'Thai': 'th', 'Turkish': 'tr', 'Ukrainian': 'uk', 'Vietnamese': 'vi'
+        };
+
+        const targetCode = langMap[targetLangName] || 'en';
+        let localizedLangName = targetLangName;
+
+        // Переводим название языка на язык интерфейса (uiLangCode)
+        try {
+            const displayNames = new Intl.DisplayNames([uiLangCode], { type: 'language' });
+            const translated = displayNames.of(targetCode);
+            if (translated) {
+                // Делаем первую букву заглавной (например, "английский" -> "Английский")
+                localizedLangName = translated.charAt(0).toUpperCase() + translated.slice(1);
+            }
+        } catch (e) {
+            console.error("Language translation error", e);
+        }
+
+        // Берем первые 3 буквы от локализованного названия
+        const shortLang = localizedLangName.substring(0, 3).toUpperCase();
 
         if (floatingWindow) {
             floatingWindow.remove();

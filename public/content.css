@@ -360,66 +360,33 @@
     background: rgba(255, 107, 107, 0.18);
     box-shadow: 0 2px 8px rgba(255, 107, 107, 0.2);
 }
-
-/* --- Подсказка про словари --- */
-.aiterm-save-hint {
-    margin-top: 14px;
-    padding-top: 12px;
-    border-top: 1px dashed rgba(0, 0, 0, 0.08);
-    font-size: 11px;
-    color: #8b90a0;
-    text-align: center;
-    line-height: 1.3;
-    font-style: italic;
-}
-
-#aiterm-floating-window.aiterm-dark .aiterm-save-hint {
-    border-top: 1px dashed rgba(255, 255, 255, 0.1);
-    color: #7b8193;
-}
-
-/* --- Подсказка про словари --- */
-.aiterm-save-hint {
-    margin-top: 14px;
-    padding-top: 12px;
-    border-top: 1px dashed rgba(0, 0, 0, 0.08);
-    font-size: 11px;
-    color: #8b90a0;
-    text-align: center;
-    line-height: 1.3;
-    font-style: italic;
-}
-
-#aiterm-floating-window.aiterm-dark .aiterm-save-hint {
-    border-top: 1px dashed rgba(255, 255, 255, 0.1);
-    color: #7b8193;
-}
-
 /* --- Подсказки про словари и настройки --- */
+.aiterm-save-hint,
+.aiterm-disable-hint {
+    font-size: 13px;
+    color: #8b90a0;
+    text-align: center;
+    line-height: 1.4;
+    font-style: normal;
+    user-select: text; /* Разрешает выделение */
+}
+
 .aiterm-save-hint {
     margin-top: 14px;
     padding-top: 12px;
     border-top: 1px dashed rgba(0, 0, 0, 0.08);
-    font-size: 11px;
-    color: #8b90a0;
-    text-align: center;
-    line-height: 1.3;
-    font-style: italic;
+    margin-bottom: 6px;
 }
 
 .aiterm-disable-hint {
-    margin-top: 8px;
-    font-size: 10px;
-    color: #a0a5b5;
-    text-align: center;
-    line-height: 1.2;
+    margin-top: 0;
 }
 
-#aiterm-floating-window.aiterm-dark .aiterm-save-hint {
-    border-top: 1px dashed rgba(255, 255, 255, 0.1);
+#aiterm-floating-window.aiterm-dark .aiterm-save-hint,
+#aiterm-floating-window.aiterm-dark .aiterm-disable-hint {
     color: #7b8193;
 }
 
-#aiterm-floating-window.aiterm-dark .aiterm-disable-hint {
-    color: #6b7189;
+#aiterm-floating-window.aiterm-dark .aiterm-save-hint {
+    border-top-color: rgba(255, 255, 255, 0.1);
 }
