@@ -20,13 +20,13 @@ const getAutoLanguage = (): keyof typeof translations => {
 
 const localTranslations = {
     ...translations,
-    en: { ...translations.en, textTooLong: 'Text is too long', confirmRemoveText: 'This action will permanently delete your profile and all dictionaries.', fullTranslations: 'Full translations', quickTranslations: 'Quick translations', resetAt: 'Resets at', limitReached: 'Limit reached. Wait for reset.', dictLimit: 'Dictionary limit reached.', wordLimit: 'Saved words limit reached.', donateText: "Want to help AiTerm get even better? You can support the project with a custom donation. It’s never required, but always deeply appreciated! ❤️", supportBtn: "Support AiTerm", limitModalTitle: "Limit Reached", limitModalRequests: "You have reached your translation requests limit. Please wait for the timer to reset.", limitModalDicts: "You have reached the maximum number of dictionaries.", limitModalWords: "You have reached the maximum number of saved words.", btnCloseModal: "Close", serverBusy: "AI servers are overloaded. Please try again in a few seconds.", networkError: "Network error. Check your internet connection.", genericError: "An error occurred. Please try again." },
-    ru: { ...translations.ru, textTooLong: 'Слишком длинный текст', confirmRemoveText: 'Это действие навсегда удалит ваш профиль и все словари.', fullTranslations: 'Полные переводы', quickTranslations: 'Быстрые переводы', resetAt: 'Обновление в', limitReached: 'Лимит исчерпан. Дождитесь обновления.', dictLimit: 'Лимит словарей исчерпан.', wordLimit: 'Лимит сохраненных слов исчерпан.', donateText: "Хочешь помочь AiTerm стать еще лучше? Ты можешь поддержать проект донатом. Это не обязательно, но всегда очень ценится! ❤️", supportBtn: "Поддержать AiTerm", limitModalTitle: "Лимит исчерпан", limitModalRequests: "Вы превысили лимит запросов на перевод. Подождите обновления таймера.", limitModalDicts: "Вы достигли лимита словарей.", limitModalWords: "Вы достигли лимита сохраненных слов.", btnCloseModal: "Закрыть", serverBusy: "Серверы ИИ перегружены. Попробуйте через пару секунд.", networkError: "Ошибка сети. Проверьте интернет.", genericError: "Произошла ошибка. Попробуйте еще раз." },
-    uk: { ...translations.uk, textTooLong: 'Занадто довгий текст', confirmRemoveText: 'Ця дія назавжди видалить ваш профіль та усі словники.', fullTranslations: 'Повні переклади', quickTranslations: 'Швидкі переклади', resetAt: 'Оновлення о', limitReached: 'Ліміт вичерпано. Дочекайтесь оновлення.', dictLimit: 'Ліміт словників вичерпано.', wordLimit: 'Ліміт збережених слів вичерпано.', donateText: "Хочеш допомогти AiTerm стати ще краще? Ти можеш підтримати проект донатом. Це не обов'язково, але завжди дуже цінується! ❤️", supportBtn: "Підтримати AiTerm", limitModalTitle: "Ліміт вичерпано", limitModalRequests: "Ви перевищили ліміт запитів на переклад. Зачекайте на оновлення таймера.", limitModalDicts: "Ви досягли ліміту словників.", limitModalWords: "Ви досягли ліміту збережених слів.", btnCloseModal: "Закрити", serverBusy: "Сервери ШІ перевантажені. Спробуйте через кілька секунд.", networkError: "Помилка мережі. Перевірте з'єднання.", genericError: "Сталася помилка. Спробуйте ще раз." },
-    zh: { ...translations.zh, textTooLong: '文本太长', confirmRemoveText: '此操作将永久删除您的个人资料和所有词典。', fullTranslations: '完整翻译', quickTranslations: '快速翻译', resetAt: '重置于', limitReached: '达到限制。等待重置。', dictLimit: '达到词典限制。', wordLimit: '保存单词的限制已达到。', limitModalTitle: "达到限制", limitModalRequests: "您已达到翻译请求限制。请等待计时器重置。", limitModalDicts: "您已达到最大词典数量。", limitModalWords: "您已达到保存单词的最大数量。", btnCloseModal: "关闭", serverBusy: "AI 服务器过载。请几秒钟后再试。", networkError: "网络错误。请检查您的连接。", genericError: "发生错误。请重试。" },
-    es: { ...translations.es, textTooLong: 'Texto demasiado largo', confirmRemoveText: 'Esta acción eliminará permanentemente su perfil y todos los diccionarios.', fullTranslations: 'Traducciones completas', quickTranslations: 'Traducciones rápidas', resetAt: 'Se reinicia a las', limitReached: 'Límite alcanzado.', dictLimit: 'Límite de diccionarios alcanzado.', wordLimit: 'Límite de palabras guardadas alcanzado.', limitModalTitle: "Límite alcanzado", limitModalRequests: "Has alcanzado tu límite de solicitudes de traducción. Espera a que se reinicie el temporizador.", limitModalDicts: "Has alcanzado el número máximo de diccionarios.", limitModalWords: "Has alcanzado el número máximo de palabras guardadas.", btnCloseModal: "Cerrar", serverBusy: "Los servidores de IA están sobrecargados. Inténtalo en unos segundos.", networkError: "Error de red. Comprueba tu conexión.", genericError: "Ocurrió un error. Inténtalo de nuevo." },
-    ar: { ...translations.ar, textTooLong: 'النص طويل جدًا', confirmRemoveText: 'سيؤدي هذا الإجراء إلى حذف ملفك الشخصي وجميع القواميس نهائيًا.', fullTranslations: 'ترجمات كاملة', quickTranslations: 'ترجمات سريعة', resetAt: 'تتم إعادة التعيين في', limitReached: 'تم الوصول إلى الحد.', dictLimit: 'تم الوصول إلى حد القاموس.', wordLimit: 'تم الوصول إلى حد الكلمات المحفوظة.', limitModalTitle: "تم الوصول إلى الحد", limitModalRequests: "لقد وصلت إلى حد طلبات الترجمة الخاصة بك. يرجى الانتظار حتى يتم إعادة ضبط المؤقت.", limitModalDicts: "لقد وصلت إلى الحد الأقصى لعدد القواميس.", limitModalWords: "لقد وصلت إلى الحد الأقصى للكلمات المحفوظة.", btnCloseModal: "إغلاق", serverBusy: "خوادم الذكاء الاصطناعي محملة بشكل زائد. يرجى المحاولة بعد بضع ثوانٍ.", networkError: "خطأ في الشبكة. تحقق من اتصالك.", genericError: "حدث خطأ. يرجى المحاولة مرة أخرى." },
-    pl: { ...translations.pl, textTooLong: 'Tekst jest za długi', confirmRemoveText: 'Ta akcja trwale usunie Twój profil i wszystkie słowniki.', fullTranslations: 'Pełne tłumaczenia', quickTranslations: 'Szybkie tłumaczenia', resetAt: 'Reset o', limitReached: 'Limit wyczerpany.', dictLimit: 'Osiągnięto limit słowników.', wordLimit: 'Osiągnięto limit zapisanych słów.', limitModalTitle: "Limit osiągnięty", limitModalRequests: "Osiągnąłeś limit zapytań o tłumaczenie. Poczekaj na reset timera.", limitModalDicts: "Osiągnąłeś maksymalną liczbę słowników.", limitModalWords: "Osiągnąłeś maksymalną liczbę zapisanych słów.", btnCloseModal: "Zamknij", serverBusy: "Serwery AI są przeciążone. Spróbuj ponownie za kilka sekund.", networkError: "Błąd sieci. Sprawdź swoje połączenie.", genericError: "Wystąpił błąd. Spróbuj ponownie." },
+    en: { ...translations.en, textTooLong: 'Text is too long', confirmRemoveText: 'This action will permanently delete your profile and all dictionaries.', fullTranslations: 'Full translations', quickTranslations: 'Quick translations', resetAt: 'Resets at', limitReached: 'Limit reached. Wait for reset.', dictLimit: 'Dictionary limit reached.', wordLimit: 'Saved words limit reached.', donateText: "Want to help AiTerm get even better? You can support the project with a custom donation. It’s never required, but always deeply appreciated! ❤️", supportBtn: "Support AiTerm", limitModalTitle: "Limit Reached", limitModalRequests: "You have reached your translation requests limit. Please wait for the timer to reset.", limitModalDicts: "You have reached the maximum number of dictionaries.", limitModalWords: "You have reached the maximum number of saved words.", btnCloseModal: "Close", serverBusy: "AI servers are overloaded. Please try again in a few seconds.", networkError: "Network error. Check your internet connection.", genericError: "An error occurred. Please try again.", duplicateWarningText: "This word already exists in the dictionary '{dictName}'. Are you sure you want to save it?", btnYesAdd: "Yes, add", btnCancel: "Cancel" },
+    ru: { ...translations.ru, textTooLong: 'Слишком длинный текст', confirmRemoveText: 'Это действие навсегда удалит ваш профиль и все словари.', fullTranslations: 'Полные переводы', quickTranslations: 'Быстрые переводы', resetAt: 'Обновление в', limitReached: 'Лимит исчерпан. Дождитесь обновления.', dictLimit: 'Лимит словарей исчерпан.', wordLimit: 'Лимит сохраненных слов исчерпан.', donateText: "Хочешь помочь AiTerm стать еще лучше? Ты можешь поддержать проект донатом. Это не обязательно, но всегда очень ценится! ❤️", supportBtn: "Поддержать AiTerm", limitModalTitle: "Лимит исчерпан", limitModalRequests: "Вы превысили лимит запросов на перевод. Подождите обновления таймера.", limitModalDicts: "Вы достигли лимита словарей.", limitModalWords: "Вы достигли лимита сохраненных слов.", btnCloseModal: "Закрыть", serverBusy: "Серверы ИИ перегружены. Попробуйте через пару секунд.", networkError: "Ошибка сети. Проверьте интернет.", genericError: "Произошла ошибка. Попробуйте еще раз.", duplicateWarningText: "Данное слово уже есть в словнике '{dictName}'. Вы точно хотите сохранить его?", btnYesAdd: "Да, добавить", btnCancel: "Отмена" },
+    uk: { ...translations.uk, textTooLong: 'Занадто довгий текст', confirmRemoveText: 'Ця дія назавжди видалить ваш профіль та усі словники.', fullTranslations: 'Повні переклади', quickTranslations: 'Швидкі переклади', resetAt: 'Оновлення о', limitReached: 'Ліміт вичерпано. Дочекайтесь оновлення.', dictLimit: 'Ліміт словників вичерпано.', wordLimit: 'Ліміт збережених слів вичерпано.', donateText: "Хочеш допомогти AiTerm стати ще краще? Ти можеш підтримати проект донатом. Це не обов'язково, але завжди дуже цінується! ❤️", supportBtn: "Підтримати AiTerm", limitModalTitle: "Ліміт вичерпано", limitModalRequests: "Ви перевищили ліміт запитів на переклад. Зачекайте на оновлення таймера.", limitModalDicts: "Ви досягли ліміту словників.", limitModalWords: "Ви досягли ліміту збережених слів.", btnCloseModal: "Закрити", serverBusy: "Сервери ШІ перевантажені. Спробуйте через кілька секунд.", networkError: "Помилка мережі. Перевірте з'єднання.", genericError: "Сталася помилка. Спробуйте ще раз.", duplicateWarningText: "Це слово вже є у словнику '{dictName}'. Ви точно хочете зберегти його?", btnYesAdd: "Так, додати", btnCancel: "Скасувати" },
+    zh: { ...translations.zh, textTooLong: '文本太长', confirmRemoveText: '此操作将永久删除您的个人资料和所有词典。', fullTranslations: '完整翻译', quickTranslations: '快速翻译', resetAt: '重置于', limitReached: '达到限制。等待重置。', dictLimit: '达到词典限制。', wordLimit: '保存单词的限制已达到。', limitModalTitle: "达到限制", limitModalRequests: "您已达到翻译请求限制。请等待计时器重置。", limitModalDicts: "您已达到最大词典数量。", limitModalWords: "您已达到保存单词的最大数量。", btnCloseModal: "关闭", serverBusy: "AI 服务器过载。请几秒钟后再试。", networkError: "网络错误。请检查您的连接。", genericError: "发生错误。请重试。", duplicateWarningText: "此单词已存在于词典 '{dictName}' 中。确定要保存吗？", btnYesAdd: "是的，添加", btnCancel: "取消" },
+    es: { ...translations.es, textTooLong: 'Texto demasiado largo', confirmRemoveText: 'Esta acción eliminará permanentemente su perfil y todos diccionarios.', fullTranslations: 'Traducciones completas', quickTranslations: 'Traducciones rápidas', resetAt: 'Se reinicia a las', limitReached: 'Límite alcanzado.', dictLimit: 'Límite de diccionarios alcanzado.', wordLimit: 'Límite de palabras guardadas alcanzado.', limitModalTitle: "Límite alcanzado", limitModalRequests: "Has alcanzado tu límite de solicitudes de traducción. Espera a que se reinicie el temporizador.", limitModalDicts: "Has alcanzado el número máximo de diccionarios.", limitModalWords: "Has alcanzado el número máximo de palabras guardadas.", btnCloseModal: "Cerrar", serverBusy: "Los servidores de IA están sobrecargados. Inténtalo en unos segundos.", networkError: "Error de red. Comprueba tu conexión.", genericError: "Ocurrió un error. Inténtalo de nuevo.", duplicateWarningText: "Esta palabra ya existe en el diccionario '{dictName}'. ¿Estás seguro de que quieres guardarla?", btnYesAdd: "Sí, añadir", btnCancel: "Cancelar" },
+    ar: { ...translations.ar, textTooLong: 'النص طويل جدًا', confirmRemoveText: 'سيؤدي هذا الإجراء إلى حذف ملفك الشخصي وجميع القواميس نهائيًا.', fullTranslations: 'ترجمات كاملة', quickTranslations: 'ترجمات سريعة', resetAt: 'تتم إعادة التعيين في', limitReached: 'تم الوصول إلى الحد.', dictLimit: 'تم الوصول إلى حد القاموس.', wordLimit: 'تم الوصول إلى حد الكلمات المحفوظة.', limitModalTitle: "تم الوصول إلى الحد", limitModalRequests: "لقد وصلت إلى حد طلبات الترجمة الخاصة بك. يرجى الانتظار حتى يتم إعادة ضبط المؤقت.", limitModalDicts: "لقد وصلت إلى الحد الأقصى لعدد القواميس.", limitModalWords: "لقد وصلت إلى الحد الأقصى للكلمات المحفوظة.", btnCloseModal: "إغلاق", serverBusy: "خوادم الذكاء الاصطناعي محملة بشكل زائد. يرجى المحاولة بعد بضع ثوانٍ.", networkError: "خطأ في الشبكة. تحقق من اتصالك.", genericError: "حدث خطأ. يرجى المحاولة مرة أخرى.", duplicateWarningText: "هذه الكلمة موجودة بالفعل في القاموس '{dictName}'. هل أنت متأكد أنك تريد حفظها؟", btnYesAdd: "نعم، أضف", btnCancel: "إلغاء" },
+    pl: { ...translations.pl, textTooLong: 'Tekst jest za długi', confirmRemoveText: 'Ta akcja trwale usunie Twój profil i wszystkie słowniki.', fullTranslations: 'Pełne tłumaczenia', quickTranslations: 'Szybkie tłumaczenia', resetAt: 'Reset o', limitReached: 'Limit wyczerpany.', dictLimit: 'Osiągnięto limit słowników.', wordLimit: 'Osiągnięto limit zapisanych słów.', limitModalTitle: "Limit osiągnięty", limitModalRequests: "Osiągnąłeś limit zapytań o tłumaczenie. Poczekaj na reset timera.", limitModalDicts: "Osiągnąłeś maksymalną liczbę słowników.", limitModalWords: "Osiągnąłeś maksymalną liczbę zapisanych słów.", btnCloseModal: "Zamknij", serverBusy: "Serwery AI są przeciążone. Spróbuj ponownie za kilka sekund.", networkError: "Błąd sieci. Sprawdź swoje połączenie.", genericError: "Wystąpił błąd. Spróbuj ponownie.", duplicateWarningText: "To słowo już istnieje w słowniku '{dictName}'. Czy na pewno chcesz je zapisać?", btnYesAdd: "Tak, dodaj", btnCancel: "Anuluj" },
 };
 
 const MAX_DICTS = 50;
@@ -53,6 +53,7 @@ function Popup() {
     const [showAuthModal, setShowAuthModal] = useState(false);
 
     const [limitModalType, setLimitModalType] = useState<'requests' | 'dicts' | 'words' | null>(null);
+    const [duplicateWarning, setDuplicateWarning] = useState<{dictId: string, dictName: string} | null>(null);
 
     const [translationResult, setTranslationResult] = useState(() => localStorage.getItem('aiterm-translation-result') || '');
     const [wordData, setWordData] = useState<WordData | null>(() => {
@@ -64,16 +65,30 @@ function Popup() {
 
     const [totalRequestsLeft, setTotalRequestsLeft] = useState<number>(() => {
         const saved = localStorage.getItem('aiterm-total-requests');
-        return saved !== null ? parseInt(saved) : 80;
+        return saved !== null ? parseInt(saved) : 30;
     });
     const [mainRequestsLeft, setMainRequestsLeft] = useState<number>(() => {
         const saved = localStorage.getItem('aiterm-main-requests');
-        return saved !== null ? parseInt(saved) : 40;
+        return saved !== null ? parseInt(saved) : 30;
     });
+
+    useEffect(() => {
+        if (totalRequestsLeft > 30) {
+            setTotalRequestsLeft(30);
+            localStorage.setItem('aiterm-total-requests', '30');
+            chrome.storage.local.set({ aitermTotalRequests: 30 });
+        }
+        if (mainRequestsLeft > 30) {
+            setMainRequestsLeft(30);
+            localStorage.setItem('aiterm-main-requests', '30');
+            chrome.storage.local.set({ aitermMainRequests: 30 });
+        }
+    }, [totalRequestsLeft, mainRequestsLeft]);
 
     const [isLoggingIn, setIsLoggingIn] = useState(false);
     const [confirmAction, setConfirmAction] = useState<'logout' | 'remove' | 'delete_dict' | 'delete_word' | 'duplicate_dict' | null>(null);
     const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
+    const [returnToSaveModal, setReturnToSaveModal] = useState(false);
 
     const [dictionaries, setDictionaries] = useState<{ id: string, name: string, word_count?: number }[]>([]);
     const [isCreateDictModalOpen, setIsCreateDictModalOpen] = useState(false);
@@ -144,11 +159,11 @@ function Popup() {
             const diff = nextReset.getTime() - now.getTime();
 
             if (diff >= (12 * 60 * 60 * 1000) - 2000 && diff <= (12 * 60 * 60 * 1000) + 2000) {
-                setTotalRequestsLeft(80);
-                setMainRequestsLeft(40);
-                localStorage.setItem('aiterm-total-requests', '80');
-                localStorage.setItem('aiterm-main-requests', '40');
-                chrome.storage.local.set({ aitermTotalRequests: 80, aitermMainRequests: 40 });
+                setTotalRequestsLeft(30);
+                setMainRequestsLeft(30);
+                localStorage.setItem('aiterm-total-requests', '30');
+                localStorage.setItem('aiterm-main-requests', '30');
+                chrome.storage.local.set({ aitermTotalRequests: 30, aitermMainRequests: 30 });
             }
 
             const formattedTime = nextReset.toLocaleTimeString(navigator.language, { hour: '2-digit', minute: '2-digit' });
@@ -179,8 +194,8 @@ function Popup() {
     useEffect(() => {
         chrome.storage.local.get(['aitermQuickTranslate', 'aitermTotalRequests', 'aitermMainRequests'], (res) => {
             if (res.aitermQuickTranslate !== undefined) setIsQuickTranslateEnabled(res.aitermQuickTranslate);
-            if (res.aitermTotalRequests !== undefined) setTotalRequestsLeft(res.aitermTotalRequests);
-            if (res.aitermMainRequests !== undefined) setMainRequestsLeft(res.aitermMainRequests);
+            if (res.aitermTotalRequests !== undefined) setTotalRequestsLeft(Math.min(res.aitermTotalRequests, 30));
+            if (res.aitermMainRequests !== undefined) setMainRequestsLeft(Math.min(res.aitermMainRequests, 30));
         });
     }, []);
 
@@ -237,8 +252,21 @@ function Popup() {
             setNewDictName('');
             setDictSearchQuery('');
             setConfirmAction(null);
+
+            if (returnToSaveModal) {
+                setIsSaveModalOpen(true);
+                setReturnToSaveModal(false);
+            }
         } else { showToast("failed to create", 'error'); }
         setIsCreatingDict(false);
+    };
+
+    const handleCloseCreateModal = () => {
+        setIsCreateDictModalOpen(false);
+        if (returnToSaveModal) {
+            setIsSaveModalOpen(true);
+            setReturnToSaveModal(false);
+        }
     };
 
     const handleRenameDictionary = async () => {
@@ -263,7 +291,7 @@ function Popup() {
         setIsRenamingDict(false);
     };
 
-    const handleSaveWord = async (dictId: string) => {
+    const handleSaveWord = async (dict: {id: string, name: string}) => {
         if (!inputText.trim() || !translationResult.trim() || !wordData) {
             showToast("nothing to save", 'error');
             return;
@@ -275,15 +303,30 @@ function Popup() {
             return;
         }
 
+        const words = await getDictionaryWords(dict.id);
+        const inputLower = inputText.trim().toLowerCase();
+        const exists = words.some((w: any) => w.word.toLowerCase() === inputLower);
+
+        if (exists) {
+            setIsSaveModalOpen(false);
+            setDuplicateWarning({ dictId: dict.id, dictName: dict.name });
+            return;
+        }
+
+        await executeSaveWord(dict.id);
+    };
+
+    const executeSaveWord = async (dictId: string) => {
         const dataToSave = {
             ...wordData,
-            sourceLangCode: sourceLang || wordData.detectedSourceLangCode || 'en',
+            sourceLangCode: sourceLang || wordData?.detectedSourceLangCode || 'en',
             targetLangCode: targetLang || 'en'
         };
         const result = await saveWordToDictionary(dictId, inputText.trim(), translationResult.trim(), dataToSave);
         if (result && result.success) {
             showToast("saved successfully", 'success');
             setIsSaveModalOpen(false);
+            setDuplicateWarning(null);
             setDictionaries(dictionaries.map(d => d.id === dictId ? { ...d, word_count: (d.word_count || 0) + 1 } : d));
         } else {
             showToast("failed to save", 'error');
@@ -307,13 +350,14 @@ function Popup() {
             if (res && res.success) {
                 showToast("profile deleted", "success");
 
+                // Выход и очистка локальных данных (в базе запросы остались)
                 await logoutFromGoogle();
                 localStorage.clear();
                 chrome.storage.local.clear();
 
                 setUserEmail(null);
-                setTotalRequestsLeft(80);
-                setMainRequestsLeft(40);
+                setTotalRequestsLeft(30);
+                setMainRequestsLeft(30);
                 setDictionaries([]);
                 setDictWords([]);
                 setIsMenuOpen(false);
@@ -375,15 +419,14 @@ function Popup() {
 
     const handleGoogleAuth = async () => {
         setIsLoggingIn(true);
-        showToast("connecting...", 'success');
         try {
             const dbResult = await loginWithGoogle();
             if (dbResult && dbResult.success) {
                 const user = dbResult.user;
                 setUserEmail(user.email);
 
-                let totalToSet = user.total_requests_left ?? 80;
-                let mainToSet = user.main_requests_left ?? 40;
+                let totalToSet = user.total_requests_left ?? 30;
+                let mainToSet = user.main_requests_left ?? 30;
 
                 setTotalRequestsLeft(totalToSet);
                 setMainRequestsLeft(mainToSet);
@@ -471,7 +514,7 @@ function Popup() {
         }
 
         if (targetLang && userEmail && (force || currentText !== lastSearchedText.current)) {
-            if (totalRequestsLeft <= 0 || mainRequestsLeft <= 0) {
+            if (mainRequestsLeft <= 0) {
                 setLimitModalType('requests');
                 return;
             }
@@ -512,15 +555,10 @@ function Popup() {
                     setWordData(data);
                     setContentLang('target');
 
-                    const newTotal = Math.max(0, totalRequestsLeft - 1);
                     const newMain = Math.max(0, mainRequestsLeft - 1);
-
-                    setTotalRequestsLeft(newTotal);
                     setMainRequestsLeft(newMain);
-                    localStorage.setItem('aiterm-total-requests', newTotal.toString());
                     localStorage.setItem('aiterm-main-requests', newMain.toString());
                     chrome.storage.local.set({
-                        aitermTotalRequests: newTotal,
                         aitermMainRequests: newMain
                     });
                 }
@@ -837,6 +875,23 @@ function Popup() {
                 </section>
             </div>
 
+            <div className={`confirm-overlay ${duplicateWarning ? 'visible' : ''}`} onClick={() => { setDuplicateWarning(null); setIsSaveModalOpen(true); }} style={{zIndex: 140}}>
+                <div className="confirm-box" onClick={(e) => e.stopPropagation()}>
+                    <h3 className="confirm-title">{t.confirmTitle || "Confirm"}</h3>
+                    <p className="confirm-text">
+                        {duplicateWarning ? (t.duplicateWarningText?.replace('{dictName}', duplicateWarning.dictName) || `This word already exists in ${duplicateWarning.dictName}. Save anyway?`) : ''}
+                    </p>
+                    <div className="confirm-actions">
+                        <button className="confirm-btn cancel" onClick={() => { setDuplicateWarning(null); setIsSaveModalOpen(true); }}>
+                            {t.btnCancel || "Cancel"}
+                        </button>
+                        <button className="confirm-btn primary" onClick={() => { if(duplicateWarning) executeSaveWord(duplicateWarning.dictId); }}>
+                            {t.btnYesAdd || "Yes, add"}
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <div className={`confirm-overlay ${limitModalType ? 'visible' : ''}`} onClick={() => setLimitModalType(null)} style={{zIndex: 130}}>
                 <div className="confirm-box" onClick={(e) => e.stopPropagation()}>
                     <div className="close-button absolute-close" onClick={() => setLimitModalType(null)}><CloseIcon/></div>
@@ -859,14 +914,14 @@ function Popup() {
                     {dictionaries.length === 0 ? (
                         <div className="empty-dict-container">
                             <p className="confirm-text" style={{marginTop: '10px'}}>{t.noDicts}</p>
-                            <button className="confirm-btn primary" style={{width: '100%'}} onClick={() => { setIsSaveModalOpen(false); setIsCreateDictModalOpen(true); }}>{t.btnCreateDict}</button>
+                            <button className="confirm-btn primary" style={{width: '100%'}} onClick={() => { setIsSaveModalOpen(false); setReturnToSaveModal(true); setIsCreateDictModalOpen(true); }}>{t.btnCreateDict}</button>
                         </div>
                     ) : (
                         <div className="dict-list-container">
                             <p className="confirm-text" style={{marginBottom: '12px'}}>{t.selectDict}</p>
                             <div className="dict-list">
                                 {dictionaries.map((d: { id: string, name: string, word_count?: number }) => (
-                                    <button key={d.id} className="dict-item-btn" onClick={() => handleSaveWord(d.id)}>
+                                    <button key={d.id} className="dict-item-btn" onClick={() => handleSaveWord(d)}>
                                         <div className="dict-item-left" style={{ overflow: 'hidden', display: 'flex', alignItems: 'center', gap: '8px', flex: 1 }}>
                                             <div style={{flexShrink: 0, display: 'flex'}}><BookIcon/></div>
                                             <span title={d.name} style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: 'block' }}>{d.name}</span>
@@ -875,19 +930,19 @@ function Popup() {
                                     </button>
                                 ))}
                             </div>
-                            <button className="confirm-btn cancel" style={{width: '100%'}} onClick={() => { setIsSaveModalOpen(false); setIsCreateDictModalOpen(true); }}>{t.btnCreateDict}</button>
+                            <button className="confirm-btn cancel" style={{width: '100%'}} onClick={() => { setIsSaveModalOpen(false); setReturnToSaveModal(true); setIsCreateDictModalOpen(true); }}>{t.btnCreateDict}</button>
                         </div>
                     )}
                 </div>
             </div>
 
-            <div className={`confirm-overlay ${isCreateDictModalOpen ? 'visible' : ''}`} onClick={() => setIsCreateDictModalOpen(false)}>
+            <div className={`confirm-overlay ${isCreateDictModalOpen ? 'visible' : ''}`} onClick={handleCloseCreateModal}>
                 <div className="confirm-box save-box" onClick={(e) => e.stopPropagation()}>
-                    <div className="close-button absolute-close" onClick={() => setIsCreateDictModalOpen(false)}><CloseIcon/></div>
+                    <div className="close-button absolute-close" onClick={handleCloseCreateModal}><CloseIcon/></div>
                     <h3 className="confirm-title">{t.btnCreateDict || "create dictionary"}</h3>
                     <input type="text" className="dict-input" placeholder="dictionary name..." value={newDictName} onChange={(e) => setNewDictName(e.target.value)} autoFocus maxLength={35} />
                     <div className="confirm-actions">
-                        <button className="confirm-btn cancel" onClick={() => setIsCreateDictModalOpen(false)}>{t.btnCancel}</button>
+                        <button className="confirm-btn cancel" onClick={handleCloseCreateModal}>{t.btnCancel}</button>
                         <button className="confirm-btn primary" onClick={() => handleCreateDictionary(false)} disabled={isCreatingDict}>{isCreatingDict ? "..." : "create"}</button>
                     </div>
                 </div>
@@ -1010,7 +1065,7 @@ function Popup() {
                         <div className="menu-body" style={{ display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden' }}>
                             {userEmail ? (
                                 <div style={{ padding: '5px 0 15px 0', borderBottom: '1px solid var(--border-color)', marginBottom: 0, flexShrink: 0 }}>
-                                    <div style={{ fontWeight: 'bold', fontSize: '14px', marginBottom: '15px', wordBreak: 'break-all', textAlign: 'center' }}>{userEmail}</div>
+                                    <div style={{ fontWeight: 'bold', fontSize: '14px', marginBottom: '15px', wordBreak: 'break-all', textAlign: 'center', color: 'var(--text-secondary)' }}>{userEmail}</div>
 
                                     <div style={{ display: 'flex', gap: '10px', marginBottom: '12px' }}>
                                         <div style={{ flex: 1, backgroundColor: 'rgba(128, 128, 128, 0.08)', padding: '12px 8px', borderRadius: '12px', textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'center', border: '1px solid var(--border-color)' }}>
@@ -1025,7 +1080,7 @@ function Popup() {
 
                                     <div style={{ display: 'flex', justifyContent: 'center' }}>
                                         <div style={{ fontSize: '12px', color: 'var(--text-secondary)', backgroundColor: 'rgba(128, 128, 128, 0.08)', padding: '4px 12px', borderRadius: '20px' }}>
-                                            {t.resetAt || 'Resets at'} <span style={{fontWeight: 'bold', color: 'var(--text-color)'}}>{timeUntilReset}</span>
+                                            {t.resetAt || 'Resets at'} <span style={{fontWeight: 'bold', color: 'var(--text-secondary)'}}>{timeUntilReset}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -1063,7 +1118,6 @@ function Popup() {
                     </div>
                 )}
 
-                {/* Экран поддержки (донаты) */}
                 {activeMenuView === 'support' && (
                     <div className="menu-view-anim about-body" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
                         <div className="menu-header" style={{ paddingRight: '4px' }}>
@@ -1092,8 +1146,6 @@ function Popup() {
                                     Crypto
                                 </a>
                             </div>
-
-                            <div style={{ width: 'calc(100% - 30px)', height: '2px', backgroundColor: 'var(--header-bg)', margin: '0 15px', borderRadius: '2px', opacity: 0.8 }}></div>
 
                             <div style={{ padding: '15px 25px', textAlign: 'center', width: '100%', boxSizing: 'border-box', marginTop: 'auto', flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                 <div className="about-text" style={{ fontSize: '18px', lineHeight: '1.6', fontWeight: 'bold', color: 'var(--text-color)' }}>
@@ -1202,7 +1254,7 @@ function Popup() {
                             {dictionaries.length === 0 ? (
                                 <div className="empty-dict-container" style={{marginTop: '20px'}}>
                                     <p className="confirm-text">{t.noDicts}</p>
-                                    <button className="confirm-btn primary" style={{width: '100%', marginTop: '10px'}} onClick={() => setIsCreateDictModalOpen(true)}>{t.btnCreateDict}</button>
+                                    <button className="confirm-btn primary" style={{width: '100%', marginTop: '10px'}} onClick={() => { setReturnToSaveModal(false); setIsCreateDictModalOpen(true); }}>{t.btnCreateDict}</button>
                                 </div>
                             ) : (
                                 <div className="dict-list-container">
@@ -1221,7 +1273,7 @@ function Popup() {
                                             <p className="confirm-text" style={{textAlign: 'center', width: '100%', marginTop: '10px'}}>nothing found.</p>
                                         )}
                                     </div>
-                                    <button className="confirm-btn primary" style={{width: '100%', marginTop: '10px'}} onClick={() => setIsCreateDictModalOpen(true)}>{t.btnCreateDict}</button>
+                                    <button className="confirm-btn primary" style={{width: '100%', marginTop: '10px'}} onClick={() => { setReturnToSaveModal(false); setIsCreateDictModalOpen(true); }}>{t.btnCreateDict}</button>
                                 </div>
                             )}
                         </div>
