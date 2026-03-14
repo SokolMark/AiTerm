@@ -18,17 +18,6 @@ const getAutoLanguage = (): keyof typeof translations => {
     return supportedUILangs.includes(browserLang) ? (browserLang as keyof typeof translations) : 'en';
 };
 
-const localTranslations = {
-    ...translations,
-    en: { ...translations.en, textTooLong: 'Text is too long', confirmRemoveText: 'This action will permanently delete your profile and all dictionaries.', fullTranslations: 'Full translations', quickTranslations: 'Quick translations', resetAt: 'Resets at', limitReached: 'Limit reached. Wait for reset.', dictLimit: 'Dictionary limit reached.', wordLimit: 'Saved words limit reached.', donateText: "Want to help AiTerm get even better? You can support the project with a custom donation. It’s never required, but always deeply appreciated! ❤️", supportBtn: "Support AiTerm", limitModalTitle: "Limit Reached", limitModalRequests: "You have reached your translation requests limit. Please wait for the timer to reset.", limitModalDicts: "You have reached the maximum number of dictionaries.", limitModalWords: "You have reached the maximum number of saved words.", btnCloseModal: "Close", serverBusy: "AI servers are overloaded. Please try again in a few seconds.", networkError: "Network error. Check your internet connection.", genericError: "An error occurred. Please try again.", duplicateWarningText: "This word already exists in the dictionary '{dictName}'. Are you sure you want to save it?", btnYesAdd: "Yes, add", btnCancel: "Cancel", welcomeTitle: "Welcome to AiTerm 1.0! 🎉", welcomeText1: "This is a completely free extension. You get 30 requests daily for the main window and 30 for the mini-window.", welcomeText2: "The project is built with passion. If you find it useful, you can support the author in the menu!", welcomeBtn: "Let's Go!" },
-    ru: { ...translations.ru, textTooLong: 'Слишком длинный текст', confirmRemoveText: 'Это действие навсегда удалит ваш профиль и все словари.', fullTranslations: 'Полные переводы', quickTranslations: 'Быстрые переводы', resetAt: 'Обновление в', limitReached: 'Лимит исчерпан. Дождитесь обновления.', dictLimit: 'Лимит словарей исчерпан.', wordLimit: 'Лимит сохраненных слов исчерпан.', donateText: "Хочешь помочь AiTerm стать еще лучше? Ты можешь поддержать проект донатом. Это не обязательно, но всегда очень ценится! ❤️", supportBtn: "Поддержать AiTerm", limitModalTitle: "Лимит исчерпан", limitModalRequests: "Вы превысили лимит запросов на перевод. Подождите обновления таймера.", limitModalDicts: "Вы достигли лимита словарей.", limitModalWords: "Вы достигли лимита сохраненных слов.", btnCloseModal: "Закрыть", serverBusy: "Серверы ИИ перегружены. Попробуйте через пару секунд.", networkError: "Ошибка сети. Проверьте интернет.", genericError: "Произошла ошибка. Попробуйте еще раз.", duplicateWarningText: "Данное слово уже есть в словнике '{dictName}'. Вы точно хотите сохранить его?", btnYesAdd: "Да, добавить", btnCancel: "Отмена", welcomeTitle: "Добро пожаловать в AiTerm 1.0! 🎉", welcomeText1: "Это полностью бесплатное расширение. Каждый день вам доступно по 30 запросов для главного и мини-окна.", welcomeText2: "Проект развивается на энтузиазме. Если хотите, вы можете поддержать автора в настройках!", welcomeBtn: "Погнали!" },
-    uk: { ...translations.uk, textTooLong: 'Занадто довгий текст', confirmRemoveText: 'Ця дія назавжди видалить ваш профіль та усі словники.', fullTranslations: 'Повні переклади', quickTranslations: 'Швидкі переклади', resetAt: 'Оновлення о', limitReached: 'Ліміт вичерпано. Дочекайтесь оновлення.', dictLimit: 'Ліміт словників вичерпано.', wordLimit: 'Ліміт збережених слів вичерпано.', donateText: "Хочеш допомогти AiTerm стати ще краще? Ти можеш підтримати проект донатом. Це не обов'язково, але завжди дуже цінується! ❤️", supportBtn: "Підтримати AiTerm", limitModalTitle: "Ліміт вичерпано", limitModalRequests: "Ви перевищили ліміт запитів на переклад. Зачекайте на оновлення таймера.", limitModalDicts: "Ви досягли ліміту словників.", limitModalWords: "Ви досягли ліміту збережених слів.", btnCloseModal: "Закрити", serverBusy: "Сервери ШІ перевантажені. Спробуйте через кілька секунд.", networkError: "Помилка мережі. Перевірте з'єднання.", genericError: "Сталася помилка. Спробуйте ще раз.", duplicateWarningText: "Це слово вже є у словнику '{dictName}'. Ви точно хочете зберегти його?", btnYesAdd: "Так, додати", btnCancel: "Скасувати", welcomeTitle: "Ласкаво просимо до AiTerm 1.0! 🎉", welcomeText1: "Це повністю безкоштовне розширення. Кожного дня вам доступно по 30 запитів для головного та міні-вікна.", welcomeText2: "Проєкт розвивається на ентузіазмі. Якщо бажаєте, ви можете підтримати автора в налаштуваннях!", welcomeBtn: "Поїхали!" },
-    zh: { ...translations.zh, textTooLong: '文本太长', confirmRemoveText: '此操作将永久删除您的个人资料和所有词典。', fullTranslations: '完整翻译', quickTranslations: '快速翻译', resetAt: '重置于', limitReached: '达到限制。等待重置。', dictLimit: '达到词典限制。', wordLimit: '保存单词的限制已达到。', limitModalTitle: "达到限制", limitModalRequests: "您已达到翻译请求限制。请等待计时器重置。", limitModalDicts: "您已达到最大词典数量。", limitModalWords: "您已达到保存单词的最大数量。", btnCloseModal: "关闭", serverBusy: "AI 服务器过载。请几秒钟后再试。", networkError: "网络错误。请检查您的连接。", genericError: "发生错误。请重试。", duplicateWarningText: "此单词已存在于词典 '{dictName}' 中。确定要保存吗？", btnYesAdd: "是的，添加", btnCancel: "取消", welcomeTitle: "Welcome to AiTerm 1.0! 🎉", welcomeText1: "This is a completely free extension. You get 30 requests daily for the main window and 30 for the mini-window.", welcomeText2: "The project is built with passion. If you find it useful, you can support the author in the menu!", welcomeBtn: "Let's Go!" },
-    es: { ...translations.es, textTooLong: 'Texto demasiado largo', confirmRemoveText: 'Esta acción eliminará permanentemente su perfil y todos diccionarios.', fullTranslations: 'Traducciones completas', quickTranslations: 'Traducciones rápidas', resetAt: 'Se reinicia a las', limitReached: 'Límite alcanzado.', dictLimit: 'Límite de diccionarios alcanzado.', wordLimit: 'Límite de palabras guardadas alcanzado.', limitModalTitle: "Límite alcanzado", limitModalRequests: "Has alcanzado tu límite de solicitudes de traducción. Espera a que se reinicie el temporizador.", limitModalDicts: "Has alcanzado el número máximo de diccionarios.", limitModalWords: "Has alcanzado el número máximo de palabras guardadas.", btnCloseModal: "Cerrar", serverBusy: "Los servidores de IA están sobrecargados. Inténtalo en unos segundos.", networkError: "Error de red. Comprueba tu conexión.", genericError: "Ocurrió un error. Inténtalo de nuevo.", duplicateWarningText: "Esta palabra ya existe en el diccionario '{dictName}'. ¿Estás seguro de que quieres guardarla?", btnYesAdd: "Sí, añadir", btnCancel: "Cancelar", welcomeTitle: "Welcome to AiTerm 1.0! 🎉", welcomeText1: "This is a completely free extension. You get 30 requests daily for the main window and 30 for the mini-window.", welcomeText2: "The project is built with passion. If you find it useful, you can support the author in the menu!", welcomeBtn: "Let's Go!" },
-    ar: { ...translations.ar, textTooLong: 'النص طويل جدًا', confirmRemoveText: 'سيؤدي هذا الإجراء إلى حذف ملفك الشخصي وجميع القواميس نهائيًا.', fullTranslations: 'ترجمات كاملة', quickTranslations: 'ترجمات سريعة', resetAt: 'تتم إعادة التعيين في', limitReached: 'تم الوصول إلى الحد.', dictLimit: 'تم الوصول إلى حد القاموس.', wordLimit: 'تم الوصول إلى حد الكلمات المحفوظة.', limitModalTitle: "تم الوصول إلى الحد", limitModalRequests: "لقد وصلت إلى حد طلبات الترجمة الخاصة بك. يرجى الانتظار حتى يتم إعادة ضبط المؤقت.", limitModalDicts: "لقد وصلت إلى الحد الأقصى لعدد القواميس.", limitModalWords: "لقد وصلت إلى الحد الأقصى للكلمات المحفوظة.", btnCloseModal: "إغلاق", serverBusy: "خوادم الذكاء الاصطناعي محملة بشكل زائد. يرجى المحاولة بعد بضع ثوانٍ.", networkError: "خطأ في الشبكة. تحقق من اتصالك.", genericError: "حدث خطأ. يرجى المحاولة مرة أخرى.", duplicateWarningText: "هذه الكلمة موجودة بالفعل في القاموس '{dictName}'. هل أنت متأكد أنك تريد حفظها؟", btnYesAdd: "نعم، أضف", btnCancel: "إلغاء", welcomeTitle: "Welcome to AiTerm 1.0! 🎉", welcomeText1: "This is a completely free extension. You get 30 requests daily for the main window and 30 for the mini-window.", welcomeText2: "The project is built with passion. If you find it useful, you can support the author in the menu!", welcomeBtn: "Let's Go!" },
-    pl: { ...translations.pl, textTooLong: 'Tekst jest za długi', confirmRemoveText: 'Ta akcja trwale usunie Twój profil i wszystkie słowniki.', fullTranslations: 'Pełne tłumaczenia', quickTranslations: 'Szybkie tłumaczenia', resetAt: 'Reset o', limitReached: 'Limit wyczerpany.', dictLimit: 'Osiągnięto limit słowników.', wordLimit: 'Osiągnięto limit zapisanych słów.', limitModalTitle: "Limit osiągnięty", limitModalRequests: "Osiągnąłeś limit zapytań o tłumaczenie. Poczekaj na reset timera.", limitModalDicts: "Osiągnąłeś maksymalną liczbę słowników.", limitModalWords: "Osiągnąłeś maksymalną liczbę zapisanych słów.", btnCloseModal: "Zamknij", serverBusy: "Serwery AI są przeciążone. Spróbuj ponownie za kilka sekund.", networkError: "Błąd sieci. Sprawdź swoje połączenie.", genericError: "Wystąpił błąd. Spróbuj ponownie.", duplicateWarningText: "To słowo już istnieje w słowniku '{dictName}'. Czy na pewno chcesz je zapisać?", btnYesAdd: "Tak, dodaj", btnCancel: "Anuluj", welcomeTitle: "Welcome to AiTerm 1.0! 🎉", welcomeText1: "This is a completely free extension. You get 30 requests daily for the main window and 30 for the mini-window.", welcomeText2: "The project is built with passion. If you find it useful, you can support the author in the menu!", welcomeBtn: "Let's Go!" },
-};
-
 const MAX_DICTS = 50;
 const MAX_WORDS = 5000;
 
@@ -129,10 +118,10 @@ function Popup() {
     const abortControllerRef = useRef<AbortController | null>(null);
     const isInitialRender = useRef(true);
 
-    const t = localTranslations[language] as any;
+    const t = translations[language] as any;
 
     const showToast = (message: string, type: 'error' | 'success' = 'error') => {
-        setToastState({visible: true, message: message.toLowerCase(), type});
+        setToastState({visible: true, message: message, type});
         setTimeout(() => setToastState(prev => ({...prev, visible: false})), 3500);
     };
 
@@ -143,7 +132,7 @@ function Popup() {
 
     const handleCopyEmail = () => {
         navigator.clipboard.writeText('sarkkofag@gmail.com').then(() => {
-            showToast("email copied to clipboard", "success");
+            showToast(t.emailCopied, "success");
         });
     };
 
@@ -159,7 +148,6 @@ function Popup() {
 
             const diff = nextReset.getTime() - now.getTime();
 
-            // Безопасное обновление: запрашиваем реальные лимиты с бэкенда, вместо слепого локального начисления
             if (diff <= 10000 && diff >= 0) {
                 if (userEmail) {
                     loginWithGoogle().then(dbResult => {
@@ -176,7 +164,8 @@ function Popup() {
                 }
             }
 
-            const formattedTime = nextReset.toLocaleTimeString(navigator.language, { hour: '2-digit', minute: '2-digit' });
+            // Передаем текущий язык интерфейса (language) в toLocaleTimeString, чтобы получить правильный формат (АМ/ПМ или 24ч)
+            const formattedTime = nextReset.toLocaleTimeString(language, { hour: '2-digit', minute: '2-digit' });
             setTimeUntilReset(formattedTime);
         };
 
@@ -184,7 +173,7 @@ function Popup() {
         const interval = setInterval(calculateTime, 10000);
 
         return () => clearInterval(interval);
-    }, [userEmail]); // Зависимость от userEmail, чтобы функция имела к нему доступ
+    }, [userEmail, language]);
 
     useEffect(() => {
         const listener = (changes: { [key: string]: chrome.storage.StorageChange }) => {
@@ -220,7 +209,6 @@ function Popup() {
             chrome.storage.local.set({ aitermUserEmail: userEmail });
             getDictionaries(userEmail).then(data => setDictionaries(data));
 
-            // Показываем окно при загрузке расширения, если еще не было показано
             const hasSeenWelcome = localStorage.getItem(`hasSeenWelcome_${userEmail}`);
             if (!hasSeenWelcome) {
                 setShowWelcomeModal(true);
@@ -263,7 +251,7 @@ function Popup() {
         const result = await createDictionary(userEmail, trimmedName);
         if (result && result.success) {
             setDictionaries([result.dictionary, ...dictionaries]);
-            showToast("dictionary created", 'success');
+            showToast(t.dictCreated, 'success');
             setIsCreateDictModalOpen(false);
             setNewDictName('');
             setDictSearchQuery('');
@@ -273,7 +261,7 @@ function Popup() {
                 setIsSaveModalOpen(true);
                 setReturnToSaveModal(false);
             }
-        } else { showToast("failed to create", 'error'); }
+        } else { showToast(t.failedToCreate, 'error'); }
         setIsCreatingDict(false);
     };
 
@@ -297,19 +285,19 @@ function Popup() {
         setIsRenamingDict(true);
         const result = await renameDictionary(activeDictionary.id, trimmedName);
         if (result && result.success) {
-            showToast("dictionary renamed", 'success');
+            showToast(t.dictRenamed, 'success');
             setIsRenameDictModalOpen(false);
             setActiveDictionary({ ...activeDictionary, name: trimmedName });
             setDictionaries(dictionaries.map(d => d.id === activeDictionary.id ? { ...d, name: trimmedName } : d));
         } else {
-            showToast("failed to rename", 'error');
+            showToast(t.failedToRename, 'error');
         }
         setIsRenamingDict(false);
     };
 
     const handleSaveWord = async (dict: {id: string, name: string}) => {
         if (!inputText.trim() || !translationResult.trim() || !wordData) {
-            showToast("nothing to save", 'error');
+            showToast(t.nothingToSave, 'error');
             return;
         }
 
@@ -340,12 +328,12 @@ function Popup() {
         };
         const result = await saveWordToDictionary(dictId, inputText.trim(), translationResult.trim(), dataToSave);
         if (result && result.success) {
-            showToast("saved successfully", 'success');
+            showToast(t.savedSuccessfully, 'success');
             setIsSaveModalOpen(false);
             setDuplicateWarning(null);
             setDictionaries(dictionaries.map(d => d.id === dictId ? { ...d, word_count: (d.word_count || 0) + 1 } : d));
         } else {
-            showToast("failed to save", 'error');
+            showToast(t.failedToSave, 'error');
         }
     };
 
@@ -364,7 +352,7 @@ function Popup() {
         } else if (confirmAction === 'remove' && userEmail) {
             const res = await deleteUserProfile(userEmail);
             if (res && res.success) {
-                showToast("profile deleted", "success");
+                showToast(t.profileDeleted, "success");
 
                 await logoutFromGoogle();
                 localStorage.clear();
@@ -388,7 +376,7 @@ function Popup() {
                 setDictSearchQuery('');
                 setWordSearchQuery('');
             } else {
-                showToast("failed to delete profile", "error");
+                showToast(t.failedToDeleteProfile, "error");
             }
             setConfirmAction(null);
         } else if (confirmAction === 'duplicate_dict') {
@@ -399,9 +387,9 @@ function Popup() {
                 setDictionaries(dictionaries.filter(d => d.id !== activeDictionary.id));
                 setActiveMenuView('dictionaries');
                 setActiveDictionary(null);
-                showToast("dictionary deleted", "success");
+                showToast(t.dictDeleted, "success");
             } else {
-                showToast("failed to delete", "error");
+                showToast(t.failedToDelete, "error");
             }
             setConfirmAction(null);
         } else if (confirmAction === 'delete_word' && selectedWordDetails) {
@@ -410,9 +398,9 @@ function Popup() {
                 setDictWords(dictWords.filter(w => w.id !== selectedWordDetails.id));
                 setDictionaries(dictionaries.map(d => d.id === selectedWordDetails.dictionary_id ? { ...d, word_count: Math.max(0, (d.word_count || 1) - 1) } : d));
                 setSelectedWordDetails(null);
-                showToast("word deleted", "success");
+                showToast(t.wordDeleted, "success");
             } else {
-                showToast("failed to delete", "error");
+                showToast(t.failedToDelete, "error");
             }
             setConfirmAction(null);
         }
@@ -460,9 +448,9 @@ function Popup() {
                 }
 
                 setShowAuthModal(false);
-                showToast("login successful", 'success');
-            } else { showToast("server error", 'error'); }
-        } catch (error) { showToast("login cancelled", 'error'); }
+                showToast(t.loginSuccessful, 'success');
+            } else { showToast(t.serverError, 'error'); }
+        } catch (error) { showToast(t.loginCancelled, 'error'); }
         finally { setIsLoggingIn(false); }
     };
 
@@ -569,7 +557,7 @@ function Popup() {
                 if (controller.signal.aborted) return;
 
                 if (data.translation && data.translation.toLowerCase().includes('gibberish')) {
-                    showToast("Не удалось распознать текст", 'error');
+                    showToast(t.gibberishError, 'error');
                     setTranslationResult("");
                     setWordData(null);
                     setDisplayedLevel('?');
@@ -594,18 +582,18 @@ function Popup() {
                     const msg = String(error.message || error).toLowerCase();
 
                     if (error.code === 'USER_NOT_FOUND' || msg.includes('user not found')) {
-                        showToast(t.genericError ? "Сессия устарела. Войдите снова." : "Session expired. Log in again.", 'error');
+                        showToast(t.sessionExpired, 'error');
                         setUserEmail(null);
                         localStorage.removeItem('aiterm-user-email');
                         chrome.storage.local.remove(['aitermUserEmail']);
                         setShowAuthModal(true);
                     }
                     else if (msg.includes('503') || msg.includes('high demand') || msg.includes('overload') || msg.includes('unavailable')) {
-                        showToast(t.serverBusy || "AI servers are overloaded. Please try again.", 'error');
+                        showToast(t.serverBusy, 'error');
                     } else if (msg.includes('failed to fetch')) {
-                        showToast(t.networkError || "Network error. Check your connection.", 'error');
+                        showToast(t.networkError, 'error');
                     } else {
-                        showToast(t.genericError || "An error occurred. Please try again.", 'error');
+                        showToast(t.genericError, 'error');
                     }
 
                     console.error("Backend Error:", error);
@@ -684,7 +672,7 @@ function Popup() {
         let val = e.target.value;
 
         if (val.length > 100) {
-            showToast(t.textTooLong || "text is too long", 'error');
+            showToast(t.textTooLong, 'error');
             return;
         }
 
@@ -785,7 +773,7 @@ function Popup() {
                     </div>
                     <div className="header-title"><span className="title-ai">Ai</span><span className="title-term">Term</span></div>
                     <div className="header-right">
-                        <div className="save-btn" onClick={() => requireAuth(() => { if(wordData) setIsSaveModalOpen(true); else showToast("translate a word first", 'error'); })}>
+                        <div className="save-btn" onClick={() => requireAuth(() => { if(wordData) setIsSaveModalOpen(true); else showToast(t.translateWordFirst, 'error'); })}>
                             <SaveIcon/><span className="save-text">{t.save}</span>
                         </div>
                     </div>
@@ -903,16 +891,16 @@ function Popup() {
 
             <div className={`confirm-overlay ${duplicateWarning ? 'visible' : ''}`} onClick={() => { setDuplicateWarning(null); setIsSaveModalOpen(true); }} style={{zIndex: 140}}>
                 <div className="confirm-box" onClick={(e) => e.stopPropagation()}>
-                    <h3 className="confirm-title">{t.confirmTitle || "Confirm"}</h3>
+                    <h3 className="confirm-title">{t.confirmTitle}</h3>
                     <p className="confirm-text">
-                        {duplicateWarning ? (t.duplicateWarningText?.replace('{dictName}', duplicateWarning.dictName) || `This word already exists in ${duplicateWarning.dictName}. Save anyway?`) : ''}
+                        {duplicateWarning ? t.duplicateWarningText.replace('{dictName}', duplicateWarning.dictName) : ''}
                     </p>
                     <div className="confirm-actions">
                         <button className="confirm-btn cancel" onClick={() => { setDuplicateWarning(null); setIsSaveModalOpen(true); }}>
-                            {t.btnCancel || "Cancel"}
+                            {t.btnCancel}
                         </button>
                         <button className="confirm-btn primary" onClick={() => { if(duplicateWarning) executeSaveWord(duplicateWarning.dictId); }}>
-                            {t.btnYesAdd || "Yes, add"}
+                            {t.btnYesAdd}
                         </button>
                     </div>
                 </div>
@@ -921,14 +909,13 @@ function Popup() {
             <div className={`confirm-overlay ${limitModalType ? 'visible' : ''}`} onClick={() => setLimitModalType(null)} style={{zIndex: 130}}>
                 <div className="confirm-box" onClick={(e) => e.stopPropagation()}>
                     <div className="close-button absolute-close" onClick={() => setLimitModalType(null)}><CloseIcon/></div>
-                    <h3 className="confirm-title">{t.limitModalTitle || "Limit Reached"}</h3>
+                    <h3 className="confirm-title">{t.limitModalTitle}</h3>
                     <p className="confirm-text" style={{marginTop: '10px'}}>
-                        {limitModalType === 'dicts' ? (t.limitModalDicts || "You have reached the maximum number of dictionaries.") :
-                            limitModalType === 'words' ? (t.limitModalWords || "You have reached the maximum number of saved words.") :
-                                (t.limitModalRequests || "You have reached your translation requests limit. Please wait for the timer to reset.")}
+                        {limitModalType === 'dicts' ? t.limitModalDicts :
+                            limitModalType === 'words' ? t.limitModalWords : t.limitModalRequests}
                     </p>
                     <div className="confirm-actions" style={{marginTop: '20px', flexDirection: 'column', gap: '10px'}}>
-                        <button className="confirm-btn cancel" style={{width: '100%'}} onClick={() => setLimitModalType(null)}>{t.btnCloseModal || "Close"}</button>
+                        <button className="confirm-btn cancel" style={{width: '100%'}} onClick={() => setLimitModalType(null)}>{t.btnCloseModal}</button>
                     </div>
                 </div>
             </div>
@@ -965,11 +952,11 @@ function Popup() {
             <div className={`confirm-overlay ${isCreateDictModalOpen ? 'visible' : ''}`} onClick={handleCloseCreateModal}>
                 <div className="confirm-box save-box" onClick={(e) => e.stopPropagation()}>
                     <div className="close-button absolute-close" onClick={handleCloseCreateModal}><CloseIcon/></div>
-                    <h3 className="confirm-title">{t.btnCreateDict || "create dictionary"}</h3>
-                    <input type="text" className="dict-input" placeholder="dictionary name..." value={newDictName} onChange={(e) => setNewDictName(e.target.value)} autoFocus maxLength={35} />
+                    <h3 className="confirm-title">{t.btnCreateDict}</h3>
+                    <input type="text" className="dict-input" placeholder={t.dictNamePlaceholder} value={newDictName} onChange={(e) => setNewDictName(e.target.value)} autoFocus maxLength={35} />
                     <div className="confirm-actions">
                         <button className="confirm-btn cancel" onClick={handleCloseCreateModal}>{t.btnCancel}</button>
-                        <button className="confirm-btn primary" onClick={() => handleCreateDictionary(false)} disabled={isCreatingDict}>{isCreatingDict ? "..." : "create"}</button>
+                        <button className="confirm-btn primary" onClick={() => handleCreateDictionary(false)} disabled={isCreatingDict}>{isCreatingDict ? "..." : t.btnCreate}</button>
                     </div>
                 </div>
             </div>
@@ -977,11 +964,11 @@ function Popup() {
             <div className={`confirm-overlay ${isRenameDictModalOpen ? 'visible' : ''}`} onClick={() => setIsRenameDictModalOpen(false)}>
                 <div className="confirm-box save-box" onClick={(e) => e.stopPropagation()}>
                     <div className="close-button absolute-close" onClick={() => setIsRenameDictModalOpen(false)}><CloseIcon/></div>
-                    <h3 className="confirm-title">{t.btnRenameDict || "rename dictionary"}</h3>
-                    <input type="text" className="dict-input" placeholder="new name..." value={dictRenameValue} onChange={(e) => setDictRenameValue(e.target.value)} autoFocus maxLength={35} />
+                    <h3 className="confirm-title">{t.btnRenameDict}</h3>
+                    <input type="text" className="dict-input" placeholder={t.newNamePlaceholder} value={dictRenameValue} onChange={(e) => setDictRenameValue(e.target.value)} autoFocus maxLength={35} />
                     <div className="confirm-actions">
-                        <button className="confirm-btn cancel" onClick={() => setIsRenameDictModalOpen(false)}>{t.btnCancel || "cancel"}</button>
-                        <button className="confirm-btn primary" onClick={handleRenameDictionary} disabled={isRenamingDict}>{isRenamingDict ? "..." : "rename"}</button>
+                        <button className="confirm-btn cancel" onClick={() => setIsRenameDictModalOpen(false)}>{t.btnCancel}</button>
+                        <button className="confirm-btn primary" onClick={handleRenameDictionary} disabled={isRenamingDict}>{isRenamingDict ? "..." : t.btnRename}</button>
                     </div>
                 </div>
             </div>
@@ -1039,15 +1026,15 @@ function Popup() {
                             )}
 
                             <div className="detail-row">
-                                <span className="detail-label">{t.explanation || "Explanation"}</span>
+                                <span className="detail-label">{t.explanation}</span>
                                 <span className="detail-value">{explanation}</span>
                             </div>
                             <div className="detail-row">
-                                <span className="detail-label">{t.synonyms || "Synonyms"}</span>
+                                <span className="detail-label">{t.synonyms}</span>
                                 <span className="detail-value">{syns.length > 0 ? syns.join(', ') : '-'}</span>
                             </div>
                             <div className="detail-row no-border">
-                                <span className="detail-label">{t.examples || "Examples"}</span>
+                                <span className="detail-label">{t.examples}</span>
                                 <div className="detail-value" style={{display: 'flex', flexDirection: 'column', gap: '6px'}}>
                                     {exmpls.length > 0 ? exmpls.map((ex: string, i: number) => <div key={i}>• {ex}</div>) : '-'}
                                 </div>
@@ -1062,9 +1049,9 @@ function Popup() {
                     <h3 className="confirm-title">{t.confirmTitle}</h3>
                     <p className="confirm-text">
                         {confirmAction === 'remove' ? t.confirmRemoveText :
-                            confirmAction === 'delete_dict' ? "delete this dictionary and all its words permanently?" :
-                                confirmAction === 'delete_word' ? "delete this word permanently?" :
-                                    confirmAction === 'duplicate_dict' ? "a dictionary with this name already exists. create anyway?" :
+                            confirmAction === 'delete_dict' ? t.confirmDeleteDict :
+                                confirmAction === 'delete_word' ? t.confirmDeleteWord :
+                                    confirmAction === 'duplicate_dict' ? t.confirmDuplicateDict :
                                         t.confirmLogoutText}
                     </p>
                     <div className="confirm-actions">
@@ -1074,8 +1061,8 @@ function Popup() {
                         }}>{t.btnCancel}</button>
                         <button className={`confirm-btn ${confirmAction === 'logout' || confirmAction === 'duplicate_dict' ? 'primary' : 'danger'}`} onClick={handleConfirmAction}>
                             {confirmAction === 'logout' ? t.btnConfirm :
-                                confirmAction === 'duplicate_dict' ? "yes, create" :
-                                    "delete"}
+                                confirmAction === 'duplicate_dict' ? t.btnYesAdd :
+                                    t.btnConfirm}
                         </button>
                     </div>
                 </div>
@@ -1095,41 +1082,41 @@ function Popup() {
 
                                     <div style={{ display: 'flex', gap: '10px', marginBottom: '12px' }}>
                                         <div style={{ flex: 1, backgroundColor: 'rgba(128, 128, 128, 0.08)', padding: '12px 8px', borderRadius: '12px', textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'center', border: '1px solid var(--border-color)' }}>
-                                            <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginBottom: '6px', lineHeight: '1.2' }}>{t.fullTranslations || 'Full translations'}</div>
+                                            <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginBottom: '6px', lineHeight: '1.2' }}>{t.fullTranslations}</div>
                                             <div style={{ fontSize: '20px', fontWeight: 'bold', color: 'var(--header-bg)' }}>{mainRequestsLeft}</div>
                                         </div>
                                         <div style={{ flex: 1, backgroundColor: 'rgba(128, 128, 128, 0.08)', padding: '12px 8px', borderRadius: '12px', textAlign: 'center', display: 'flex', flexDirection: 'column', justifyContent: 'center', border: '1px solid var(--border-color)' }}>
-                                            <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginBottom: '6px', lineHeight: '1.2' }}>{t.quickTranslations || 'Quick translations'}</div>
+                                            <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginBottom: '6px', lineHeight: '1.2' }}>{t.quickTranslations}</div>
                                             <div style={{ fontSize: '20px', fontWeight: 'bold', color: 'var(--header-bg)' }}>{totalRequestsLeft}</div>
                                         </div>
                                     </div>
 
                                     <div style={{ display: 'flex', justifyContent: 'center' }}>
                                         <div style={{ fontSize: '12px', color: 'var(--text-secondary)', backgroundColor: 'rgba(128, 128, 128, 0.08)', padding: '4px 12px', borderRadius: '20px' }}>
-                                            {t.resetAt || 'Resets at'} <span style={{fontWeight: 'bold', color: 'var(--text-secondary)'}}>{timeUntilReset}</span>
+                                            {t.resetAt} <span style={{fontWeight: 'bold', color: 'var(--text-secondary)'}}>{timeUntilReset}</span>
                                         </div>
                                     </div>
                                 </div>
                             ) : (
                                 <div style={{ padding: '15px', borderBottom: '1px solid var(--border-color)', marginBottom: 0, textAlign: 'center', flexShrink: 0 }}>
-                                    <div style={{ fontWeight: 'bold', fontSize: '14px', marginBottom: '12px' }}>not logged in</div>
-                                    <button className="confirm-btn primary" style={{width: '100%', padding: '10px 0'}} onClick={() => setShowAuthModal(true)}>log in</button>
+                                    <div style={{ fontWeight: 'bold', fontSize: '14px', marginBottom: '12px' }}>{t.notLoggedIn}</div>
+                                    <button className="confirm-btn primary" style={{width: '100%', padding: '10px 0'}} onClick={() => setShowAuthModal(true)}>{t.logInBtn}</button>
                                 </div>
                             )}
 
                             <div className="about-scroll-area" style={{ display: 'flex', flexDirection: 'column', flex: 1, overflowY: 'auto', paddingRight: '4px' }}>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', padding: '16px 0' }}>
-                                    <button className="menu-list-btn" style={{ margin: 0 }} onClick={() => requireAuth(() => { setActiveMenuView('dictionaries'); setDictSearchQuery(''); })}><BookIcon/><span>{t.menuDictionaries || "Dictionaries"}</span></button>
+                                    <button className="menu-list-btn" style={{ margin: 0 }} onClick={() => requireAuth(() => { setActiveMenuView('dictionaries'); setDictSearchQuery(''); })}><BookIcon/><span>{t.menuDictionaries}</span></button>
                                     <button className="menu-list-btn" style={{ margin: 0 }} onClick={() => setModalMode('ui')}>
-                                        <GlobeIcon/><div className="menu-lang-text"><span>{t.menuChangeLang || "Language"}</span><span className="menu-lang-subtext">{currentUILangObj ? getLanguageName(currentUILangObj.code, language) : 'English'}</span></div>
+                                        <GlobeIcon/><div className="menu-lang-text"><span>{t.menuChangeLang}</span><span className="menu-lang-subtext">{currentUILangObj ? getLanguageName(currentUILangObj.code, language) : 'English'}</span></div>
                                     </button>
-                                    <button className="menu-list-btn" style={{ margin: 0 }} onClick={() => setActiveMenuView('features')}><SettingsIcon/><span>Settings & Features</span></button>
-                                    <button className="menu-list-btn" style={{ margin: 0 }} onClick={() => setActiveMenuView('about')}><InfoIcon/><span>{t.about_menu || "About AiTerm"}</span></button>
+                                    <button className="menu-list-btn" style={{ margin: 0 }} onClick={() => setActiveMenuView('features')}><SettingsIcon/><span>{t.settingsFeatures}</span></button>
+                                    <button className="menu-list-btn" style={{ margin: 0 }} onClick={() => setActiveMenuView('about')}><InfoIcon/><span>{t.about_menu}</span></button>
                                     <button className="menu-list-btn" style={{ margin: 0 }} onClick={() => setActiveMenuView('support')}>
                                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
                                             <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
                                         </svg>
-                                        <span>{t.supportBtn || "Support AiTerm"}</span>
+                                        <span>{t.supportBtn}</span>
                                     </button>
                                 </div>
 
@@ -1155,7 +1142,7 @@ function Popup() {
                         <div className="about-scroll-area" style={{ padding: '0', display: 'flex', flexDirection: 'column', alignItems: 'center', overflowY: 'auto', flex: 1, width: '100%', WebkitMaskImage: 'none', maskImage: 'none' }}>
                             <div style={{ padding: '15px 15px 0 15px', width: '100%', boxSizing: 'border-box', marginBottom: '15px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                                 <div className="about-text" style={{ fontSize: '14px', lineHeight: '1.5', marginBottom: '12px', textAlign: 'center', color: 'var(--text-color)' }}>
-                                    Pay with cards from anywhere in the world: Visa, Mastercard, Apple Pay, Google Pay
+                                    {t.payCards}
                                 </div>
                                 <a href="https://send.monobank.ua/jar/9wyS9jdUi2" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', padding: '12px 0', backgroundColor: 'var(--header-bg)', color: '#fff', borderRadius: '8px', textDecoration: 'none', fontWeight: 'bold', fontSize: '18px', cursor: 'pointer', transition: 'opacity 0.2s' }} onMouseOver={(e) => e.currentTarget.style.opacity = '0.8'} onMouseOut={(e) => e.currentTarget.style.opacity = '1'}>
                                     Monobank
@@ -1166,7 +1153,7 @@ function Popup() {
 
                             <div style={{ padding: '0 15px', width: '100%', boxSizing: 'border-box', marginBottom: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                                 <div className="about-text" style={{ fontSize: '14px', lineHeight: '1.5', marginBottom: '12px', textAlign: 'center', color: 'var(--text-color)' }}>
-                                    Pay with any cryptocurrency from your wallet via the secure NOWPayments gateway
+                                    {t.payCrypto}
                                 </div>
                                 <a href="https://nowpayments.io/donation?api_key=7a13f050-cac5-4070-bed0-399343b52071" target="_blank" rel="noreferrer noopener" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', padding: '12px 0', backgroundColor: 'var(--header-bg)', color: '#fff', borderRadius: '8px', textDecoration: 'none', fontWeight: 'bold', fontSize: '18px', cursor: 'pointer', transition: 'opacity 0.2s' }} onMouseOver={(e) => e.currentTarget.style.opacity = '0.8'} onMouseOut={(e) => e.currentTarget.style.opacity = '1'}>
                                     Crypto
@@ -1175,7 +1162,7 @@ function Popup() {
 
                             <div style={{ padding: '15px 25px', textAlign: 'center', width: '100%', boxSizing: 'border-box', marginTop: 'auto', flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                 <div className="about-text" style={{ fontSize: '18px', lineHeight: '1.6', fontWeight: 'bold', color: 'var(--text-color)' }}>
-                                    {t.donateText || "Want to help AiTerm get even better? You can support the project with a custom donation. It’s never required, but always deeply appreciated! ❤️"}
+                                    {t.donateText}
                                 </div>
                             </div>
                         </div>
@@ -1192,8 +1179,8 @@ function Popup() {
                         <div className="prices-body" style={{padding: '5px'}}>
                             <div className="feature-card">
                                 <div className="feature-info">
-                                    <span className="feature-title">Quick Translation Popup</span>
-                                    <span className="feature-desc">Show a floating AiTerm button when you select text on any webpage.</span>
+                                    <span className="feature-title">{t.quickTransPopup}</span>
+                                    <span className="feature-desc">{t.quickTransDesc}</span>
                                 </div>
                                 <label className="switch">
                                     <input type="checkbox" checked={isQuickTranslateEnabled} onChange={toggleQuickTranslate} />
@@ -1201,7 +1188,7 @@ function Popup() {
                                 </label>
                             </div>
                             <div className="soon-badge">
-                                More exciting features coming in future updates! 🚀
+                                {t.soonBadge}
                             </div>
                         </div>
                     </div>
@@ -1217,32 +1204,27 @@ function Popup() {
 
                         <div className="about-scroll-area">
                             <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-                                <span style={{ backgroundColor: 'rgba(128, 128, 128, 0.1)', color: 'var(--text-secondary)', padding: '6px 12px', borderRadius: '20px', fontSize: '13px', fontWeight: 'bold' }}>Version 1.0</span>
+                                <span style={{ backgroundColor: 'rgba(128, 128, 128, 0.1)', color: 'var(--text-secondary)', padding: '6px 12px', borderRadius: '20px', fontSize: '13px', fontWeight: 'bold' }}>{t.version}</span>
                             </div>
 
-                            <div className="about-title">What is AiTerm?</div>
+                            <div className="about-title">{t.aboutTitle1}</div>
                             <div className="about-text">
-                                AiTerm is an advanced, AI-powered translation assistant designed for deep contextual analysis and accelerated language learning. Unlike traditional dictionaries, AiTerm leverages Large Language Models (LLMs) to provide nuanced explanations, real-world usage examples, and precise proficiency assessments.
+                                {t.aboutText1}
                             </div>
 
-                            <div className="about-title">Why choose AiTerm?</div>
-                            <div className="about-text">
-                                • <b>Contextual Accuracy:</b> Move beyond literal translations. AiTerm analyzes the surrounding text to provide the most relevant meaning.<br/>
-                                • <b>CEFR Assessment:</b> Instantly identify the difficulty level of any word, from A1 (Beginner) to C2 (Mastery).<br/>
-                                • <b>Smart Dictionaries:</b> Build your personal vocabulary by saving words along with their full context, definitions, and examples for future review.
+                            <div className="about-title">{t.aboutTitle2}</div>
+                            <div className="about-text" style={{ whiteSpace: 'pre-line' }}>
+                                {t.aboutText2}
                             </div>
 
-                            <div className="about-title">How to use</div>
-                            <div className="about-text">
-                                1. <b>Translate:</b> Enter a term, select your target language, and click "Translate" or press Enter.<br/>
-                                2. <b>Save:</b> Click the "Save" icon in the upper-right corner to add a word to your collection.<br/>
-                                3. <b>Manage:</b> Access and organize your vocabulary via the "Dictionaries" menu.<br/>
-                                4. <b>Quick Access:</b> Highlight any text while browsing to open the Mini Translation Window for instant results.
+                            <div className="about-title">{t.aboutTitle3}</div>
+                            <div className="about-text" style={{ whiteSpace: 'pre-line' }}>
+                                {t.aboutText3}
                             </div>
                         </div>
 
                         <div className="contacts-section">
-                            <div className="contacts-title">Developer Contacts</div>
+                            <div className="contacts-title">{t.devContacts}</div>
 
                             <div className="contact-btn" onClick={handleCopyEmail}>
                                 <MailIcon/>
@@ -1277,7 +1259,7 @@ function Popup() {
                         </div>
 
                         {dictionaries.length > 0 && (
-                            <input type="text" className="search-input" placeholder="search dictionary..." value={dictSearchQuery} onChange={(e) => setDictSearchQuery(e.target.value)} />
+                            <input type="text" className="search-input" placeholder={t.searchDict} value={dictSearchQuery} onChange={(e) => setDictSearchQuery(e.target.value)} />
                         )}
 
                         <div className="dictionaries-body">
@@ -1300,7 +1282,7 @@ function Popup() {
                                                 </button>
                                             ))
                                         ) : (
-                                            <p className="confirm-text" style={{textAlign: 'center', width: '100%', marginTop: '10px'}}>nothing found.</p>
+                                            <p className="confirm-text" style={{textAlign: 'center', width: '100%', marginTop: '10px'}}>{t.nothingFound}</p>
                                         )}
                                     </div>
                                     <button className="confirm-btn primary" style={{width: '100%', marginTop: '10px'}} onClick={() => { setReturnToSaveModal(false); setIsCreateDictModalOpen(true); }}>{t.btnCreateDict}</button>
@@ -1327,14 +1309,14 @@ function Popup() {
                         </div>
 
                         {dictWords.length > 0 && (
-                            <input type="text" className="search-input" placeholder="search word..." value={wordSearchQuery} onChange={(e) => setWordSearchQuery(e.target.value)} />
+                            <input type="text" className="search-input" placeholder={t.searchWord} value={wordSearchQuery} onChange={(e) => setWordSearchQuery(e.target.value)} />
                         )}
 
                         <div className="dictionaries-body">
                             {dictWords.length === 0 ? (
-                                <p className="confirm-text" style={{textAlign: 'center', marginTop: '20px'}}>no words saved yet.</p>
+                                <p className="confirm-text" style={{textAlign: 'center', marginTop: '20px'}}>{t.noWordsSaved}</p>
                             ) : filteredWords.length === 0 ? (
-                                <p className="confirm-text" style={{textAlign: 'center', marginTop: '20px'}}>nothing found.</p>
+                                <p className="confirm-text" style={{textAlign: 'center', marginTop: '20px'}}>{t.nothingFound}</p>
                             ) : (
                                 <div className="words-list-container">
                                     {filteredWords.map((w: any) => (
