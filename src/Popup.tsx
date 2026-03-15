@@ -1,5 +1,5 @@
 import {useState, useEffect, useLayoutEffect, useRef, useMemo} from 'react';
-import {fetchWordData, WordData, loginWithGoogle, logoutFromGoogle, getDictionaries, createDictionary, getDictionaryWords, saveWordToDictionary, deleteDictionary, deleteWord, deleteUserProfile, renameDictionary} from './aiService';
+import {fetchWordData, WordData, loginWithGoogle, logoutFromGoogle, getDictionaries, createDictionary, getDictionaryWords, saveWordToDictionary, deleteDictionary, deleteWord, deleteUserProfile, renameDictionary, authenticateUser} from './aiService';
 import {translations, availableLanguages, getLanguageName} from './languages';
 
 import { CloseIcon, SwapIcon, MenuIcon, SaveIcon, SunIcon, MoonIcon, BookIcon, GlobeIcon, LogOutIcon, TrashIcon, BackIcon, InfoIcon, ProductHuntIcon, LinkedInIcon, MailIcon, CopyIcon, GithubIcon, SettingsIcon, EditIcon } from './components/Icons';
@@ -212,6 +212,22 @@ function Popup() {
             if (!hasSeenWelcome) {
                 setShowWelcomeModal(true);
             }
+
+            // Синхронизируем лимиты при каждом открытии окна
+            authenticateUser(userEmail).then(dbResult => {
+                if (dbResult && dbResult.success) {
+                    const newTotal = dbResult.user.total_requests_left ?? 30;
+                    const newMain = dbResult.user.main_requests_left ?? 30;
+
+                    setTotalRequestsLeft(newTotal);
+                    setMainRequestsLeft(newMain);
+
+                    localStorage.setItem('aiterm-total-requests', newTotal.toString());
+                    localStorage.setItem('aiterm-main-requests', newMain.toString());
+                    chrome.storage.local.set({ aitermTotalRequests: newTotal, aitermMainRequests: newMain });
+                }
+            }).catch(err => console.error("Ошибка синхронизации лимитов:", err));
+
         } else {
             chrome.storage.local.remove(['aitermUserEmail']);
         }

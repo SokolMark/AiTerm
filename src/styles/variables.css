@@ -57,7 +57,6 @@ img {
     --inward-glow: rgba(74, 144, 226, 0.4);
     --donut-inner-bg: rgba(74, 144, 226, 0.15);
 
-    --swap-btn-scale: 1.05;
     --lang-btn-basis: 112px;
     --translate-btn-basis: 145px;
     --popup-border: var(--header-bg);
@@ -96,7 +95,6 @@ img {
     --lang-modal-end: #1a1a1a;
     --theme-scale-lg: 1;
     --theme-scale-sm: 1;
-    --swap-btn-scale: 0.95;
     --lang-btn-basis: 118px;
     --translate-btn-basis: 155px;
     --bg-gradient-bottom: #253649;
@@ -156,7 +154,8 @@ img {
 .content-wrapper::after {
     background: linear-gradient(to bottom, #1e1e1e 45%, #253649 100%);
     opacity: 0;
-    transition: opacity 0.4s ease-in-out;
+    /* Уравняли время перехода с остальными элементами до 0.3s */
+    transition: opacity 0.3s ease;
 }
 
 .popup-container.dark-theme .content-wrapper::after {
