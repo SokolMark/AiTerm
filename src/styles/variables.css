@@ -14,7 +14,7 @@ html, body {
     /* ВОЗВРАЩАЕМ ВИНДОВСКОЕ СГЛАЖИВАНИЕ CLEARTYPE */
     -webkit-font-smoothing: subpixel-antialiased !important;
     -moz-osx-font-smoothing: auto !important;
-    text-rendering: optimizeLegibility !important;
+    text-rendering: auto !important;
 }
 
 * {
@@ -156,7 +156,7 @@ img {
 .content-wrapper::after {
     background: linear-gradient(to bottom, #1e1e1e 45%, #253649 100%);
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.4s ease-in-out;
 }
 
 .popup-container.dark-theme .content-wrapper::after {

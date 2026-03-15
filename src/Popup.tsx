@@ -1,4 +1,4 @@
-import {useState, useEffect, useLayoutEffect, useRef} from 'react';
+import {useState, useEffect, useLayoutEffect, useRef, useMemo} from 'react';
 import {fetchWordData, WordData, loginWithGoogle, logoutFromGoogle, getDictionaries, createDictionary, getDictionaryWords, saveWordToDictionary, deleteDictionary, deleteWord, deleteUserProfile, renameDictionary} from './aiService';
 import {translations, availableLanguages, getLanguageName} from './languages';
 
@@ -164,7 +164,6 @@ function Popup() {
                 }
             }
 
-            // Передаем текущий язык интерфейса (language) в toLocaleTimeString, чтобы получить правильный формат (АМ/ПМ или 24ч)
             const formattedTime = nextReset.toLocaleTimeString(language, { hour: '2-digit', minute: '2-digit' });
             setTimeUntilReset(formattedTime);
         };
@@ -222,11 +221,20 @@ function Popup() {
         return dictionaries.reduce((acc, dict) => acc + (dict.word_count || 0), 0);
     };
 
-    const filteredDictionaries = dictionaries.filter(d => d.name.toLowerCase().includes(dictSearchQuery.toLowerCase()));
-    const filteredWords = dictWords.filter(w =>
-        w.word.toLowerCase().includes(wordSearchQuery.toLowerCase()) ||
-        w.translation.toLowerCase().includes(wordSearchQuery.toLowerCase())
-    );
+    // ОПТИМИЗАЦИЯ 1: Мемоизируем фильтрацию списков, чтобы они не пересчитывались
+    // при каждом переключении темы или вводе текста, блокируя UI поток
+    const filteredDictionaries = useMemo(() => {
+        const query = dictSearchQuery.toLowerCase();
+        return dictionaries.filter(d => d.name.toLowerCase().includes(query));
+    }, [dictionaries, dictSearchQuery]);
+
+    const filteredWords = useMemo(() => {
+        const query = wordSearchQuery.toLowerCase();
+        return dictWords.filter(w =>
+            w.word.toLowerCase().includes(query) ||
+            w.translation.toLowerCase().includes(query)
+        );
+    }, [dictWords, wordSearchQuery]);
 
     const handleCreateDictionary = async (forceCreate: boolean = false) => {
         const trimmedName = newDictName.trim();
@@ -1319,7 +1327,8 @@ function Popup() {
                                 <p className="confirm-text" style={{textAlign: 'center', marginTop: '20px'}}>{t.nothingFound}</p>
                             ) : (
                                 <div className="words-list-container">
-                                    {filteredWords.map((w: any) => (
+                                    {/* ОПТИМИЗАЦИЯ 2: Ограничиваем рендер только 100 словами за раз, чтобы не убить DOM */}
+                                    {filteredWords.slice(0, 100).map((w: any) => (
                                         <div key={w.id} className="word-item-btn" onClick={() => { setSelectedWordDetails(w); setDetailLang('target'); }} style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
                                             <span className="word-item-orig" title={w.word} style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', flex: 1, minWidth: 0 }}>{w.word}</span>
                                             <span className="word-item-trans" title={w.translation} style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', flex: 1, textAlign: 'right', minWidth: 0, color: 'var(--text-secondary)' }}>{w.translation}</span>

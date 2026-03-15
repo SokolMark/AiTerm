@@ -5,7 +5,8 @@ let currentSelectedText = "";
 let popupCenterX = 0;
 let popupTopY = 0;
 
-const WORKER_URL = "http://127.0.0.1:8787/translate";
+// Убрали /translate отсюда, чтобы было как в aiService.ts
+const BASE_URL = "https://aiterm-proxy.sarkkofag.workers.dev";
 
 function removeUI() {
     if (triggerBtn) {
@@ -228,7 +229,7 @@ const uiTranslations = {
         saveHint: "इस शब्द को सहेजने के लिए, इसे मुख्य एक्सटेंशन मेनू में अनुवाद करें।",
         disableHint: "इस पॉपअप को अक्षम करने के लिए, मुख्य मेनू में सेटिंग्स पर जाएं।",
         authTitle: "लॉग इन नहीं है",
-        authSub: "लॉग इन करने के लिए कृपया अपने ब्राउज़र टूलबार में AiTerm एक्सटेंशन आइकन पर क्लिक करें।",
+        authSub: "लॉग इन करने के लिए कृपया अपने ब्राउज़र टूलबार में AiTerm एक्सटेंशन आइकन पर क्लिक करें。",
         limitReached: "सीमा पूरी हो गई।"
     }
 };
@@ -246,7 +247,6 @@ function openFloatingWindow() {
         const theme = result.aitermTheme || 'light';
         const isLoggedIn = !!result.aitermUserEmail;
 
-        // Карта для маппинга английских названий в коды
         const langMap = {
             'Arabic': 'ar', 'Bengali': 'bn', 'Chinese': 'zh', 'Czech': 'cs', 'Danish': 'da',
             'Dutch': 'nl', 'English': 'en', 'Finnish': 'fi', 'French': 'fr', 'German': 'de',
@@ -259,19 +259,16 @@ function openFloatingWindow() {
         const targetCode = langMap[targetLangName] || 'en';
         let localizedLangName = targetLangName;
 
-        // Переводим название языка на язык интерфейса (uiLangCode)
         try {
             const displayNames = new Intl.DisplayNames([uiLangCode], { type: 'language' });
             const translated = displayNames.of(targetCode);
             if (translated) {
-                // Делаем первую букву заглавной (например, "английский" -> "Английский")
                 localizedLangName = translated.charAt(0).toUpperCase() + translated.slice(1);
             }
         } catch (e) {
             console.error("Language translation error", e);
         }
 
-        // Берем первые 3 буквы от локализованного названия
         const shortLang = localizedLangName.substring(0, 3).toUpperCase();
 
         if (floatingWindow) {
@@ -372,10 +369,15 @@ function openFloatingWindow() {
                 Rules: NO markdown, NO formatting, JUST valid JSON.`;
 
                 try {
-                    const response = await fetch(WORKER_URL, {
+                    // ДОБАВЛЕН /translate И ПАРАМЕТРЫ email, source
+                    const response = await fetch(`${BASE_URL}/translate`, {
                         method: "POST",
                         headers: {"Content-Type": "application/json"},
-                        body: JSON.stringify({prompt: prompt, isPremium: false}),
+                        body: JSON.stringify({
+                            prompt: prompt,
+                            email: result.aitermUserEmail,
+                            source: 'mini'
+                        }),
                         signal: signal
                     });
 
@@ -384,8 +386,8 @@ function openFloatingWindow() {
                         throw new Error("HTTP " + response.status);
                     }
 
-                    const result = await response.json();
-                    const rawText = result.candidates[0].content.parts[0].text;
+                    const resultData = await response.json();
+                    const rawText = resultData.candidates[0].content.parts[0].text;
 
                     let cleanedText = rawText.replace(/```json/gi, '').replace(/```/g, '').trim();
                     const match = cleanedText.match(/\{[\s\S]*\}/);
@@ -396,7 +398,6 @@ function openFloatingWindow() {
                     targetTextEl.textContent = data.translation;
                     sourceLangTagEl.textContent = data.detectedSourceLangCode.toUpperCase();
 
-                    // Списываем 1 QUICK запрос из памяти
                     chrome.storage.local.set({aitermQuickLimits: currentLimits - 1});
 
                 } catch (error) {

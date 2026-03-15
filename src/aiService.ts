@@ -10,8 +10,8 @@ export interface WordData {
     targetContent?: { examples: string[]; synonyms: string[]; explanation: string; };
 }
 
-const BASE_URL = "http://127.0.0.1:8787";
-// const BASE_URL = "https://aiterm-proxy.sarkkofag.workers.dev";
+// const BASE_URL = "http://127.0.0.1:8787";
+const BASE_URL = "https://aiterm-proxy.sarkkofag.workers.dev";
 
 const CACHE_KEY = 'aiterm-translation-cache';
 const MAX_CACHE_SIZE = 100;

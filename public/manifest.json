@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "AiTerm",
   "version": "1.0",
-  "description": "A powerful plugin for translating words between any languages, providing detailed explanations, CEFR levels, and frequency for each word.",
+  "description": "Powerful word translation plug-in between any languages that provides detailed explanations of words",
   "icons": {
     "16": "icons/icon16.png",
     "32": "icons/icon32.png",
@@ -40,5 +40,6 @@
         "content.css"
       ]
     }
-  ]
+  ],
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA28aJSrA9RPdYDccdqUEMmO6Kn9Omf03FAtkBG3Zmp3wgbFgUJEZ5GNZ5zbmCe5Lk3BH5c1FkZmI/RoFdQS6DvpQ5PJJVlwuShh2Y2671ffUM59obgJnsRUqrPA9k2wf1eHHOWWI9j8PMW/G2Swiu+3C6ldL1czV49toi8hiGCDGEiGw6EPwHNjOOpLEQuUZOtq4b8Nn+tSuq4VXwOxJuY+F8ZDe1YaN8saGS+Pmn8SU586O2o2x7EniSbTrWRN5ASSECfn0ggcZlka8V9lNIO33KiCzau6VXx3ObiCEG2OkGqy6RHh2T6ovDLnm5m9pXO+PupQNGsJKvxjfezYaKDwIDAQAB"
 }
