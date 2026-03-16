@@ -1,15 +1,36 @@
 // --- Helper для автоматического перевода названий языков ---
+const ruNames: Record<string, string> = {
+    'en': 'Английский', 'ru': 'Русский', 'es': 'Испанский', 'fr': 'Французский',
+    'de': 'Немецкий', 'zh': 'Китайский', 'uk': 'Украинский', 'pl': 'Польский',
+    'ar': 'Арабский', 'ja': 'Японский', 'ko': 'Корейский', 'pt': 'Португальский',
+    'it': 'Итальянский', 'tr': 'Турецкий', 'hi': 'Хинди', 'he': 'Иврит',
+    'nl': 'Голландский', 'sv': 'Шведский', 'fi': 'Финский', 'no': 'Норвежский',
+    'da': 'Датский', 'cs': 'Чешский', 'el': 'Греческий', 'hu': 'Венгерский',
+    'ro': 'Румынский', 'id': 'Индонезийский', 'th': 'Тайский', 'vi': 'Вьетнамский',
+    'bn': 'Бенгальский', 'fa': 'Персидский'
+};
+
 export const getLanguageName = (langCode: string, uiLang: string): string => {
     try {
+        const cleanCode = langCode.trim().toLowerCase().split('-')[0];
+
+        // Жесткая привязка полных названий для русского интерфейса
+        if (uiLang === 'ru' && ruNames[cleanCode]) {
+            return ruNames[cleanCode];
+        }
+
         const displayNames = new Intl.DisplayNames([uiLang], {type: 'language'});
-        const name = displayNames.of(langCode);
+        const name = displayNames.of(cleanCode);
         if (name) {
             return name.charAt(0).toUpperCase() + name.slice(1);
         }
     } catch (e) {
         console.error("Language translation error", e);
     }
-    return availableLanguages.find(l => l.code === langCode)?.name || langCode;
+
+    // Фолбек
+    const fallback = availableLanguages.find(l => l.code.toLowerCase() === langCode.toLowerCase().trim())?.name;
+    return fallback || langCode.toUpperCase();
 };
 
 // --- Translation Dictionary ---
@@ -821,7 +842,7 @@ export const translations = {
         confirmDuplicateDict: 'Um dicionário com esse nome já existe. Criar mesmo assim?',
         dictNamePlaceholder: 'Nome do dicionário...',
         btnCreate: 'Criar',
-        btnRename: 'Renomear',
+        btnRename: 'Renommer',
         newNamePlaceholder: 'Novo nome...',
         emailCopied: 'E-mail copiado',
         version: 'Versão 1.0'
@@ -920,7 +941,7 @@ export const translations = {
         payCrypto: 'Оплата любой криптовалютой через защищенный шлюз NOWPayments',
         quickTransPopup: 'Быстрый перевод (Pop-up)',
         quickTransDesc: 'Показывать плавающую кнопку AiTerm при выделении текста на любом сайте.',
-        soonBadge: 'Больше крутых функций в будущих обновлениях! 🚀',
+        soonBadge: 'Больше крутих функций в будущих обновлениях! 🚀',
         aboutTitle1: 'Что такое AiTerm?',
         aboutText1: 'AiTerm — это продвинутый ИИ-переводчик, созданный для глубокого анализа контекста и изучения языков.',
         aboutTitle2: 'Почему именно AiTerm?',
@@ -1053,7 +1074,7 @@ export const translations = {
         confirmDuplicateDict: 'Ya existe un diccionario con este nombre. ¿Crearlo de todos modos?',
         dictNamePlaceholder: 'Nombre del diccionario...',
         btnCreate: 'Crear',
-        btnRename: 'Renombrar',
+        btnRename: 'Renommar',
         newNamePlaceholder: 'Nuevo nombre...',
         emailCopied: 'Correo electrónico copiado',
         version: 'Versión 1.0'

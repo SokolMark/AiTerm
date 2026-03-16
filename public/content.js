@@ -5,8 +5,40 @@ let currentSelectedText = "";
 let popupCenterX = 0;
 let popupTopY = 0;
 
-// Убрали /translate отсюда, чтобы было как в aiService.ts
 const BASE_URL = "https://aiterm-proxy.sarkkofag.workers.dev";
+
+// --- Добавляем наш словарь и хелпер для перевода кодов языков ---
+const ruNamesContent = {
+    'en': 'Английский', 'ru': 'Русский', 'es': 'Испанский', 'fr': 'Французский',
+    'de': 'Немецкий', 'zh': 'Китайский', 'uk': 'Украинский', 'pl': 'Польский',
+    'ar': 'Арабский', 'ja': 'Японский', 'ko': 'Корейский', 'pt': 'Португальский',
+    'it': 'Итальянский', 'tr': 'Турецкий', 'hi': 'Хинди', 'he': 'Иврит',
+    'nl': 'Голландский', 'sv': 'Шведский', 'fi': 'Финский', 'no': 'Норвежский',
+    'da': 'Датский', 'cs': 'Чешский', 'el': 'Греческий', 'hu': 'Венгерский',
+    'ro': 'Румынский', 'id': 'Индонезийский', 'th': 'Тайский', 'vi': 'Вьетнамский',
+    'bn': 'Бенгальский', 'fa': 'Персидский'
+};
+
+function getLocalizedLangShort(langCode, uiLangCode) {
+    if (!langCode) return "???";
+    const cleanCode = langCode.trim().toLowerCase().split('-')[0];
+
+    if (uiLangCode === 'ru' && ruNamesContent[cleanCode]) {
+        return ruNamesContent[cleanCode].substring(0, 3).toUpperCase();
+    }
+
+    try {
+        const displayNames = new Intl.DisplayNames([uiLangCode], { type: 'language' });
+        const translated = displayNames.of(cleanCode);
+        if (translated) {
+            return translated.substring(0, 3).toUpperCase();
+        }
+    } catch (e) {
+        console.error("Language translation error", e);
+    }
+    return cleanCode.substring(0, 3).toUpperCase();
+}
+// ------------------------------------------------------------------
 
 function removeUI() {
     if (triggerBtn) {
@@ -257,19 +289,8 @@ function openFloatingWindow() {
         };
 
         const targetCode = langMap[targetLangName] || 'en';
-        let localizedLangName = targetLangName;
-
-        try {
-            const displayNames = new Intl.DisplayNames([uiLangCode], { type: 'language' });
-            const translated = displayNames.of(targetCode);
-            if (translated) {
-                localizedLangName = translated.charAt(0).toUpperCase() + translated.slice(1);
-            }
-        } catch (e) {
-            console.error("Language translation error", e);
-        }
-
-        const shortLang = localizedLangName.substring(0, 3).toUpperCase();
+        // Используем хелпер для языка назначения
+        const shortLang = getLocalizedLangShort(targetCode, uiLangCode);
 
         if (floatingWindow) {
             floatingWindow.remove();
@@ -369,7 +390,6 @@ function openFloatingWindow() {
                 Rules: NO markdown, NO formatting, JUST valid JSON.`;
 
                 try {
-                    // ДОБАВЛЕН /translate И ПАРАМЕТРЫ email, source
                     const response = await fetch(`${BASE_URL}/translate`, {
                         method: "POST",
                         headers: {"Content-Type": "application/json"},
@@ -396,7 +416,11 @@ function openFloatingWindow() {
                     const data = JSON.parse(cleanedText);
 
                     targetTextEl.textContent = data.translation;
-                    sourceLangTagEl.textContent = data.detectedSourceLangCode.toUpperCase();
+
+                    // Используем хелпер для языка исходника
+                    const sourceShort = getLocalizedLangShort(data.detectedSourceLangCode, uiLangCode);
+                    sourceLangTagEl.textContent = sourceShort;
+                    sourceLangTagEl.title = data.detectedSourceLangCode.toUpperCase();
 
                     chrome.storage.local.set({aitermQuickLimits: currentLimits - 1});
 

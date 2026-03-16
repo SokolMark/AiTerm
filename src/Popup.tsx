@@ -31,6 +31,19 @@ function Popup() {
         return saved ? (saved as keyof typeof translations) : getAutoLanguage();
     });
 
+    const [exchangeRate, setExchangeRate] = useState<string | null>(null);
+
+    useEffect(() => {
+        fetch('https://api.exchangerate-api.com/v4/latest/USD')
+            .then(res => res.json())
+            .then(data => {
+                if (data && data.rates && data.rates.UAH) {
+                    setExchangeRate(data.rates.UAH.toFixed(2));
+                }
+            })
+            .catch(() => setExchangeRate('41.50')); // Резервный курс на случай ошибки сети
+    }, []);
+
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [activeMenuView, setActiveMenuView] = useState<'main' | 'dictionaries' | 'dict_view' | 'about' | 'features' | 'support'>('main');
     const [modalMode, setModalMode] = useState<'ui' | 'source' | 'target' | null>(null);
@@ -1165,6 +1178,12 @@ function Popup() {
                             <div style={{ padding: '15px 15px 0 15px', width: '100%', boxSizing: 'border-box', marginBottom: '15px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                                 <div className="about-text" style={{ fontSize: '14px', lineHeight: '1.5', marginBottom: '12px', textAlign: 'center', color: 'var(--text-color)' }}>
                                     {t.payCards}
+                                    {/* ДОБАВЛЕННЫЙ БЛОК С КУРСОМ ВАЛЮТ */}
+                                    {exchangeRate && (
+                                        <div style={{ marginTop: '8px', fontSize: '13px', color: 'var(--hint-color)', fontWeight: 'bold' }}>
+                                            💡 1 USD ≈ {exchangeRate} UAH
+                                        </div>
+                                    )}
                                 </div>
                                 <a href="https://send.monobank.ua/jar/9wyS9jdUi2" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', padding: '12px 0', backgroundColor: 'var(--header-bg)', color: '#fff', borderRadius: '8px', textDecoration: 'none', fontWeight: 'bold', fontSize: '18px', cursor: 'pointer', transition: 'opacity 0.2s' }} onMouseOver={(e) => e.currentTarget.style.opacity = '0.8'} onMouseOut={(e) => e.currentTarget.style.opacity = '1'}>
                                     Monobank
