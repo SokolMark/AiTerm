@@ -33,6 +33,11 @@
       "matches": [
         "<all_urls>"
       ],
+      "exclude_matches": [
+        "*://*.monobank.ua/*",
+        "*://send.monobank.ua/*",
+        "*://*.privat24.ua/*"
+      ],
       "js": [
         "content.js"
       ],
