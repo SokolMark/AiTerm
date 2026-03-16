@@ -174,13 +174,14 @@ function Popup() {
         return () => clearInterval(interval);
     }, [userEmail, language]);
 
+    // ТУТ ИСПРАВЛЕНА ОШИБКА С .toString()
     useEffect(() => {
         const listener = (changes: { [key: string]: chrome.storage.StorageChange }) => {
-            if (changes.aitermTotalRequests) {
+            if (changes.aitermTotalRequests && changes.aitermTotalRequests.newValue !== undefined) {
                 setTotalRequestsLeft(changes.aitermTotalRequests.newValue);
                 localStorage.setItem('aiterm-total-requests', changes.aitermTotalRequests.newValue.toString());
             }
-            if (changes.aitermMainRequests) {
+            if (changes.aitermMainRequests && changes.aitermMainRequests.newValue !== undefined) {
                 setMainRequestsLeft(changes.aitermMainRequests.newValue);
                 localStorage.setItem('aiterm-main-requests', changes.aitermMainRequests.newValue.toString());
             }
@@ -213,7 +214,6 @@ function Popup() {
                 setShowWelcomeModal(true);
             }
 
-            // Синхронизируем лимиты при каждом открытии окна
             authenticateUser(userEmail).then(dbResult => {
                 if (dbResult && dbResult.success) {
                     const newTotal = dbResult.user.total_requests_left ?? 30;
@@ -237,8 +237,6 @@ function Popup() {
         return dictionaries.reduce((acc, dict) => acc + (dict.word_count || 0), 0);
     };
 
-    // ОПТИМИЗАЦИЯ 1: Мемоизируем фильтрацию списков, чтобы они не пересчитывались
-    // при каждом переключении темы или вводе текста, блокируя UI поток
     const filteredDictionaries = useMemo(() => {
         const query = dictSearchQuery.toLowerCase();
         return dictionaries.filter(d => d.name.toLowerCase().includes(query));
