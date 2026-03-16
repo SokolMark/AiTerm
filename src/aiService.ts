@@ -83,10 +83,11 @@ Rules:
   2-3 = rare
   1 = very rare
 - detectedSourceLangCode: EXACT 2-letter ISO code. Even if the text is random gibberish/nonsense, strictly detect the language based on the alphabet/characters used.
+- DICTIONARY FOCUS ONLY: Translate purely as a linguistic phrase. Do NOT explain pop culture, songs, albums, artists, or encyclopedic facts. Ignore proper noun context.
 
 CRITICAL LANGUAGE ISOLATION:
-1. "sourceContent" fields MUST be written entirely in the source language (${sourceLang || 'the detected source language'}). Give 1-4 sentences for examples, 1-5 synonyms, and 1-3 sentences for explanation.
-2. "targetContent" fields MUST be written entirely in ${targetLang}. Give 1-4 sentences for examples, 1-5 synonyms, and 1-3 sentences for explanation.
+1. "sourceContent" fields MUST be written entirely in the source language (${sourceLang || 'the detected source language'}). Give 2-5 sentences for examples, 1-5 synonyms, and 1-3 sentences for explanation.
+2. "targetContent" fields MUST be written entirely in ${targetLang}. Give 2-5 sentences for examples, 1-5 synonyms, and 1-3 sentences for explanation.
 Do not mix languages. Explanations in targetContent MUST be strictly in ${targetLang}.
 
 JSON:
