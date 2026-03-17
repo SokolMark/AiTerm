@@ -1220,19 +1220,8 @@ function Popup() {
                                 </a>
                             </div>
 
-                            <div className="separator-line" style={{ width: 'calc(100% - 30px)', margin: '0 15px 15px 15px' }}></div>
-
-                            <div style={{ padding: '0 15px', width: '100%', boxSizing: 'border-box', marginBottom: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                                <div className="about-text" style={{ fontSize: '14px', lineHeight: '1.5', marginBottom: '12px', textAlign: 'center', color: 'var(--text-color)' }}>
-                                    {t.payCrypto}
-                                </div>
-                                <a href="https://nowpayments.io/donation?api_key=7a13f050-cac5-4070-bed0-399343b52071" target="_blank" rel="noreferrer noopener" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', padding: '12px 0', backgroundColor: 'var(--header-bg)', color: '#fff', borderRadius: '8px', textDecoration: 'none', fontWeight: 'bold', fontSize: '18px', cursor: 'pointer', transition: 'opacity 0.2s' }} onMouseOver={(e) => e.currentTarget.style.opacity = '0.8'} onMouseOut={(e) => e.currentTarget.style.opacity = '1'}>
-                                    Crypto
-                                </a>
-                            </div>
-
-                            <div style={{ padding: '15px 25px', textAlign: 'center', width: '100%', boxSizing: 'border-box', marginTop: 'auto', flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                <div className="about-text" style={{ fontSize: '18px', lineHeight: '1.6', fontWeight: 'bold', color: 'var(--text-color)' }}>
+                            <div style={{ padding: '15px', textAlign: 'center', width: '100%', boxSizing: 'border-box', flex: 1, display: 'flex', alignItems: 'flex-start', justifyContent: 'center' }}>
+                                <div className="about-text" style={{ fontSize: '14px', lineHeight: '1.6', color: 'var(--text-color)' }}>
                                     {t.donateText}
                                 </div>
                             </div>
