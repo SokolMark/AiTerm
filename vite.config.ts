@@ -24,8 +24,7 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        main: resolve(__dirname, 'index.html'),
-        content: resolve(__dirname, 'src/content.ts'),
+        main: resolve(__dirname, 'index.html')
       },
       output: {
         // Мы убрали папку 'src/' из путей генерации файлов.

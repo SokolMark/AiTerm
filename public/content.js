@@ -5,9 +5,11 @@ let currentSelectedText = "";
 let popupCenterX = 0;
 let popupTopY = 0;
 
+// Инициализируем кэш для переводов на текущей странице
+const translationCache = new Map();
+
 const BASE_URL = "https://aiterm-proxy.sarkkofag.workers.dev";
 
-// --- Добавляем наш словарь и хелпер для перевода кодов языков ---
 const ruNamesContent = {
     'en': 'Английский', 'ru': 'Русский', 'es': 'Испанский', 'fr': 'Французский',
     'de': 'Немецкий', 'zh': 'Китайский', 'uk': 'Украинский', 'pl': 'Польский',
@@ -38,7 +40,6 @@ function getLocalizedLangShort(langCode, uiLangCode) {
     }
     return cleanCode.substring(0, 3).toUpperCase();
 }
-// ------------------------------------------------------------------
 
 function removeUI() {
     if (triggerBtn) {
@@ -91,7 +92,11 @@ document.addEventListener('mouseup', (event) => {
     if ((floatingWindow && floatingWindow.contains(event.target)) || (triggerBtn && triggerBtn.contains(event.target))) return;
 
     setTimeout(() => {
+        if (!chrome || !chrome.storage || !chrome.storage.local) return;
+
         chrome.storage.local.get(['aitermQuickTranslate'], (res) => {
+            if (chrome.runtime.lastError) return;
+
             if (res.aitermQuickTranslate === false) {
                 removeUI();
                 return;
@@ -110,29 +115,40 @@ document.addEventListener('mouseup', (event) => {
                 text = selection ? selection.toString().trim() : '';
                 if (text.length > 0 && text.length <= 50 && selection.rangeCount > 0) {
                     const domRect = selection.getRangeAt(0).getBoundingClientRect();
-                    rect = {
-                        left: domRect.left + window.scrollX,
-                        top: domRect.top + window.scrollY,
-                        right: domRect.right + window.scrollX,
-                        bottom: domRect.bottom + window.scrollY,
-                        width: domRect.width,
-                        height: domRect.height
-                    };
+                    if (domRect.width > 0 && domRect.height > 0) {
+                        rect = {
+                            left: domRect.left + window.scrollX,
+                            top: domRect.top + window.scrollY,
+                            right: domRect.right + window.scrollX,
+                            bottom: domRect.bottom + window.scrollY,
+                            width: domRect.width,
+                            height: domRect.height
+                        };
+                    }
                 }
             }
 
             if (text.length > 0 && text.length <= 50 && rect) {
                 currentSelectedText = text;
                 removeUI();
+
                 triggerBtn = document.createElement('div');
                 triggerBtn.id = 'aiterm-trigger-btn';
                 triggerBtn.textContent = 'AiTerm';
+
+                triggerBtn.style.position = 'absolute';
+                triggerBtn.style.zIndex = '2147483647';
+                triggerBtn.style.cursor = 'pointer';
+
                 document.body.appendChild(triggerBtn);
+
                 popupCenterX = rect.left + (rect.width / 2);
                 popupTopY = rect.bottom + 8;
-                const btnWidth = triggerBtn.offsetWidth;
+
+                const btnWidth = triggerBtn.offsetWidth || 60;
                 triggerBtn.style.left = `${popupCenterX - (btnWidth / 2)}px`;
                 triggerBtn.style.top = `${popupTopY}px`;
+
                 triggerBtn.addEventListener('mousedown', (e) => e.stopPropagation());
                 triggerBtn.addEventListener('click', openFloatingWindow);
             } else {
@@ -289,7 +305,6 @@ function openFloatingWindow() {
         };
 
         const targetCode = langMap[targetLangName] || 'en';
-        // Используем хелпер для языка назначения
         const shortLang = getLocalizedLangShort(targetCode, uiLangCode);
 
         if (floatingWindow) {
@@ -299,6 +314,10 @@ function openFloatingWindow() {
 
         floatingWindow = document.createElement('div');
         floatingWindow.id = 'aiterm-floating-window';
+
+        floatingWindow.style.position = 'absolute';
+        floatingWindow.style.zIndex = '2147483647';
+
         if (theme === 'dark') floatingWindow.classList.add('aiterm-dark');
 
         if (!isLoggedIn) {
@@ -366,6 +385,20 @@ function openFloatingWindow() {
             const sourceLangTagEl = document.getElementById('aiterm-source-lang');
             const arrowEl = document.getElementById('aiterm-arrow');
 
+            // Формируем уникальный ключ кэша для текста и целевого языка
+            const cacheKey = `${currentSelectedText.trim().toLowerCase()}_${targetLangName}`;
+
+            // Проверяем наличие в кэше
+            if (translationCache.has(cacheKey)) {
+                const cachedData = translationCache.get(cacheKey);
+                targetTextEl.textContent = cachedData.translation;
+
+                const sourceShort = getLocalizedLangShort(cachedData.detectedSourceLangCode, uiLangCode);
+                sourceLangTagEl.textContent = sourceShort;
+                sourceLangTagEl.title = cachedData.detectedSourceLangCode.toUpperCase();
+                return; // Прерываем выполнение, чтобы не делать запрос к API
+            }
+
             chrome.storage.local.get(['aitermQuickLimits', 'aitermPlan'], async (limRes) => {
                 let currentLimits = limRes.aitermQuickLimits !== undefined ? limRes.aitermQuickLimits : 30;
 
@@ -417,10 +450,12 @@ function openFloatingWindow() {
 
                     targetTextEl.textContent = data.translation;
 
-                    // Используем хелпер для языка исходника
                     const sourceShort = getLocalizedLangShort(data.detectedSourceLangCode, uiLangCode);
                     sourceLangTagEl.textContent = sourceShort;
                     sourceLangTagEl.title = data.detectedSourceLangCode.toUpperCase();
+
+                    // Сохраняем успешный перевод в кэш
+                    translationCache.set(cacheKey, data);
 
                     chrome.storage.local.set({aitermQuickLimits: currentLimits - 1});
 

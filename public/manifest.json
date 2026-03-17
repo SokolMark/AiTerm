@@ -20,13 +20,17 @@
   },
   "permissions": [
     "storage",
-    "identity"
+    "identity",
+    "scripting"
   ],
   "oauth2": {
     "client_id": "477928247590-djo2slpf4v96j5hkde74ppfn3tcbj993.apps.googleusercontent.com",
     "scopes": [
       "https://www.googleapis.com/auth/userinfo.email"
     ]
+  },
+  "background": {
+    "service_worker": "background.js"
   },
   "content_scripts": [
     {
