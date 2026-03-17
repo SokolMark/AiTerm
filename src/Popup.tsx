@@ -152,12 +152,19 @@ function Popup() {
     useEffect(() => {
         const calculateTime = () => {
             const now = new Date();
-            const nextReset = new Date(Date.UTC(
-                now.getUTCFullYear(),
-                now.getUTCMonth(),
-                now.getUTCDate(),
-                now.getUTCHours() < 12 ? 12 : 24, 0, 0, 0
-            ));
+            const nextReset = new Date(now);
+
+            // Сбрасываем минуты/секунды
+            nextReset.setUTCMilliseconds(0);
+            nextReset.setUTCSeconds(0);
+            nextReset.setUTCMinutes(0);
+
+            // Определяем следующую точку сброса (12:00 или 00:00 следующего дня)
+            if (now.getUTCHours() < 12) {
+                nextReset.setUTCHours(12);
+            } else {
+                nextReset.setUTCHours(24);
+            }
 
             const diff = nextReset.getTime() - now.getTime();
 
@@ -177,6 +184,7 @@ function Popup() {
                 }
             }
 
+            // toLocaleTimeString сама переведет это UTC-время в локальное время пользователя
             const formattedTime = nextReset.toLocaleTimeString(language, { hour: '2-digit', minute: '2-digit' });
             setTimeUntilReset(formattedTime);
         };
@@ -187,7 +195,6 @@ function Popup() {
         return () => clearInterval(interval);
     }, [userEmail, language]);
 
-    // ТУТ ИСПРАВЛЕНА ОШИБКА С .toString()
     useEffect(() => {
         const listener = (changes: { [key: string]: chrome.storage.StorageChange }) => {
             if (changes.aitermTotalRequests && changes.aitermTotalRequests.newValue !== undefined) {
@@ -806,8 +813,7 @@ function Popup() {
                             <div className={`theme-ball ${isDarkTheme ? 'dark' : 'light'}`}>{isDarkTheme ? <MoonIcon/> : <SunIcon/>}</div>
                         </div>
                     </div>
-                    <div className="header-title"><span className="title-ai">Ai</span><span className="title-term">Term</span></div>
-                    <div className="header-right">
+                    <div className="header-title"><span className="title-ai">Ai</span><span className="title-term">Term</span></div><div className="header-right">
                         <div className="save-btn" onClick={() => requireAuth(() => { if(wordData) setIsSaveModalOpen(true); else showToast(t.translateWordFirst, 'error'); })}>
                             <SaveIcon/><span className="save-text">{t.save}</span>
                         </div>
@@ -1178,7 +1184,6 @@ function Popup() {
                             <div style={{ padding: '15px 15px 0 15px', width: '100%', boxSizing: 'border-box', marginBottom: '15px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                                 <div className="about-text" style={{ fontSize: '14px', lineHeight: '1.5', marginBottom: '12px', textAlign: 'center', color: 'var(--text-color)' }}>
                                     {t.payCards}
-                                    {/* ДОБАВЛЕННЫЙ БЛОК С КУРСОМ ВАЛЮТ */}
                                     {exchangeRate && (
                                         <div style={{ marginTop: '8px', fontSize: '13px', color: 'var(--hint-color)', fontWeight: 'bold' }}>
                                             💡 1 USD ≈ {exchangeRate} UAH
@@ -1360,7 +1365,6 @@ function Popup() {
                                 <p className="confirm-text" style={{textAlign: 'center', marginTop: '20px'}}>{t.nothingFound}</p>
                             ) : (
                                 <div className="words-list-container">
-                                    {/* ОПТИМИЗАЦИЯ 2: Ограничиваем рендер только 100 словами за раз, чтобы не убить DOM */}
                                     {filteredWords.slice(0, 100).map((w: any) => (
                                         <div key={w.id} className="word-item-btn" onClick={() => { setSelectedWordDetails(w); setDetailLang('target'); }} style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
                                             <span className="word-item-orig" title={w.word} style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', flex: 1, minWidth: 0 }}>{w.word}</span>
