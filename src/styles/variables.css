@@ -38,7 +38,6 @@ img {
     --bg-color: #f0f2f5;
     --bg-color-rgb: 240, 242, 245;
 
-    /* Четкие контрастные цвета для светлой темы */
     --text-color: #000000;
     --text-secondary: #333333;
     --hint-color: #555555;
@@ -62,7 +61,6 @@ img {
     --lang-modal-end: #8ab4f8;
     --bg-gradient-bottom: #d7e2f1;
 
-    /* Цвета скроллбара (Светлая тема) */
     --scrollbar-thumb: #c1c1c1;
     --scrollbar-track: transparent;
 }
@@ -71,7 +69,6 @@ img {
     --bg-color: #1e1e1e;
     --bg-color-rgb: 30, 30, 30;
 
-    /* Четкие контрастные цвета для темной темы */
     --text-color: #FFFFFF;
     --text-secondary: #CCCCCC;
     --hint-color: #AAAAAA;
@@ -97,7 +94,6 @@ img {
     --translate-btn-basis: 155px;
     --bg-gradient-bottom: #253649;
 
-    /* Цвета скроллбара (Темная тема) */
     --scrollbar-thumb: #555555;
     --scrollbar-track: transparent;
 }
@@ -116,7 +112,6 @@ img {
     border-radius: 0 !important;
     overflow: hidden;
     font-family: 'Segoe UI', system-ui, sans-serif;
-    transition: border-color 0.3s ease, background-color 0.3s ease;
 }
 
 .content-wrapper {
@@ -152,19 +147,13 @@ img {
 .content-wrapper::after {
     background: linear-gradient(to bottom, #1e1e1e 45%, #253649 100%);
     opacity: 0;
-    /* Уравняли время перехода с остальными элементами до 0.3s */
-    transition: opacity 0.3s ease;
 }
 
 .popup-container.dark-theme .content-wrapper::after {
     opacity: 1;
 }
 
-/* =========================================
-   Настройки скроллбара
-   ========================================= */
-
-/* 1. Скроллбары для ГЛАВНОГО ОКНА (статичные серые, чтобы не было мерцания при смене темы) */
+/* 1. Скроллбары для ГЛАВНОГО ОКНА (статичные серые) */
 .text-box::-webkit-scrollbar, .examples-content::-webkit-scrollbar {
     width: 6px;
 }
@@ -174,14 +163,14 @@ img {
     margin-bottom: 5px;
 }
 .text-box::-webkit-scrollbar-thumb, .examples-content::-webkit-scrollbar-thumb {
-    background-color: #888888; /* Статичный серый цвет */
+    background-color: #888888;
     border-radius: 10px;
 }
 .text-box::-webkit-scrollbar-thumb:hover, .examples-content::-webkit-scrollbar-thumb:hover {
-    background-color: #666666; /* Статичный темно-серый при наведении */
+    background-color: #666666;
 }
 
-/* 2. Скроллбары для ОСТАЛЬНЫХ ОКОН (динамические, зависят от темы расширения) */
+/* 2. Скроллбары для ОСТАЛЬНЫХ ОКОН */
 .prices-body::-webkit-scrollbar, .lang-list::-webkit-scrollbar,
 .dictionaries-body::-webkit-scrollbar, .words-list-container::-webkit-scrollbar,
 .word-detail-box::-webkit-scrollbar, .dict-list::-webkit-scrollbar {
@@ -220,7 +209,7 @@ img {
     align-items: center;
     justify-content: center;
     color: var(--text-secondary);
-    transition: transform 0.2s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.2s ease;
     width: 32px;
     height: 32px;
     border-radius: 8px;
@@ -233,7 +222,6 @@ img {
     box-shadow: 0 0 0 2px var(--accent-color);
 }
 
-/* Полностью скрываем стрелки прокрутки */
 ::-webkit-scrollbar-button {
     display: none !important;
     width: 0 !important;

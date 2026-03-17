@@ -35,11 +35,10 @@
     flex-shrink: 0;
     letter-spacing: 1.2px;
     font-family: inherit;
-    transition: color 0.3s ease;
 }
 
-.title-ai { color: var(--header-bg); transition: color 0.3s ease; }
-.title-term { color: var(--term-color); transition: color 0.3s ease; }
+.title-ai { color: var(--header-bg); }
+.title-term { color: var(--term-color); }
 
 .info-trigger {
     font-size: 20px;
@@ -58,7 +57,7 @@
     justify-content: center;
     line-height: 1;
     font-style: normal;
-    transition: opacity 0.25s ease, transform 0.2s ease, color 0.3s ease;
+    transition: opacity 0.25s ease, transform 0.2s ease;
 }
 
 .info-trigger:hover {
@@ -83,7 +82,6 @@
     background-color: var(--header-bg);
     opacity: 0.2;
     border-radius: 7px;
-    transition: background-color 0.3s ease;
 }
 
 .theme-ball {
@@ -97,7 +95,7 @@
     align-items: center;
     justify-content: center;
     font-size: 14px;
-    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s ease;
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 2;
     color: var(--header-bg);
 }
@@ -109,7 +107,6 @@
     width: 18px;
     height: 18px;
     stroke: var(--header-bg);
-    transition: stroke 0.3s ease;
 }
 
 .save-btn {
@@ -123,7 +120,7 @@
     padding: 2px 8px;
     border-radius: 15px;
     user-select: none;
-    transition: transform 0.2s ease, opacity 0.25s ease, color 0.3s ease, background-color 0.3s ease;
+    transition: transform 0.2s ease, opacity 0.25s ease;
 }
 
 .save-btn:hover {
@@ -137,4 +134,82 @@
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+}
+
+/* =========================================
+   ШТОРКА ДЛЯ ПЛАВНОЙ СМЕНЫ ТЕМЫ С ЛОГОТИПОМ
+   ========================================= */
+.theme-transition-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 999999;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.theme-transition-bg {
+    position: absolute;
+    top: -10vh;
+    bottom: -10vh;
+    width: 140vw;
+    filter: blur(50px);
+    z-index: -1;
+    will-change: transform;
+}
+
+.theme-transition-overlay.to-dark .theme-transition-bg {
+    background-color: #1e1e1e;
+    left: -160vw;
+    animation: swipeBgRight 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.theme-transition-overlay.to-light .theme-transition-bg {
+    background-color: #f0f2f5;
+    right: -160vw;
+    animation: swipeBgLeft 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes swipeBgRight {
+    0% { transform: translateX(0); }
+    50% { transform: translateX(140vw); }
+    100% { transform: translateX(280vw); }
+}
+
+@keyframes swipeBgLeft {
+    0% { transform: translateX(0); }
+    50% { transform: translateX(-140vw); }
+    100% { transform: translateX(-280vw); }
+}
+
+.theme-transition-text {
+    font-size: 52px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    z-index: 2;
+    display: flex;
+    opacity: 0;
+    animation: popText 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    /* Легкая тень, чтобы текст отрывался от фона */
+    text-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+
+/* Жестко задаем цвета логотипу на шторке, чтобы они не моргали при смене темы под шторкой */
+.theme-transition-overlay.to-dark .title-ai { color: #3a7dcb; }
+.theme-transition-overlay.to-dark .title-term { color: #949cac; }
+
+.theme-transition-overlay.to-light .title-ai { color: #4a90e2; }
+.theme-transition-overlay.to-light .title-term { color: #737b8b; }
+
+@keyframes popText {
+    0% { opacity: 0; transform: scale(0.85); }
+    25% { opacity: 1; transform: scale(1.02); }
+    50% { opacity: 1; transform: scale(1.05); }
+    75% { opacity: 1; transform: scale(1.02); }
+    100% { opacity: 0; transform: scale(0.85); }
 }

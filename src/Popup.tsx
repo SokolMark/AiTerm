@@ -26,6 +26,9 @@ function Popup() {
         const saved = localStorage.getItem('aiterm-theme');
         return saved ? saved === 'dark' : getAutoTheme();
     });
+
+    const [themeAnim, setThemeAnim] = useState<'to-dark' | 'to-light' | null>(null);
+
     const [language, setLanguage] = useState<keyof typeof translations>(() => {
         const saved = localStorage.getItem('aiterm-language');
         return saved ? (saved as keyof typeof translations) : getAutoLanguage();
@@ -41,7 +44,7 @@ function Popup() {
                     setExchangeRate(data.rates.UAH.toFixed(2));
                 }
             })
-            .catch(() => setExchangeRate('41.50')); // Резервный курс на случай ошибки сети
+            .catch(() => setExchangeRate('41.50'));
     }, []);
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -133,6 +136,20 @@ function Popup() {
 
     const t = translations[language] as any;
 
+    const toggleTheme = () => {
+        if (themeAnim) return;
+        const nextIsDark = !isDarkTheme;
+        setThemeAnim(nextIsDark ? 'to-dark' : 'to-light');
+
+        setTimeout(() => {
+            setIsDarkTheme(nextIsDark);
+        }, 300);
+
+        setTimeout(() => {
+            setThemeAnim(null);
+        }, 600);
+    };
+
     const showToast = (message: string, type: 'error' | 'success' = 'error') => {
         setToastState({visible: true, message: message, type});
         setTimeout(() => setToastState(prev => ({...prev, visible: false})), 3500);
@@ -154,12 +171,10 @@ function Popup() {
             const now = new Date();
             const nextReset = new Date(now);
 
-            // Сбрасываем минуты/секунды
             nextReset.setUTCMilliseconds(0);
             nextReset.setUTCSeconds(0);
             nextReset.setUTCMinutes(0);
 
-            // Определяем следующую точку сброса (12:00 или 00:00 следующего дня)
             if (now.getUTCHours() < 12) {
                 nextReset.setUTCHours(12);
             } else {
@@ -184,7 +199,6 @@ function Popup() {
                 }
             }
 
-            // toLocaleTimeString сама переведет это UTC-время в локальное время пользователя
             const formattedTime = nextReset.toLocaleTimeString(language, { hour: '2-digit', minute: '2-digit' });
             setTimeUntilReset(formattedTime);
         };
@@ -802,22 +816,33 @@ function Popup() {
 
     return (
         <div className={`popup-container ${isDarkTheme ? 'dark-theme' : 'light-theme'}`}>
+
+            {/* АНИМИРОВАННАЯ ШТОРКА С ЛОГОТИПОМ */}
+            {themeAnim && (
+                <div className={`theme-transition-overlay ${themeAnim}`}>
+                    <div className="theme-transition-bg"></div>
+                    <div className="theme-transition-text">
+                        <span className="title-ai">Ai</span><span className="title-term">Term</span>
+                    </div>
+                </div>
+            )}
+
             <div className={`toast ${toastState.type} ${toastState.visible ? 'visible' : ''}`}>{toastState.message}</div>
 
             <div className="content-wrapper">
                 <header className="header">
                     <div className="header-left">
                         <div className="info-trigger" onClick={() => { setIsMenuOpen(true); setActiveMenuView('main'); }}><MenuIcon/></div>
-                        <div className="theme-switch" onClick={() => setIsDarkTheme(!isDarkTheme)}>
+                        <div className="theme-switch" onClick={toggleTheme}>
                             <div className="theme-track"></div>
                             <div className={`theme-ball ${isDarkTheme ? 'dark' : 'light'}`}>{isDarkTheme ? <MoonIcon/> : <SunIcon/>}</div>
                         </div>
                     </div>
                     <div className="header-title"><span className="title-ai">Ai</span><span className="title-term">Term</span></div><div className="header-right">
-                        <div className="save-btn" onClick={() => requireAuth(() => { if(wordData) setIsSaveModalOpen(true); else showToast(t.translateWordFirst, 'error'); })}>
-                            <SaveIcon/><span className="save-text">{t.save}</span>
-                        </div>
+                    <div className="save-btn" onClick={() => requireAuth(() => { if(wordData) setIsSaveModalOpen(true); else showToast(t.translateWordFirst, 'error'); })}>
+                        <SaveIcon/><span className="save-text">{t.save}</span>
                     </div>
+                </div>
                 </header>
 
                 <section className="translation-block">

@@ -15,8 +15,8 @@ export default defineConfig({
       apply: 'build',
       writeBundle() {
         cpSync(
-          resolve(__dirname, 'public', 'manifest.json'),
-          resolve(__dirname, 'dist', 'manifest.json')
+            resolve(__dirname, 'public', 'manifest.json'),
+            resolve(__dirname, 'dist', 'manifest.json')
         )
       },
     },
@@ -28,9 +28,11 @@ export default defineConfig({
         content: resolve(__dirname, 'src/content.ts'),
       },
       output: {
-        entryFileNames: `src/[name].js`,
+        // Мы убрали папку 'src/' из путей генерации файлов.
+        // Теперь файлы будут лежать прямо в корне папки dist, как того требует manifest.json
+        entryFileNames: `[name].js`,
         chunkFileNames: `assets/[name].js`,
-        assetFileNames: `src/[name].[ext]`,
+        assetFileNames: `[name].[ext]`,
       },
     },
   },
