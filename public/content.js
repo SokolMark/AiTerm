@@ -4,10 +4,8 @@ let currentSelectedText = "";
 let popupCenterX = 0;
 let popupTopY = 0;
 
-// Кешируем только настройки автопопапа
 let cachedAutoPopup = false;
 
-// Безопасная проверка, жив ли контекст плагина
 function isExtensionValid() {
     try {
         return typeof chrome !== 'undefined' && chrome.runtime && !!chrome.runtime.id;
@@ -33,24 +31,63 @@ if (isExtensionValid() && chrome.storage && chrome.storage.local) {
 const translationCache = new Map();
 const BASE_URL = "https://aiterm-proxy.sarkkofag.workers.dev";
 
+// Массив поддерживаемых языков
+const availableLanguages = [
+    {code: 'ar', name: 'Arabic', flag: 'sa'},
+    {code: 'bn', name: 'Bengali', flag: 'bd'},
+    {code: 'zh', name: 'Chinese', flag: 'cn'},
+    {code: 'cs', name: 'Czech', flag: 'cz'},
+    {code: 'da', name: 'Danish', flag: 'dk'},
+    {code: 'nl', name: 'Dutch', flag: 'nl'},
+    {code: 'en', name: 'English', flag: 'gb'},
+    {code: 'fi', name: 'Finnish', flag: 'fi'},
+    {code: 'fr', name: 'French', flag: 'fr'},
+    {code: 'de', name: 'German', flag: 'de'},
+    {code: 'el', name: 'Greek', flag: 'gr'},
+    {code: 'he', name: 'Hebrew', flag: 'il'},
+    {code: 'hi', name: 'Hindi', flag: 'in'},
+    {code: 'hu', name: 'Hungarian', flag: 'hu'},
+    {code: 'id', name: 'Indonesian', flag: 'id'},
+    {code: 'it', name: 'Italian', flag: 'it'},
+    {code: 'ja', name: 'Japanese', flag: 'jp'},
+    {code: 'ko', name: 'Korean', flag: 'kr'},
+    {code: 'no', name: 'Norwegian', flag: 'no'},
+    {code: 'fa', name: 'Persian', flag: 'ir'},
+    {code: 'pl', name: 'Polish', flag: 'pl'},
+    {code: 'pt', name: 'Portuguese', flag: 'pt'},
+    {code: 'ro', name: 'Romanian', flag: 'ro'},
+    {code: 'ru', name: 'Russian', flag: 'ru'},
+    {code: 'es', name: 'Spanish', flag: 'es'},
+    {code: 'sv', name: 'Swedish', flag: 'se'},
+    {code: 'th', name: 'Thai', flag: 'th'},
+    {code: 'tr', name: 'Turkish', flag: 'tr'},
+    {code: 'uk', name: 'Ukrainian', flag: 'ua'},
+    {code: 'vi', name: 'Vietnamese', flag: 'vn'}
+];
+
+const getResetText = (uiLang) => {
+    const map = { ru: 'Сбросить', uk: 'Скинути', es: 'Restablecer', pl: 'Resetuj', zh: '重置', ar: 'إعادة تعيين', fr: 'Réinitialiser', pt: 'Redefinir', hi: 'रीसेट' };
+    return map[uiLang] || 'Reset';
+};
+
+const getAutoText = (uiLang) => {
+    const map = { ru: 'Авто', uk: 'Авто', es: 'Auto', pl: 'Auto', zh: '自动', ar: 'تلقائي', fr: 'Auto', pt: 'Auto', hi: 'स्वत:' };
+    return map[uiLang] || 'Auto';
+};
+
 function getLocalizedLangShort(langCode, uiLangCode) {
     if (!langCode) return "???";
     const cleanCode = langCode.trim().toLowerCase().split('-')[0];
 
-    // ruNamesContent теперь берется из translations.js
-    if (uiLangCode === 'ru' && ruNamesContent[cleanCode]) {
+    if (uiLangCode === 'ru' && typeof ruNamesContent !== 'undefined' && ruNamesContent[cleanCode]) {
         return ruNamesContent[cleanCode].substring(0, 3).toUpperCase();
     }
 
     try {
         const displayNames = new Intl.DisplayNames([uiLangCode], { type: 'language' });
         const translated = displayNames.of(cleanCode);
-        if (translated) {
-            return translated.substring(0, 3).toUpperCase();
-        }
-    } catch (e) {
-        console.error("Language translation error", e);
-    }
+        if (translated) return translated.substring(0, 3).toUpperCase();
+    } catch (e) { }
     return cleanCode.substring(0, 3).toUpperCase();
 }
 
@@ -87,23 +124,14 @@ function getInputSelectionRect(input) {
     const width = spanRect.width;
     const height = spanRect.height;
     document.body.removeChild(div);
-    return {
-        left: absoluteLeft,
-        top: absoluteTop,
-        right: absoluteLeft + width,
-        bottom: absoluteTop + height,
-        width: width,
-        height: height
-    };
+    return { left: absoluteLeft, top: absoluteTop, right: absoluteLeft + width, bottom: absoluteTop + height, width: width, height: height };
 }
 
-// Окно-заглушка со старым белым дизайном
 function showReloadPopup() {
     removeUI();
 
     floatingWindow = document.createElement('div');
     floatingWindow.id = 'aiterm-floating-window';
-
     floatingWindow.style.position = 'absolute';
     floatingWindow.style.zIndex = '2147483647';
     floatingWindow.style.background = '#ffffff';
@@ -116,31 +144,16 @@ function showReloadPopup() {
     floatingWindow.style.fontFamily = 'Arial, sans-serif';
 
     const browserLang = navigator.language.split('-')[0];
-    // reloadTranslations теперь берется из translations.js
-    const t = reloadTranslations[browserLang] || reloadTranslations['en'];
+    const t = (typeof reloadTranslations !== 'undefined') ? (reloadTranslations[browserLang] || reloadTranslations['en']) : {title: "Inactive", desc: "Refresh", btnText: "Refresh"};
 
     floatingWindow.innerHTML = `
         <div style="display: flex; justify-content: center; padding: 12px 10px 5px 10px;">
             <span style="color: #007bff; font-weight: bold; font-size: 16px;">Ai</span><span style="color: #888888; font-weight: bold; font-size: 16px;">Term</span>
         </div>
         <div style="text-align: center; padding: 10px 15px 15px 15px;">
-            <div style="font-size: 14px; font-weight: bold; margin-bottom: 8px; color: #dc3545;">
-                ${t.title}
-            </div>
-            <div style="font-size: 12px; margin-bottom: 16px; color: #666666; line-height: 1.4;">
-                ${t.desc}
-            </div>
-            <button id="aiterm-reload-btn" style="
-                background: #007bff; 
-                color: white; 
-                border: none; 
-                padding: 8px 16px; 
-                border-radius: 6px; 
-                cursor: pointer; 
-                font-weight: bold;
-                width: 100%;
-                transition: opacity 0.2s;
-            ">${t.btnText}</button>
+            <div style="font-size: 14px; font-weight: bold; margin-bottom: 8px; color: #dc3545;">${t.title}</div>
+            <div style="font-size: 12px; margin-bottom: 16px; color: #666666; line-height: 1.4;">${t.desc}</div>
+            <button id="aiterm-reload-btn" style="background: #007bff; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; transition: opacity 0.2s;">${t.btnText}</button>
         </div>
     `;
 
@@ -165,7 +178,6 @@ function showReloadPopup() {
     floatingWindow.addEventListener('mousedown', (e) => e.stopPropagation());
 }
 
-// Слушатель вызова из контекстного меню (ПКМ)
 if (isExtensionValid() && chrome.runtime.onMessage) {
     chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         if (request.action === "showContextMenuPopup") {
@@ -184,12 +196,9 @@ if (isExtensionValid() && chrome.runtime.onMessage) {
                     const domRect = selection.getRangeAt(0).getBoundingClientRect();
                     if (domRect.width > 0 && domRect.height > 0) {
                         rect = {
-                            left: domRect.left + window.scrollX,
-                            top: domRect.top + window.scrollY,
-                            right: domRect.right + window.scrollX,
-                            bottom: domRect.bottom + window.scrollY,
-                            width: domRect.width,
-                            height: domRect.height
+                            left: domRect.left + window.scrollX, top: domRect.top + window.scrollY,
+                            right: domRect.right + window.scrollX, bottom: domRect.bottom + window.scrollY,
+                            width: domRect.width, height: domRect.height
                         };
                     }
                 }
@@ -206,7 +215,6 @@ if (isExtensionValid() && chrome.runtime.onMessage) {
     });
 }
 
-// Слушатель для автоматического всплывания
 document.addEventListener('mouseup', (event) => {
     if (floatingWindow && floatingWindow.contains(event.target)) return;
 
@@ -228,12 +236,9 @@ document.addEventListener('mouseup', (event) => {
                 const domRect = selection.getRangeAt(0).getBoundingClientRect();
                 if (domRect.width > 0 && domRect.height > 0) {
                     rect = {
-                        left: domRect.left + window.scrollX,
-                        top: domRect.top + window.scrollY,
-                        right: domRect.right + window.scrollX,
-                        bottom: domRect.bottom + window.scrollY,
-                        width: domRect.width,
-                        height: domRect.height
+                        left: domRect.left + window.scrollX, top: domRect.top + window.scrollY,
+                        right: domRect.right + window.scrollX, bottom: domRect.bottom + window.scrollY,
+                        width: domRect.width, height: domRect.height
                     };
                 }
             }
@@ -244,33 +249,22 @@ document.addEventListener('mouseup', (event) => {
             popupCenterX = rect.left + (rect.width / 2);
             popupTopY = rect.bottom + 8;
 
-            if (!isExtensionValid()) {
-                showReloadPopup();
-                return;
-            }
+            if (!isExtensionValid()) { showReloadPopup(); return; }
 
             try {
                 chrome.storage.local.get(['aitermAutoPopup'], (res) => {
-                    if (chrome.runtime.lastError) {
-                        showReloadPopup();
-                        return;
-                    }
-
+                    if (chrome.runtime.lastError) { showReloadPopup(); return; }
                     if (res.aitermAutoPopup !== true) return;
-
                     removeUI();
                     openFloatingWindow();
                 });
-            } catch (e) {
-                showReloadPopup();
-            }
+            } catch (e) { showReloadPopup(); }
         } else {
             removeUI();
         }
     }, 10);
 });
 
-// Закрываем окно при клике вне его
 document.addEventListener('mousedown', (event) => {
     if (floatingWindow && !floatingWindow.contains(event.target)) {
         floatingWindow.remove();
@@ -279,36 +273,24 @@ document.addEventListener('mousedown', (event) => {
 });
 
 function openFloatingWindow() {
-    if (!isExtensionValid()) {
-        showReloadPopup();
-        return;
-    }
+    if (!isExtensionValid()) { showReloadPopup(); return; }
 
     try {
         chrome.storage.local.get(['aitermTargetLangName', 'aitermUILanguage', 'aitermTheme', 'aitermUserEmail'], (result) => {
-            if (chrome.runtime.lastError) {
-                showReloadPopup();
-                return;
-            }
+            if (chrome.runtime.lastError) { showReloadPopup(); return; }
 
-            const targetLangName = result.aitermTargetLangName || 'English';
+            const targetLangNameRaw = result.aitermTargetLangName || 'English';
             const uiLangCode = result.aitermUILanguage || 'en';
-            // uiTranslations теперь берется из translations.js
-            const t = uiTranslations[uiLangCode] || uiTranslations['en'];
+            const t = (typeof uiTranslations !== 'undefined') ? (uiTranslations[uiLangCode] || uiTranslations['en']) : {};
             const theme = result.aitermTheme || 'light';
             const isLoggedIn = !!result.aitermUserEmail;
 
-            const langMap = {
-                'Arabic': 'ar', 'Bengali': 'bn', 'Chinese': 'zh', 'Czech': 'cs', 'Danish': 'da',
-                'Dutch': 'nl', 'English': 'en', 'Finnish': 'fi', 'French': 'fr', 'German': 'de',
-                'Greek': 'el', 'Hebrew': 'he', 'Hindi': 'hi', 'Hungarian': 'hu', 'Indonesian': 'id',
-                'Italian': 'it', 'Japanese': 'ja', 'Korean': 'ko', 'Norwegian': 'no', 'Persian': 'fa',
-                'Polish': 'pl', 'Portuguese': 'pt', 'Romanian': 'ro', 'Russian': 'ru', 'Spanish': 'es',
-                'Swedish': 'sv', 'Thai': 'th', 'Turkish': 'tr', 'Ukrainian': 'uk', 'Vietnamese': 'vi'
-            };
+            const targetObj = availableLanguages.find(l => l.name === targetLangNameRaw) || availableLanguages.find(l => l.code === 'en');
 
-            const targetCode = langMap[targetLangName] || 'en';
-            const shortLang = getLocalizedLangShort(targetCode, uiLangCode);
+            let localTargetLangCode = targetObj.code;
+            let localTargetLangName = targetObj.name;
+            let localSourceLangCode = null;
+            let localSourceLangName = null;
 
             removeUI();
 
@@ -324,10 +306,10 @@ function openFloatingWindow() {
                     <button class="aiterm-cancel-btn" id="aiterm-auth-close" title="Close" style="display:block; top:8px; right:8px; position:absolute;">✖</button>
                     <div class="aiterm-header"><span class="aiterm-title-ai">Ai</span><span class="aiterm-title-term">Term</span></div>
                     <div style="text-align: center; padding: 10px 10px;">
-                        <div style="font-size: 15px; font-weight: bold; margin-bottom: 8px;">${t.authTitle}</div>
-                        <div style="font-size: 12px; opacity: 0.7; margin-bottom: 10px; line-height: 1.4;">${t.authSub}</div>
+                        <div style="font-size: 15px; font-weight: bold; margin-bottom: 8px;">${t.authTitle || "Not logged in"}</div>
+                        <div style="font-size: 12px; opacity: 0.7; margin-bottom: 10px; line-height: 1.4;">${t.authSub || "Please log in"}</div>
                     </div>
-                    <div class="aiterm-disable-hint">${t.disableHint}</div>
+                    <div class="aiterm-disable-hint">${t.disableHint || ""}</div>
                 `;
                 document.body.appendChild(floatingWindow);
                 positionWindow();
@@ -347,18 +329,134 @@ function openFloatingWindow() {
                     <div class="aiterm-text-box" id="aiterm-target-text">...</div>
                 </div>
                 <div class="aiterm-controls-row">
-                    <div class="aiterm-lang-tag" id="aiterm-source-lang">${t.auto}</div>
-                    <button class="aiterm-translate-btn" id="aiterm-translate-btn">${t.translateBtn}</button>
-                    <div class="aiterm-lang-tag" title="${targetLangName}">${shortLang}</div>
+                    <div class="aiterm-lang-tag aiterm-clickable" id="aiterm-source-lang">${getAutoText(uiLangCode)}</div>
+                    <button class="aiterm-translate-btn" id="aiterm-translate-btn">${t.translateBtn || "Translate"}</button>
+                    <div class="aiterm-lang-tag aiterm-clickable" id="aiterm-target-lang" title="${localTargetLangName}">${getLocalizedLangShort(localTargetLangCode, uiLangCode)}</div>
                 </div>
-                <div class="aiterm-save-hint">${t.saveHint}</div>
-                <div class="aiterm-disable-hint">${t.disableHint}</div>
+                <div class="aiterm-save-hint">${t.saveHint || ""}</div>
+                <div class="aiterm-disable-hint">${t.disableHint || ""}</div>
+                
+                <div class="aiterm-lang-panel" id="aiterm-lang-panel">
+                    <div class="aiterm-lang-panel-header">
+                        <button class="aiterm-lang-close" id="aiterm-lang-close">✖</button>
+                    </div>
+                    <div class="aiterm-lang-list" id="aiterm-lang-list"></div>
+                </div>
             `;
 
             document.body.appendChild(floatingWindow);
             positionWindow();
             floatingWindow.addEventListener('mousedown', (e) => e.stopPropagation());
 
+            // Инициализация выпадающей панели языков
+            const langPanel = floatingWindow.querySelector('#aiterm-lang-panel');
+            const langList = floatingWindow.querySelector('#aiterm-lang-list');
+            const sourceTag = floatingWindow.querySelector('#aiterm-source-lang');
+            const targetTag = floatingWindow.querySelector('#aiterm-target-lang');
+            const closePanelBtn = floatingWindow.querySelector('#aiterm-lang-close');
+
+            let activePanelMode = null;
+
+            function getFullLanguageName(code, uiLang) {
+                try {
+                    if (uiLang === 'ru' && typeof ruNamesContent !== 'undefined' && ruNamesContent[code]) {
+                        return ruNamesContent[code];
+                    }
+                    const displayNames = new Intl.DisplayNames([uiLang], { type: 'language' });
+                    const translated = displayNames.of(code);
+                    if (translated) return translated.charAt(0).toUpperCase() + translated.slice(1);
+                } catch (e) {}
+                const fallback = availableLanguages.find(l => l.code === code);
+                return fallback ? fallback.name : code.toUpperCase();
+            }
+
+            function renderLangList(mode) {
+                langList.innerHTML = '';
+
+                // Кнопка Сбросить / Авто
+                const resetItem = document.createElement('div');
+                resetItem.className = `aiterm-lang-item ${mode === 'source' && !localSourceLangCode ? 'selected' : ''}`;
+                resetItem.innerHTML = `<span>${getResetText(uiLangCode)} / ${getAutoText(uiLangCode)}</span>`;
+                resetItem.onclick = (e) => { e.stopPropagation(); selectLanguage(null, mode); };
+                langList.appendChild(resetItem);
+
+                availableLanguages.forEach(lang => {
+                    const isSelected = mode === 'source' ? localSourceLangCode === lang.code : localTargetLangCode === lang.code;
+                    const item = document.createElement('div');
+                    item.className = `aiterm-lang-item ${isSelected ? 'selected' : ''}`;
+                    const langName = getFullLanguageName(lang.code, uiLangCode);
+                    item.innerHTML = `<img src="https://flagcdn.com/w40/${lang.flag}.png" class="aiterm-lang-flag" alt="flag"><span>${langName}</span>`;
+                    item.onclick = (e) => { e.stopPropagation(); selectLanguage(lang, mode); };
+                    langList.appendChild(item);
+                });
+            }
+
+            function openPanel(mode) {
+                activePanelMode = mode;
+                renderLangList(mode);
+                langPanel.className = 'aiterm-lang-panel';
+
+                void langPanel.offsetWidth;
+
+                if (mode === 'source') {
+                    langPanel.classList.add('prepare-left');
+                    setTimeout(() => langPanel.classList.add('open-left'), 10);
+                } else {
+                    langPanel.classList.add('prepare-right');
+                    setTimeout(() => langPanel.classList.add('open-right'), 10);
+                }
+            }
+
+            function closeLangPanel() {
+                if (activePanelMode === 'source') {
+                    langPanel.classList.remove('open-left');
+                } else {
+                    langPanel.classList.remove('open-right');
+                }
+                setTimeout(() => { activePanelMode = null; }, 300);
+            }
+
+            closePanelBtn.onclick = (e) => { e.stopPropagation(); closeLangPanel(); };
+            sourceTag.onclick = (e) => { e.stopPropagation(); openPanel('source'); };
+            targetTag.onclick = (e) => { e.stopPropagation(); openPanel('target'); };
+
+            function selectLanguage(langObj, mode) {
+                if (mode === 'source') {
+                    if (langObj) {
+                        localSourceLangCode = langObj.code;
+                        localSourceLangName = langObj.name;
+                        sourceTag.textContent = getLocalizedLangShort(langObj.code, uiLangCode);
+                        sourceTag.title = langObj.name;
+                    } else {
+                        localSourceLangCode = null;
+                        localSourceLangName = null;
+                        sourceTag.textContent = getAutoText(uiLangCode);
+                        sourceTag.title = 'Auto';
+                    }
+                } else {
+                    if (langObj) {
+                        localTargetLangCode = langObj.code;
+                        localTargetLangName = langObj.name;
+                        targetTag.textContent = getLocalizedLangShort(langObj.code, uiLangCode);
+                        targetTag.title = langObj.name;
+
+                        // Синхронизация с главным окном расширения
+                        chrome.storage.local.set({
+                            aitermTargetLangName: langObj.name,
+                            aitermTargetLangCode: langObj.code
+                        });
+                    } else {
+                        // Если нажали сброс на языке перевода (если требуется)
+                        localTargetLangCode = 'en';
+                        localTargetLangName = 'English';
+                        targetTag.textContent = getLocalizedLangShort('en', uiLangCode);
+                        targetTag.title = 'English';
+                    }
+                }
+                closeLangPanel();
+            }
+
+            // Логика перевода с учетом выбранного языка
             let abortController = null;
             const cancelBtn = document.getElementById('aiterm-cancel-btn');
             cancelBtn.addEventListener('click', () => {
@@ -367,36 +465,32 @@ function openFloatingWindow() {
 
             document.getElementById('aiterm-translate-btn').addEventListener('click', async () => {
                 const targetTextEl = document.getElementById('aiterm-target-text');
-                const sourceLangTagEl = document.getElementById('aiterm-source-lang');
                 const arrowEl = document.getElementById('aiterm-arrow');
 
-                const cacheKey = `${currentSelectedText.trim().toLowerCase()}_${targetLangName}`;
+                const cacheKey = `${currentSelectedText.trim().toLowerCase()}_${localTargetLangName}_${localSourceLangCode || 'auto'}`;
 
                 if (translationCache.has(cacheKey)) {
                     const cachedData = translationCache.get(cacheKey);
                     targetTextEl.textContent = cachedData.translation;
                     const sourceShort = getLocalizedLangShort(cachedData.detectedSourceLangCode, uiLangCode);
-                    sourceLangTagEl.textContent = sourceShort;
-                    sourceLangTagEl.title = cachedData.detectedSourceLangCode.toUpperCase();
+                    sourceTag.textContent = sourceShort;
+                    sourceTag.title = cachedData.detectedSourceLangCode.toUpperCase();
                     return;
                 }
 
-                if (!isExtensionValid()) {
-                    showReloadPopup();
-                    return;
-                }
+                if (!isExtensionValid()) { showReloadPopup(); return; }
 
                 try {
                     chrome.storage.local.get(['aitermQuickLimits', 'aitermPlan'], async (limRes) => {
                         let currentLimits = limRes.aitermQuickLimits !== undefined ? limRes.aitermQuickLimits : 30;
 
                         if (currentLimits <= 0) {
-                            targetTextEl.textContent = t.limitReached;
+                            targetTextEl.textContent = t.limitReached || "Limit reached.";
                             targetTextEl.style.color = "#dc3545";
                             return;
                         }
 
-                        targetTextEl.textContent = t.loading;
+                        targetTextEl.textContent = t.loading || "Loading...";
                         targetTextEl.style.color = "";
                         arrowEl.classList.add('aiterm-tremble');
                         cancelBtn.style.display = 'block';
@@ -404,21 +498,21 @@ function openFloatingWindow() {
                         abortController = new AbortController();
                         const signal = abortController.signal;
 
-                        const prompt = `Translate "${currentSelectedText}" into ${targetLangName}. 
-                        Auto-detect the source language.
+                        const sourceInstruction = localSourceLangCode
+                            ? `Source language: ${localSourceLangName}.`
+                            : 'Auto-detect the source language.';
+
+                        const prompt = `Translate "${currentSelectedText}" into ${localTargetLangName}. 
+                        ${sourceInstruction}
                         Return STRICTLY a JSON object with EXACTLY this structure:
-                        { "translation": "string", "detectedSourceLangCode": "string" }
+                        { "translation": "string", "detectedSourceLangCode": "${localSourceLangCode || 'string'}" }
                         Rules: NO markdown, NO formatting, JUST valid JSON.`;
 
                         try {
                             const response = await fetch(`${BASE_URL}/translate`, {
                                 method: "POST",
                                 headers: {"Content-Type": "application/json"},
-                                body: JSON.stringify({
-                                    prompt: prompt,
-                                    email: result.aitermUserEmail,
-                                    source: 'mini'
-                                }),
+                                body: JSON.stringify({ prompt: prompt, email: result.aitermUserEmail, source: 'mini' }),
                                 signal: signal
                             });
 
@@ -435,23 +529,21 @@ function openFloatingWindow() {
                             targetTextEl.textContent = data.translation;
 
                             const sourceShort = getLocalizedLangShort(data.detectedSourceLangCode, uiLangCode);
-                            sourceLangTagEl.textContent = sourceShort;
-                            sourceLangTagEl.title = data.detectedSourceLangCode.toUpperCase();
+                            sourceTag.textContent = sourceShort;
+                            sourceTag.title = data.detectedSourceLangCode.toUpperCase();
 
                             translationCache.set(cacheKey, data);
                             chrome.storage.local.set({aitermQuickLimits: currentLimits - 1});
                         } catch (error) {
                             if (error.name === 'AbortError') targetTextEl.textContent = "...";
-                            else targetTextEl.textContent = t.error;
+                            else targetTextEl.textContent = t.error || "Error";
                         } finally {
                             arrowEl.classList.remove('aiterm-tremble');
                             cancelBtn.style.display = 'none';
                             abortController = null;
                         }
                     });
-                } catch (e) {
-                    showReloadPopup();
-                }
+                } catch (e) { showReloadPopup(); }
             });
 
             function positionWindow() {
@@ -464,7 +556,5 @@ function openFloatingWindow() {
             }
 
         });
-    } catch (e) {
-        showReloadPopup();
-    }
+    } catch (e) { showReloadPopup(); }
 }

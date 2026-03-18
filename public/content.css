@@ -390,3 +390,141 @@
 #aiterm-floating-window.aiterm-dark .aiterm-save-hint {
     border-top-color: rgba(255, 255, 255, 0.1);
 }
+
+/* --- Выпадающая панель языков --- */
+.aiterm-lang-panel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 16px;
+    z-index: 2000000;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+}
+
+#aiterm-floating-window.aiterm-dark .aiterm-lang-panel {
+    background: rgba(26, 29, 39, 0.75);
+}
+
+/* Скрытые состояния (слева и справа) */
+.aiterm-lang-panel.prepare-left {
+    transform: translateX(-30px);
+}
+.aiterm-lang-panel.prepare-right {
+    transform: translateX(30px);
+}
+
+/* Открытые состояния */
+.aiterm-lang-panel.open-left,
+.aiterm-lang-panel.open-right {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(0);
+}
+
+/* Шапка панели выбора языка */
+.aiterm-lang-panel-header {
+    display: flex;
+    justify-content: flex-end;
+    padding: 12px 16px 4px;
+}
+
+.aiterm-lang-close {
+    background: rgba(128, 128, 128, 0.15);
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    color: var(--text-color, #3d4260);
+    cursor: pointer;
+    font-size: 12px;
+    line-height: 24px;
+    text-align: center;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.aiterm-dark .aiterm-lang-close {
+    color: #c8ccd8;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.aiterm-lang-close:hover {
+    background: rgba(128, 128, 128, 0.25);
+    transform: scale(1.1);
+}
+
+/* Список языков (Плавный скролл и мягкие границы) */
+.aiterm-lang-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 16px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    scroll-behavior: smooth;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15px, black calc(100% - 15px), transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0%, black 15px, black calc(100% - 15px), transparent 100%);
+}
+
+.aiterm-lang-list::-webkit-scrollbar {
+    width: 4px;
+}
+.aiterm-lang-list::-webkit-scrollbar-thumb {
+    background: rgba(128, 128, 128, 0.3);
+    border-radius: 4px;
+}
+
+/* Элемент языка */
+.aiterm-lang-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+    color: #3d4260;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.aiterm-dark .aiterm-lang-item {
+    color: #c8ccd8;
+}
+
+.aiterm-lang-item:hover {
+    background: rgba(128, 128, 128, 0.1);
+}
+
+.aiterm-lang-item.selected {
+    background: rgba(74, 144, 226, 0.15);
+    color: #4a90e2;
+}
+
+.aiterm-lang-flag {
+    width: 20px;
+    height: 14px;
+    border-radius: 2px;
+    object-fit: cover;
+}
+
+/* Кликабельные теги в меню */
+.aiterm-clickable {
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+.aiterm-clickable:hover {
+    background: rgba(128, 128, 128, 0.1);
+}
