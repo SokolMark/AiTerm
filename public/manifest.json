@@ -45,6 +45,7 @@
         "*://*.privat24.ua/*"
       ],
       "js": [
+        "translations.js",
         "content.js"
       ],
       "css": [

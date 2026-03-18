@@ -33,21 +33,11 @@ if (isExtensionValid() && chrome.storage && chrome.storage.local) {
 const translationCache = new Map();
 const BASE_URL = "https://aiterm-proxy.sarkkofag.workers.dev";
 
-const ruNamesContent = {
-    'en': 'Английский', 'ru': 'Русский', 'es': 'Испанский', 'fr': 'Французский',
-    'de': 'Немецкий', 'zh': 'Китайский', 'uk': 'Украинский', 'pl': 'Польский',
-    'ar': 'Арабский', 'ja': 'Японский', 'ko': 'Корейский', 'pt': 'Португальский',
-    'it': 'Итальянский', 'tr': 'Турецкий', 'hi': 'Хинди', 'he': 'Иврит',
-    'nl': 'Голландский', 'sv': 'Шведский', 'fi': 'Финский', 'no': 'Норвежский',
-    'da': 'Датский', 'cs': 'Чешский', 'el': 'Греческий', 'hu': 'Венгерский',
-    'ro': 'Румынский', 'id': 'Индонезийский', 'th': 'Тайский', 'vi': 'Вьетнамский',
-    'bn': 'Бенгальский', 'fa': 'Персидский'
-};
-
 function getLocalizedLangShort(langCode, uiLangCode) {
     if (!langCode) return "???";
     const cleanCode = langCode.trim().toLowerCase().split('-')[0];
 
+    // ruNamesContent теперь берется из translations.js
     if (uiLangCode === 'ru' && ruNamesContent[cleanCode]) {
         return ruNamesContent[cleanCode].substring(0, 3).toUpperCase();
     }
@@ -126,9 +116,8 @@ function showReloadPopup() {
     floatingWindow.style.fontFamily = 'Arial, sans-serif';
 
     const browserLang = navigator.language.split('-')[0];
-    const title = (browserLang === 'ru' || browserLang === 'uk') ? 'Плагин не активен' : 'Plugin is inactive';
-    const desc = (browserLang === 'ru' || browserLang === 'uk') ? 'Обновите страницу, чтобы продолжить использование AiTerm.' : 'Please refresh the page to continue using AiTerm.';
-    const btnText = (browserLang === 'ru' || browserLang === 'uk') ? 'Обновить страницу' : 'Refresh page';
+    // reloadTranslations теперь берется из translations.js
+    const t = reloadTranslations[browserLang] || reloadTranslations['en'];
 
     floatingWindow.innerHTML = `
         <div style="display: flex; justify-content: center; padding: 12px 10px 5px 10px;">
@@ -136,10 +125,10 @@ function showReloadPopup() {
         </div>
         <div style="text-align: center; padding: 10px 15px 15px 15px;">
             <div style="font-size: 14px; font-weight: bold; margin-bottom: 8px; color: #dc3545;">
-                ${title}
+                ${t.title}
             </div>
             <div style="font-size: 12px; margin-bottom: 16px; color: #666666; line-height: 1.4;">
-                ${desc}
+                ${t.desc}
             </div>
             <button id="aiterm-reload-btn" style="
                 background: #007bff; 
@@ -151,7 +140,7 @@ function showReloadPopup() {
                 font-weight: bold;
                 width: 100%;
                 transition: opacity 0.2s;
-            ">${btnText}</button>
+            ">${t.btnText}</button>
         </div>
     `;
 
@@ -289,119 +278,6 @@ document.addEventListener('mousedown', (event) => {
     }
 });
 
-const uiTranslations = {
-    en: {
-        translateBtn: "Translate",
-        loading: "Loading...",
-        error: "Error...",
-        auto: "AUTO",
-        saveHint: "To save this word, translate it in the main extension menu.",
-        disableHint: "To configure popups, go to Settings in the main menu.",
-        authTitle: "Not logged in",
-        authSub: "Please click the AiTerm extension icon in your browser toolbar to log in.",
-        limitReached: "Limit reached. Reset soon."
-    },
-    uk: {
-        translateBtn: "Перекласти",
-        loading: "Завантаження...",
-        error: "Помилка...",
-        auto: "АВТО",
-        saveHint: "Щоб зберегти слово у словник, перекладіть його в головному меню.",
-        disableHint: "Щоб налаштувати вікна, зайдіть у Налаштування (Settings).",
-        authTitle: "Ви не авторизовані",
-        authSub: "Будь ласка, клікніть по іконці розширення AiTerm у панелі браузера, щоб увійти в акаунт.",
-        limitReached: "Ліміт вичерпано."
-    },
-    ru: {
-        translateBtn: "Перевести",
-        loading: "Загрузка...",
-        error: "Ошибка...",
-        auto: "АВТО",
-        saveHint: "Что б сохранить это слово в словник, вам нужно перевести это слово в основном плагине и сохранить его там.",
-        disableHint: "Настроить появление окна можно в настройках (Settings).",
-        authTitle: "Вы не авторизованы",
-        authSub: "Пожалуйста, кликните по иконке расширения AiTerm в панели браузера, чтобы войти в аккаунт.",
-        limitReached: "Лимит исчерпан."
-    },
-    es: {
-        translateBtn: "Traducir",
-        loading: "Cargando...",
-        error: "Error...",
-        auto: "AUTO",
-        saveHint: "Para guardar esta palabra, tradúcela en el menú principal de la extensión.",
-        disableHint: "Para desactivar esto, ve a Configuración en el menú principal.",
-        authTitle: "No has iniciado sesión",
-        authSub: "Haz clic en el icono de la extensión AiTerm para iniciar sesión.",
-        limitReached: "Límite alcanzado."
-    },
-    pl: {
-        translateBtn: "Tłumacz",
-        loading: "Ładowanie...",
-        error: "Błąd...",
-        auto: "AUTO",
-        saveHint: "Aby zapisać to słowo, przetłumacz je w głównym menu rozszerzenia.",
-        disableHint: "Aby wyłączyć tę funkcję, przejdź do Ustawień w menu głównym.",
-        authTitle: "Nie zalogowano",
-        authSub: "Kliknij ikonę rozszerzenia AiTerm, aby się zalogować.",
-        limitReached: "Limit wyczerpany."
-    },
-    zh: {
-        translateBtn: "翻译",
-        loading: "加载中...",
-        error: "错误...",
-        auto: "自动",
-        saveHint: "要将此词保存到词典中，请在主扩展菜单中翻译它。",
-        disableHint: "要禁用此功能，请转到主菜单中的设置。",
-        authTitle: "未登录",
-        authSub: "请单击浏览器中的 AiTerm 扩展图标以登录。",
-        limitReached: "达到限制。"
-    },
-    ar: {
-        translateBtn: "ترجمة",
-        loading: "جار التحميل...",
-        error: "خطأ...",
-        auto: "تلقائي",
-        saveHint: "لحفظ هذه الكلمة، يرجى ترجمتها في القائمة الرئيسية للإضافة.",
-        disableHint: "لتعطيل هذه الميزة، انتقل إلى الإعدادات في القائمة الرئيسية.",
-        authTitle: "لم يتم تسجيل الدخول",
-        authSub: "الرجاء النقر فوق أيقونة إضافة AiTerm لتسجيل الدخول.",
-        limitReached: "تم الوصول إلى الحد."
-    },
-    fr: {
-        translateBtn: "Traduire",
-        loading: "Chargement...",
-        error: "Erreur...",
-        auto: "AUTO",
-        saveHint: "Pour enregistrer ce mot, traduisez-le dans le menu principal de l'extension.",
-        disableHint: "Pour désactiver cette fenêtre, allez dans les Paramètres du menu principal.",
-        authTitle: "Non connecté",
-        authSub: "Veuillez cliquer sur l'icône de l'extension AiTerm dans la barre de votre navigateur pour vous connecter.",
-        limitReached: "Limite atteinte."
-    },
-    pt: {
-        translateBtn: "Traduzir",
-        loading: "Carregando...",
-        error: "Erro...",
-        auto: "AUTO",
-        saveHint: "Para salvar esta palavra, traduza-a no menu principal da extensão.",
-        disableHint: "Para desativar este popup, vá para Configurações no menu principal.",
-        authTitle: "Não conectado",
-        authSub: "Por favor, clique no ícone da extensão AiTerm na barra do navegador para fazer login.",
-        limitReached: "Limite atingido."
-    },
-    hi: {
-        translateBtn: "अनुवाद",
-        loading: "लोड हो रहा है...",
-        error: "त्रुटि...",
-        auto: "स्वत:",
-        saveHint: "इस शब्द को सहेजने के लिए, इसे मुख्य एक्सटेंशन मेनू में अनुवाद करें।",
-        disableHint: "इस पॉपअप को अक्षम करने के लिए, मुख्य मेनू में सेटिंग्स पर जाएं।",
-        authTitle: "लॉग इन नहीं है",
-        authSub: "लॉग इन करने के लिए कृपया अपने ब्राउज़र टूलबार में AiTerm एक्सटेंशन आइकन पर क्लिक करें。",
-        limitReached: "सीमा पूरी हो गई।"
-    }
-};
-
 function openFloatingWindow() {
     if (!isExtensionValid()) {
         showReloadPopup();
@@ -417,6 +293,7 @@ function openFloatingWindow() {
 
             const targetLangName = result.aitermTargetLangName || 'English';
             const uiLangCode = result.aitermUILanguage || 'en';
+            // uiTranslations теперь берется из translations.js
             const t = uiTranslations[uiLangCode] || uiTranslations['en'];
             const theme = result.aitermTheme || 'light';
             const isLoggedIn = !!result.aitermUserEmail;
