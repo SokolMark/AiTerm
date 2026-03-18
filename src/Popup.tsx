@@ -127,7 +127,6 @@ function Popup() {
     const [isDonutFlashing, setIsDonutFlashing] = useState(false);
     const [isContentReady, setIsContentReady] = useState(() => !!wordData);
 
-    // Новые настройки для вызова окон
     const [isContextMenuEnabled, setIsContextMenuEnabled] = useState(true);
     const [isAutoPopupEnabled, setIsAutoPopupEnabled] = useState(false);
 
@@ -635,7 +634,6 @@ function Popup() {
                     setWordData(data);
                     setContentLang('target');
 
-                    // Вот здесь мы проверяем: если это не кэш, то отнимаем лимит
                     if (!data.isCached) {
                         const newMain = Math.max(0, mainRequestsLeft - 1);
                         setMainRequestsLeft(newMain);
@@ -819,17 +817,12 @@ function Popup() {
     let displaySourceLangCode = sourceLang || wordData?.detectedSourceLangCode;
     let displaySourceLangObj = availableLanguages.find(l => l.code === displaySourceLangCode);
 
-    if (wordData && !displaySourceLangObj) {
-        displaySourceLangObj = availableLanguages.find(l => l.code === 'en');
-    }
-
     const toggleSourceLangObj = displaySourceLangObj;
     const currentCarouselData = contentLang === 'source' ? wordData?.sourceContent : (wordData?.targetContent || wordData);
 
     return (
         <div className={`popup-container ${isDarkTheme ? 'dark-theme' : 'light-theme'}`}>
 
-            {/* АНИМИРОВАННАЯ ШТОРКА С ЛОГОТИПОМ */}
             {themeAnim && (
                 <div className={`theme-transition-overlay ${themeAnim}`}>
                     <div className="theme-transition-bg"></div>
@@ -926,9 +919,11 @@ function Popup() {
                                 </svg>
                             </div>
                         </div>
-                        {wordData && toggleSourceLangObj && targetLangObj && (
+                        {wordData && targetLangObj && (
                             <div className="content-lang-toggle">
-                                <img src={`https://flagcdn.com/w80/${toggleSourceLangObj.flag}.png`} width="40" className={`toggle-flag ${contentLang === 'source' ? 'active' : ''}`} onClick={() => setContentLang('source')} alt="Source"/>
+                                {toggleSourceLangObj && (
+                                    <img src={`https://flagcdn.com/w80/${toggleSourceLangObj.flag}.png`} width="40" className={`toggle-flag ${contentLang === 'source' ? 'active' : ''}`} onClick={() => setContentLang('source')} alt="Source"/>
+                                )}
                                 <img src={`https://flagcdn.com/w80/${targetLangObj.flag}.png`} width="40" className={`toggle-flag ${contentLang === 'target' ? 'active' : ''}`} onClick={() => setContentLang('target')} alt="Target"/>
                             </div>
                         )}
