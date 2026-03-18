@@ -28,10 +28,33 @@ if (isExtensionValid() && chrome.storage && chrome.storage.local) {
     });
 }
 
-const translationCache = new Map();
+// Заменяем new Map() на работу с локальным хранилищем расширения
+const getCachedTranslation = (key) => {
+    return new Promise(resolve => {
+        chrome.storage.local.get(['aitermContentCache'], (res) => {
+            const cache = res.aitermContentCache || {};
+            resolve(cache[key] ? cache[key].data : null);
+        });
+    });
+};
+
+const saveCachedTranslation = (key, data) => {
+    chrome.storage.local.get(['aitermContentCache'], (res) => {
+        let cache = res.aitermContentCache || {};
+        cache[key] = { data, timestamp: Date.now() };
+
+        // Оставляем только последние 100 запросов
+        const keys = Object.keys(cache);
+        if (keys.length > 100) {
+            keys.sort((a, b) => cache[a].timestamp - cache[b].timestamp);
+            delete cache[keys[0]];
+        }
+        chrome.storage.local.set({ aitermContentCache: cache });
+    });
+};
+
 const BASE_URL = "https://aiterm-proxy.sarkkofag.workers.dev";
 
-// Массив поддерживаемых языков
 const availableLanguages = [
     {code: 'ar', name: 'Arabic', flag: 'sa'},
     {code: 'bn', name: 'Bengali', flag: 'bd'},
@@ -348,7 +371,6 @@ function openFloatingWindow() {
             positionWindow();
             floatingWindow.addEventListener('mousedown', (e) => e.stopPropagation());
 
-            // Инициализация выпадающей панели языков
             const langPanel = floatingWindow.querySelector('#aiterm-lang-panel');
             const langList = floatingWindow.querySelector('#aiterm-lang-list');
             const sourceTag = floatingWindow.querySelector('#aiterm-source-lang');
@@ -373,7 +395,6 @@ function openFloatingWindow() {
             function renderLangList(mode) {
                 langList.innerHTML = '';
 
-                // Кнопка Сбросить / Авто
                 const resetItem = document.createElement('div');
                 resetItem.className = `aiterm-lang-item ${mode === 'source' && !localSourceLangCode ? 'selected' : ''}`;
                 resetItem.innerHTML = `<span>${getResetText(uiLangCode)} / ${getAutoText(uiLangCode)}</span>`;
@@ -440,13 +461,11 @@ function openFloatingWindow() {
                         targetTag.textContent = getLocalizedLangShort(langObj.code, uiLangCode);
                         targetTag.title = langObj.name;
 
-                        // Синхронизация с главным окном расширения
                         chrome.storage.local.set({
                             aitermTargetLangName: langObj.name,
                             aitermTargetLangCode: langObj.code
                         });
                     } else {
-                        // Если нажали сброс на языке перевода (если требуется)
                         localTargetLangCode = 'en';
                         localTargetLangName = 'English';
                         targetTag.textContent = getLocalizedLangShort('en', uiLangCode);
@@ -456,7 +475,6 @@ function openFloatingWindow() {
                 closeLangPanel();
             }
 
-            // Логика перевода с учетом выбранного языка
             let abortController = null;
             const cancelBtn = document.getElementById('aiterm-cancel-btn');
             cancelBtn.addEventListener('click', () => {
@@ -469,12 +487,15 @@ function openFloatingWindow() {
 
                 const cacheKey = `${currentSelectedText.trim().toLowerCase()}_${localTargetLangName}_${localSourceLangCode || 'auto'}`;
 
-                if (translationCache.has(cacheKey)) {
-                    const cachedData = translationCache.get(cacheKey);
+                // Проверка нового кэша из chrome.storage
+                const cachedData = await getCachedTranslation(cacheKey);
+
+                if (cachedData) {
                     targetTextEl.textContent = cachedData.translation;
                     const sourceShort = getLocalizedLangShort(cachedData.detectedSourceLangCode, uiLangCode);
                     sourceTag.textContent = sourceShort;
                     sourceTag.title = cachedData.detectedSourceLangCode.toUpperCase();
+                    // Завершаем работу функции, лимит НЕ списывается
                     return;
                 }
 
@@ -532,7 +553,7 @@ function openFloatingWindow() {
                             sourceTag.textContent = sourceShort;
                             sourceTag.title = data.detectedSourceLangCode.toUpperCase();
 
-                            translationCache.set(cacheKey, data);
+                            saveCachedTranslation(cacheKey, data);
                             chrome.storage.local.set({aitermQuickLimits: currentLimits - 1});
                         } catch (error) {
                             if (error.name === 'AbortError') targetTextEl.textContent = "...";

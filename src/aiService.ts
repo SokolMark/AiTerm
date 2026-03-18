@@ -8,6 +8,7 @@ export interface WordData {
     detectedSourceLangCode?: string;
     sourceContent?: { examples: string[]; synonyms: string[]; explanation: string; };
     targetContent?: { examples: string[]; synonyms: string[]; explanation: string; };
+    isCached?: boolean; // Добавлен флаг кэширования
 }
 
 // const BASE_URL = "http://127.0.0.1:8787";
@@ -32,7 +33,8 @@ const getFromCache = (key: string): WordData | null => {
         const cache = JSON.parse(cacheStr);
         if (cache[key]) {
             console.log("⚡ Loaded from local cache!");
-            return cache[key].wordData;
+            // Возвращаем данные с флагом isCached: true
+            return { ...cache[key].wordData, isCached: true };
         }
     } catch (e) {
         console.error("Cache read error", e);
@@ -48,7 +50,9 @@ const saveToCache = (key: string, wordData: WordData) => {
             cache = JSON.parse(cacheStr);
         }
 
-        cache[key] = {wordData, timestamp: Date.now()};
+        // Убираем флаг isCached перед сохранением, чтобы он не хранился жестко
+        const { isCached, ...dataToSave } = wordData;
+        cache[key] = {wordData: dataToSave, timestamp: Date.now()};
 
         if (Object.keys(cache).length > MAX_CACHE_SIZE) {
             const keys = Object.keys(cache);
@@ -65,7 +69,7 @@ const saveToCache = (key: string, wordData: WordData) => {
 export const fetchWordData = async (word: string, sourceLang: string | null, targetLang: string, email: string, source: 'main' | 'mini'): Promise<WordData> => {
     const cacheKey = getCacheKey(word, sourceLang, targetLang);
     const cachedData = getFromCache(cacheKey);
-    if (cachedData) return cachedData;
+    if (cachedData) return cachedData; // Если есть кэш, возвращаем его сразу (в нем уже isCached = true)
 
     const unifiedPrompt = `
 Task: Translate "${word}" to ${targetLang}. Source: ${sourceLang || 'auto'}.
@@ -111,7 +115,7 @@ JSON:
             } catch (e) {
             }
             const error: any = new Error(serverError);
-            error.code = errorCode; // Прокидываем код ошибки дальше
+            error.code = errorCode;
             throw error;
         }
 

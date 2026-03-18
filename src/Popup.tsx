@@ -635,12 +635,15 @@ function Popup() {
                     setWordData(data);
                     setContentLang('target');
 
-                    const newMain = Math.max(0, mainRequestsLeft - 1);
-                    setMainRequestsLeft(newMain);
-                    localStorage.setItem('aiterm-main-requests', newMain.toString());
-                    chrome.storage.local.set({
-                        aitermMainRequests: newMain
-                    });
+                    // Вот здесь мы проверяем: если это не кэш, то отнимаем лимит
+                    if (!data.isCached) {
+                        const newMain = Math.max(0, mainRequestsLeft - 1);
+                        setMainRequestsLeft(newMain);
+                        localStorage.setItem('aiterm-main-requests', newMain.toString());
+                        chrome.storage.local.set({
+                            aitermMainRequests: newMain
+                        });
+                    }
                 }
 
             } catch (error: any) {
@@ -670,7 +673,6 @@ function Popup() {
             }
         }
     };
-
     useEffect(() => {
         if (isInitialRender.current) {
             isInitialRender.current = false;
