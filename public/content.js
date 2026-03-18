@@ -92,69 +92,79 @@ document.addEventListener('mouseup', (event) => {
     if ((floatingWindow && floatingWindow.contains(event.target)) || (triggerBtn && triggerBtn.contains(event.target))) return;
 
     setTimeout(() => {
-        if (!chrome || !chrome.storage || !chrome.storage.local) return;
+        // ПРЕДОХРАНИТЕЛЬ: Проверяем, жив ли контекст расширения
+        if (!chrome || !chrome.runtime || !chrome.runtime.id) {
+            return;
+        }
 
-        chrome.storage.local.get(['aitermQuickTranslate'], (res) => {
-            if (chrome.runtime.lastError) return;
+        if (!chrome.storage || !chrome.storage.local) return;
 
-            if (res.aitermQuickTranslate === false) {
-                removeUI();
-                return;
-            }
+        try {
+            chrome.storage.local.get(['aitermQuickTranslate'], (res) => {
+                if (chrome.runtime.lastError) return;
 
-            let text = "";
-            let rect = null;
-            const activeEl = document.activeElement;
-            const isInput = activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA');
+                if (res.aitermQuickTranslate === false) {
+                    removeUI();
+                    return;
+                }
 
-            if (isInput) {
-                text = activeEl.value.substring(activeEl.selectionStart, activeEl.selectionEnd).trim();
-                if (text.length > 0 && text.length <= 50) rect = getInputSelectionRect(activeEl);
-            } else {
-                const selection = window.getSelection();
-                text = selection ? selection.toString().trim() : '';
-                if (text.length > 0 && text.length <= 50 && selection.rangeCount > 0) {
-                    const domRect = selection.getRangeAt(0).getBoundingClientRect();
-                    if (domRect.width > 0 && domRect.height > 0) {
-                        rect = {
-                            left: domRect.left + window.scrollX,
-                            top: domRect.top + window.scrollY,
-                            right: domRect.right + window.scrollX,
-                            bottom: domRect.bottom + window.scrollY,
-                            width: domRect.width,
-                            height: domRect.height
-                        };
+                let text = "";
+                let rect = null;
+                const activeEl = document.activeElement;
+                const isInput = activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA');
+
+                if (isInput) {
+                    text = activeEl.value.substring(activeEl.selectionStart, activeEl.selectionEnd).trim();
+                    if (text.length > 0 && text.length <= 50) rect = getInputSelectionRect(activeEl);
+                } else {
+                    const selection = window.getSelection();
+                    text = selection ? selection.toString().trim() : '';
+                    if (text.length > 0 && text.length <= 50 && selection.rangeCount > 0) {
+                        const domRect = selection.getRangeAt(0).getBoundingClientRect();
+                        if (domRect.width > 0 && domRect.height > 0) {
+                            rect = {
+                                left: domRect.left + window.scrollX,
+                                top: domRect.top + window.scrollY,
+                                right: domRect.right + window.scrollX,
+                                bottom: domRect.bottom + window.scrollY,
+                                width: domRect.width,
+                                height: domRect.height
+                            };
+                        }
                     }
                 }
-            }
 
-            if (text.length > 0 && text.length <= 50 && rect) {
-                currentSelectedText = text;
-                removeUI();
+                if (text.length > 0 && text.length <= 50 && rect) {
+                    currentSelectedText = text;
+                    removeUI();
 
-                triggerBtn = document.createElement('div');
-                triggerBtn.id = 'aiterm-trigger-btn';
-                triggerBtn.textContent = 'AiTerm';
+                    triggerBtn = document.createElement('div');
+                    triggerBtn.id = 'aiterm-trigger-btn';
+                    triggerBtn.textContent = 'AiTerm';
 
-                triggerBtn.style.position = 'absolute';
-                triggerBtn.style.zIndex = '2147483647';
-                triggerBtn.style.cursor = 'pointer';
+                    triggerBtn.style.position = 'absolute';
+                    triggerBtn.style.zIndex = '2147483647';
+                    triggerBtn.style.cursor = 'pointer';
 
-                document.body.appendChild(triggerBtn);
+                    document.body.appendChild(triggerBtn);
 
-                popupCenterX = rect.left + (rect.width / 2);
-                popupTopY = rect.bottom + 8;
+                    popupCenterX = rect.left + (rect.width / 2);
+                    popupTopY = rect.bottom + 8;
 
-                const btnWidth = triggerBtn.offsetWidth || 60;
-                triggerBtn.style.left = `${popupCenterX - (btnWidth / 2)}px`;
-                triggerBtn.style.top = `${popupTopY}px`;
+                    const btnWidth = triggerBtn.offsetWidth || 60;
+                    triggerBtn.style.left = `${popupCenterX - (btnWidth / 2)}px`;
+                    triggerBtn.style.top = `${popupTopY}px`;
 
-                triggerBtn.addEventListener('mousedown', (e) => e.stopPropagation());
-                triggerBtn.addEventListener('click', openFloatingWindow);
-            } else {
-                removeUI();
-            }
-        });
+                    triggerBtn.addEventListener('mousedown', (e) => e.stopPropagation());
+                    triggerBtn.addEventListener('click', openFloatingWindow);
+                } else {
+                    removeUI();
+                }
+            });
+        } catch (e) {
+            // Тихо гасим ошибку, если она все же проскочила
+            console.log("AiTerm: old context ignored.");
+        }
     }, 10);
 });
 
@@ -288,189 +298,206 @@ function openFloatingWindow() {
         triggerBtn = null;
     }
 
-    chrome.storage.local.get(['aitermTargetLangName', 'aitermUILanguage', 'aitermTheme', 'aitermUserEmail'], (result) => {
-        const targetLangName = result.aitermTargetLangName || 'English';
-        const uiLangCode = result.aitermUILanguage || 'en';
-        const t = uiTranslations[uiLangCode] || uiTranslations['en'];
-        const theme = result.aitermTheme || 'light';
-        const isLoggedIn = !!result.aitermUserEmail;
+    // ПРЕДОХРАНИТЕЛЬ 2
+    if (!chrome || !chrome.runtime || !chrome.runtime.id) {
+        return;
+    }
 
-        const langMap = {
-            'Arabic': 'ar', 'Bengali': 'bn', 'Chinese': 'zh', 'Czech': 'cs', 'Danish': 'da',
-            'Dutch': 'nl', 'English': 'en', 'Finnish': 'fi', 'French': 'fr', 'German': 'de',
-            'Greek': 'el', 'Hebrew': 'he', 'Hindi': 'hi', 'Hungarian': 'hu', 'Indonesian': 'id',
-            'Italian': 'it', 'Japanese': 'ja', 'Korean': 'ko', 'Norwegian': 'no', 'Persian': 'fa',
-            'Polish': 'pl', 'Portuguese': 'pt', 'Romanian': 'ro', 'Russian': 'ru', 'Spanish': 'es',
-            'Swedish': 'sv', 'Thai': 'th', 'Turkish': 'tr', 'Ukrainian': 'uk', 'Vietnamese': 'vi'
-        };
+    try {
+        chrome.storage.local.get(['aitermTargetLangName', 'aitermUILanguage', 'aitermTheme', 'aitermUserEmail'], (result) => {
+            if (chrome.runtime.lastError) return;
 
-        const targetCode = langMap[targetLangName] || 'en';
-        const shortLang = getLocalizedLangShort(targetCode, uiLangCode);
+            const targetLangName = result.aitermTargetLangName || 'English';
+            const uiLangCode = result.aitermUILanguage || 'en';
+            const t = uiTranslations[uiLangCode] || uiTranslations['en'];
+            const theme = result.aitermTheme || 'light';
+            const isLoggedIn = !!result.aitermUserEmail;
 
-        if (floatingWindow) {
-            floatingWindow.remove();
-            floatingWindow = null;
-        }
+            const langMap = {
+                'Arabic': 'ar', 'Bengali': 'bn', 'Chinese': 'zh', 'Czech': 'cs', 'Danish': 'da',
+                'Dutch': 'nl', 'English': 'en', 'Finnish': 'fi', 'French': 'fr', 'German': 'de',
+                'Greek': 'el', 'Hebrew': 'he', 'Hindi': 'hi', 'Hungarian': 'hu', 'Indonesian': 'id',
+                'Italian': 'it', 'Japanese': 'ja', 'Korean': 'ko', 'Norwegian': 'no', 'Persian': 'fa',
+                'Polish': 'pl', 'Portuguese': 'pt', 'Romanian': 'ro', 'Russian': 'ru', 'Spanish': 'es',
+                'Swedish': 'sv', 'Thai': 'th', 'Turkish': 'tr', 'Ukrainian': 'uk', 'Vietnamese': 'vi'
+            };
 
-        floatingWindow = document.createElement('div');
-        floatingWindow.id = 'aiterm-floating-window';
+            const targetCode = langMap[targetLangName] || 'en';
+            const shortLang = getLocalizedLangShort(targetCode, uiLangCode);
 
-        floatingWindow.style.position = 'absolute';
-        floatingWindow.style.zIndex = '2147483647';
+            if (floatingWindow) {
+                floatingWindow.remove();
+                floatingWindow = null;
+            }
 
-        if (theme === 'dark') floatingWindow.classList.add('aiterm-dark');
+            floatingWindow = document.createElement('div');
+            floatingWindow.id = 'aiterm-floating-window';
 
-        if (!isLoggedIn) {
+            floatingWindow.style.position = 'absolute';
+            floatingWindow.style.zIndex = '2147483647';
+
+            if (theme === 'dark') floatingWindow.classList.add('aiterm-dark');
+
+            if (!isLoggedIn) {
+                floatingWindow.innerHTML = `
+                    <button class="aiterm-cancel-btn" id="aiterm-auth-close" title="Close" style="display:block; top:8px; right:8px; position:absolute;">✖</button>
+                    <div class="aiterm-header"><span class="aiterm-title-ai">Ai</span><span class="aiterm-title-term">Term</span></div>
+                    <div style="text-align: center; padding: 10px 10px;">
+                        <div style="font-size: 15px; font-weight: bold; margin-bottom: 8px;">${t.authTitle}</div>
+                        <div style="font-size: 12px; opacity: 0.7; margin-bottom: 10px; line-height: 1.4;">${t.authSub}</div>
+                    </div>
+                    <div class="aiterm-disable-hint">${t.disableHint}</div>
+                `;
+                document.body.appendChild(floatingWindow);
+
+                const windowWidth = 370;
+                const viewportWidth = document.documentElement.clientWidth;
+                let leftPosition = popupCenterX - (windowWidth / 2);
+                leftPosition = Math.max(10, Math.min(leftPosition, viewportWidth - windowWidth - 10));
+                floatingWindow.style.left = `${leftPosition}px`;
+                floatingWindow.style.top = `${popupTopY}px`;
+
+                floatingWindow.addEventListener('mousedown', (e) => e.stopPropagation());
+                document.getElementById('aiterm-auth-close').addEventListener('click', removeUI);
+                return;
+            }
+
             floatingWindow.innerHTML = `
-                <button class="aiterm-cancel-btn" id="aiterm-auth-close" title="Close" style="display:block; top:8px; right:8px; position:absolute;">✖</button>
                 <div class="aiterm-header"><span class="aiterm-title-ai">Ai</span><span class="aiterm-title-term">Term</span></div>
-                <div style="text-align: center; padding: 10px 10px;">
-                    <div style="font-size: 15px; font-weight: bold; margin-bottom: 8px;">${t.authTitle}</div>
-                    <div style="font-size: 12px; opacity: 0.7; margin-bottom: 10px; line-height: 1.4;">${t.authSub}</div>
+                <div class="aiterm-texts-row">
+                    <div class="aiterm-text-box" id="aiterm-source-text">${currentSelectedText}</div>
+                    <div class="aiterm-middle-col">
+                        <div class="aiterm-arrow" id="aiterm-arrow">&rarr;</div>
+                        <button class="aiterm-cancel-btn" id="aiterm-cancel-btn" title="Cancel">✖</button>
+                    </div>
+                    <div class="aiterm-text-box" id="aiterm-target-text">...</div>
                 </div>
+                <div class="aiterm-controls-row">
+                    <div class="aiterm-lang-tag" id="aiterm-source-lang">${t.auto}</div>
+                    <button class="aiterm-translate-btn" id="aiterm-translate-btn">${t.translateBtn}</button>
+                    <div class="aiterm-lang-tag" title="${targetLangName}">${shortLang}</div>
+                </div>
+                <div class="aiterm-save-hint">${t.saveHint}</div>
                 <div class="aiterm-disable-hint">${t.disableHint}</div>
             `;
+
             document.body.appendChild(floatingWindow);
 
             const windowWidth = 370;
             const viewportWidth = document.documentElement.clientWidth;
             let leftPosition = popupCenterX - (windowWidth / 2);
             leftPosition = Math.max(10, Math.min(leftPosition, viewportWidth - windowWidth - 10));
+
             floatingWindow.style.left = `${leftPosition}px`;
             floatingWindow.style.top = `${popupTopY}px`;
-
             floatingWindow.addEventListener('mousedown', (e) => e.stopPropagation());
-            document.getElementById('aiterm-auth-close').addEventListener('click', removeUI);
-            return;
-        }
 
-        floatingWindow.innerHTML = `
-            <div class="aiterm-header"><span class="aiterm-title-ai">Ai</span><span class="aiterm-title-term">Term</span></div>
-            <div class="aiterm-texts-row">
-                <div class="aiterm-text-box" id="aiterm-source-text">${currentSelectedText}</div>
-                <div class="aiterm-middle-col">
-                    <div class="aiterm-arrow" id="aiterm-arrow">&rarr;</div>
-                    <button class="aiterm-cancel-btn" id="aiterm-cancel-btn" title="Cancel">✖</button>
-                </div>
-                <div class="aiterm-text-box" id="aiterm-target-text">...</div>
-            </div>
-            <div class="aiterm-controls-row">
-                <div class="aiterm-lang-tag" id="aiterm-source-lang">${t.auto}</div>
-                <button class="aiterm-translate-btn" id="aiterm-translate-btn">${t.translateBtn}</button>
-                <div class="aiterm-lang-tag" title="${targetLangName}">${shortLang}</div>
-            </div>
-            <div class="aiterm-save-hint">${t.saveHint}</div>
-            <div class="aiterm-disable-hint">${t.disableHint}</div>
-        `;
+            let abortController = null;
+            const cancelBtn = document.getElementById('aiterm-cancel-btn');
+            cancelBtn.addEventListener('click', () => {
+                if (abortController) abortController.abort();
+            });
 
-        document.body.appendChild(floatingWindow);
+            document.getElementById('aiterm-translate-btn').addEventListener('click', async () => {
+                const targetTextEl = document.getElementById('aiterm-target-text');
+                const sourceLangTagEl = document.getElementById('aiterm-source-lang');
+                const arrowEl = document.getElementById('aiterm-arrow');
 
-        const windowWidth = 370;
-        const viewportWidth = document.documentElement.clientWidth;
-        let leftPosition = popupCenterX - (windowWidth / 2);
-        leftPosition = Math.max(10, Math.min(leftPosition, viewportWidth - windowWidth - 10));
+                const cacheKey = `${currentSelectedText.trim().toLowerCase()}_${targetLangName}`;
 
-        floatingWindow.style.left = `${leftPosition}px`;
-        floatingWindow.style.top = `${popupTopY}px`;
-        floatingWindow.addEventListener('mousedown', (e) => e.stopPropagation());
+                if (translationCache.has(cacheKey)) {
+                    const cachedData = translationCache.get(cacheKey);
+                    targetTextEl.textContent = cachedData.translation;
 
-        let abortController = null;
-        const cancelBtn = document.getElementById('aiterm-cancel-btn');
-        cancelBtn.addEventListener('click', () => {
-            if (abortController) abortController.abort();
-        });
-
-        document.getElementById('aiterm-translate-btn').addEventListener('click', async () => {
-            const targetTextEl = document.getElementById('aiterm-target-text');
-            const sourceLangTagEl = document.getElementById('aiterm-source-lang');
-            const arrowEl = document.getElementById('aiterm-arrow');
-
-            // Формируем уникальный ключ кэша для текста и целевого языка
-            const cacheKey = `${currentSelectedText.trim().toLowerCase()}_${targetLangName}`;
-
-            // Проверяем наличие в кэше
-            if (translationCache.has(cacheKey)) {
-                const cachedData = translationCache.get(cacheKey);
-                targetTextEl.textContent = cachedData.translation;
-
-                const sourceShort = getLocalizedLangShort(cachedData.detectedSourceLangCode, uiLangCode);
-                sourceLangTagEl.textContent = sourceShort;
-                sourceLangTagEl.title = cachedData.detectedSourceLangCode.toUpperCase();
-                return; // Прерываем выполнение, чтобы не делать запрос к API
-            }
-
-            chrome.storage.local.get(['aitermQuickLimits', 'aitermPlan'], async (limRes) => {
-                let currentLimits = limRes.aitermQuickLimits !== undefined ? limRes.aitermQuickLimits : 30;
-
-                if (currentLimits <= 0) {
-                    targetTextEl.textContent = t.limitReached;
-                    targetTextEl.style.color = "#dc3545";
+                    const sourceShort = getLocalizedLangShort(cachedData.detectedSourceLangCode, uiLangCode);
+                    sourceLangTagEl.textContent = sourceShort;
+                    sourceLangTagEl.title = cachedData.detectedSourceLangCode.toUpperCase();
                     return;
                 }
 
-                targetTextEl.textContent = t.loading;
-                targetTextEl.style.color = "";
-                arrowEl.classList.add('aiterm-tremble');
-                cancelBtn.style.display = 'block';
-
-                abortController = new AbortController();
-                const signal = abortController.signal;
-
-                const prompt = `Translate "${currentSelectedText}" into ${targetLangName}. 
-                Auto-detect the source language.
-                Return STRICTLY a JSON object with EXACTLY this structure:
-                { "translation": "string", "detectedSourceLangCode": "string" }
-                Rules: NO markdown, NO formatting, JUST valid JSON.`;
+                // ПРЕДОХРАНИТЕЛЬ 3
+                if (!chrome || !chrome.runtime || !chrome.runtime.id) return;
 
                 try {
-                    const response = await fetch(`${BASE_URL}/translate`, {
-                        method: "POST",
-                        headers: {"Content-Type": "application/json"},
-                        body: JSON.stringify({
-                            prompt: prompt,
-                            email: result.aitermUserEmail,
-                            source: 'mini'
-                        }),
-                        signal: signal
+                    chrome.storage.local.get(['aitermQuickLimits', 'aitermPlan'], async (limRes) => {
+                        let currentLimits = limRes.aitermQuickLimits !== undefined ? limRes.aitermQuickLimits : 30;
+
+                        if (currentLimits <= 0) {
+                            targetTextEl.textContent = t.limitReached;
+                            targetTextEl.style.color = "#dc3545";
+                            return;
+                        }
+
+                        targetTextEl.textContent = t.loading;
+                        targetTextEl.style.color = "";
+                        arrowEl.classList.add('aiterm-tremble');
+                        cancelBtn.style.display = 'block';
+
+                        abortController = new AbortController();
+                        const signal = abortController.signal;
+
+                        const prompt = `Translate "${currentSelectedText}" into ${targetLangName}. 
+                        Auto-detect the source language.
+                        Return STRICTLY a JSON object with EXACTLY this structure:
+                        { "translation": "string", "detectedSourceLangCode": "string" }
+                        Rules: NO markdown, NO formatting, JUST valid JSON.`;
+
+                        try {
+                            const response = await fetch(`${BASE_URL}/translate`, {
+                                method: "POST",
+                                headers: {"Content-Type": "application/json"},
+                                body: JSON.stringify({
+                                    prompt: prompt,
+                                    email: result.aitermUserEmail,
+                                    source: 'mini'
+                                }),
+                                signal: signal
+                            });
+
+                            if (!response.ok) {
+                                console.error("HTTP Error from backend:", response.status);
+                                throw new Error("HTTP " + response.status);
+                            }
+
+                            const resultData = await response.json();
+                            const rawText = resultData.candidates[0].content.parts[0].text;
+
+                            let cleanedText = rawText.replace(/```json/gi, '').replace(/```/g, '').trim();
+                            const match = cleanedText.match(/\{[\s\S]*\}/);
+                            if (match) cleanedText = match[0];
+
+                            const data = JSON.parse(cleanedText);
+
+                            targetTextEl.textContent = data.translation;
+
+                            const sourceShort = getLocalizedLangShort(data.detectedSourceLangCode, uiLangCode);
+                            sourceLangTagEl.textContent = sourceShort;
+                            sourceLangTagEl.title = data.detectedSourceLangCode.toUpperCase();
+
+                            translationCache.set(cacheKey, data);
+
+                            if (chrome && chrome.storage && chrome.storage.local) {
+                                chrome.storage.local.set({aitermQuickLimits: currentLimits - 1});
+                            }
+
+                        } catch (error) {
+                            if (error.name === 'AbortError') targetTextEl.textContent = "...";
+                            else {
+                                console.error("AiTerm Translation Error:", error);
+                                targetTextEl.textContent = t.error;
+                            }
+                        } finally {
+                            arrowEl.classList.remove('aiterm-tremble');
+                            cancelBtn.style.display = 'none';
+                            abortController = null;
+                        }
                     });
-
-                    if (!response.ok) {
-                        console.error("HTTP Error from backend:", response.status);
-                        throw new Error("HTTP " + response.status);
-                    }
-
-                    const resultData = await response.json();
-                    const rawText = resultData.candidates[0].content.parts[0].text;
-
-                    let cleanedText = rawText.replace(/```json/gi, '').replace(/```/g, '').trim();
-                    const match = cleanedText.match(/\{[\s\S]*\}/);
-                    if (match) cleanedText = match[0];
-
-                    const data = JSON.parse(cleanedText);
-
-                    targetTextEl.textContent = data.translation;
-
-                    const sourceShort = getLocalizedLangShort(data.detectedSourceLangCode, uiLangCode);
-                    sourceLangTagEl.textContent = sourceShort;
-                    sourceLangTagEl.title = data.detectedSourceLangCode.toUpperCase();
-
-                    // Сохраняем успешный перевод в кэш
-                    translationCache.set(cacheKey, data);
-
-                    chrome.storage.local.set({aitermQuickLimits: currentLimits - 1});
-
-                } catch (error) {
-                    if (error.name === 'AbortError') targetTextEl.textContent = "...";
-                    else {
-                        console.error("AiTerm Translation Error:", error);
-                        targetTextEl.textContent = t.error;
-                    }
-                } finally {
-                    arrowEl.classList.remove('aiterm-tremble');
-                    cancelBtn.style.display = 'none';
-                    abortController = null;
+                } catch (e) {
+                    console.log("AiTerm: old context ignored during translation.");
                 }
             });
         });
-    });
+    } catch (e) {
+        console.log("AiTerm: old context ignored during window open.");
+    }
 }
