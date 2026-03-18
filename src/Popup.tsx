@@ -127,7 +127,10 @@ function Popup() {
     const [isDonutFlashing, setIsDonutFlashing] = useState(false);
     const [isContentReady, setIsContentReady] = useState(() => !!wordData);
 
-    const [isQuickTranslateEnabled, setIsQuickTranslateEnabled] = useState(true);
+    // Новые настройки для вызова окон
+    const [isContextMenuEnabled, setIsContextMenuEnabled] = useState(true);
+    const [isAutoPopupEnabled, setIsAutoPopupEnabled] = useState(false);
+
     const [timeUntilReset, setTimeUntilReset] = useState('');
 
     const lastSearchedText = useRef(inputText);
@@ -225,17 +228,24 @@ function Popup() {
     }, []);
 
     useEffect(() => {
-        chrome.storage.local.get(['aitermQuickTranslate', 'aitermTotalRequests', 'aitermMainRequests'], (res) => {
-            if (res.aitermQuickTranslate !== undefined) setIsQuickTranslateEnabled(res.aitermQuickTranslate);
+        chrome.storage.local.get(['aitermContextMenu', 'aitermAutoPopup', 'aitermTotalRequests', 'aitermMainRequests'], (res) => {
+            if (res.aitermContextMenu !== undefined) setIsContextMenuEnabled(res.aitermContextMenu);
+            if (res.aitermAutoPopup !== undefined) setIsAutoPopupEnabled(res.aitermAutoPopup);
             if (res.aitermTotalRequests !== undefined) setTotalRequestsLeft(Math.min(res.aitermTotalRequests, 30));
             if (res.aitermMainRequests !== undefined) setMainRequestsLeft(Math.min(res.aitermMainRequests, 30));
         });
     }, []);
 
-    const toggleQuickTranslate = () => {
-        const newVal = !isQuickTranslateEnabled;
-        setIsQuickTranslateEnabled(newVal);
-        chrome.storage.local.set({ aitermQuickTranslate: newVal });
+    const toggleContextMenu = () => {
+        const newVal = !isContextMenuEnabled;
+        setIsContextMenuEnabled(newVal);
+        chrome.storage.local.set({ aitermContextMenu: newVal });
+    };
+
+    const toggleAutoPopup = () => {
+        const newVal = !isAutoPopupEnabled;
+        setIsAutoPopupEnabled(newVal);
+        chrome.storage.local.set({ aitermAutoPopup: newVal });
     };
 
     useEffect(() => {
@@ -1237,16 +1247,29 @@ function Popup() {
                             <div className="close-button" onClick={() => setIsMenuOpen(false)} style={{ marginRight: '2px' }}><CloseIcon/></div>
                         </div>
                         <div className="prices-body" style={{padding: '5px'}}>
+
                             <div className="feature-card">
                                 <div className="feature-info">
-                                    <span className="feature-title">{t.quickTransPopup}</span>
-                                    <span className="feature-desc">{t.quickTransDesc}</span>
+                                    <span className="feature-title">Перевод по ПКМ (Контекстное меню)</span>
+                                    <span className="feature-desc">Кликните правой кнопкой мыши по выделенному тексту для вызова меню</span>
                                 </div>
                                 <label className="switch">
-                                    <input type="checkbox" checked={isQuickTranslateEnabled} onChange={toggleQuickTranslate} />
+                                    <input type="checkbox" checked={isContextMenuEnabled} onChange={toggleContextMenu} />
                                     <span className="slider"></span>
                                 </label>
                             </div>
+
+                            <div className="feature-card">
+                                <div className="feature-info">
+                                    <span className="feature-title">Автоматическое окно</span>
+                                    <span className="feature-desc">Кнопка появляется сразу после выделения текста</span>
+                                </div>
+                                <label className="switch">
+                                    <input type="checkbox" checked={isAutoPopupEnabled} onChange={toggleAutoPopup} />
+                                    <span className="slider"></span>
+                                </label>
+                            </div>
+
                             <div className="soon-badge">
                                 {t.soonBadge}
                             </div>

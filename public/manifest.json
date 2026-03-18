@@ -21,7 +21,9 @@
   "permissions": [
     "storage",
     "identity",
-    "scripting"
+    "scripting",
+    "contextMenus",
+    "activeTab"
   ],
   "oauth2": {
     "client_id": "477928247590-djo2slpf4v96j5hkde74ppfn3tcbj993.apps.googleusercontent.com",
