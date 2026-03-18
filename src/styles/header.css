@@ -155,36 +155,39 @@
 
 .theme-transition-bg {
     position: absolute;
-    top: -10vh;
-    bottom: -10vh;
-    width: 140vw;
-    filter: blur(50px);
+    top: -20vh;
+    bottom: -20vh;
+    /* Увеличиваем ширину блока, чтобы размытые края не попадали в экран */
+    width: 200vw;
+    filter: blur(45px);
     z-index: -1;
     will-change: transform;
 }
-
 .theme-transition-overlay.to-dark .theme-transition-bg {
     background-color: #1e1e1e;
-    left: -160vw;
+    /* Отодвигаем стартовую позицию дальше за экран */
+    left: -250vw;
     animation: swipeBgRight 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 .theme-transition-overlay.to-light .theme-transition-bg {
     background-color: #f0f2f5;
-    right: -160vw;
+    /* Отодвигаем стартовую позицию дальше за экран */
+    right: -250vw;
     animation: swipeBgLeft 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
-
 @keyframes swipeBgRight {
     0% { transform: translateX(0); }
-    50% { transform: translateX(140vw); }
-    100% { transform: translateX(280vw); }
+    /* На 50% блок перекрывает экран с огромным запасом (от -50vw до +150vw) */
+    50% { transform: translateX(200vw); }
+    /* Финальная точка уводит хвост блока далеко за правый край */
+    100% { transform: translateX(400vw); }
 }
 
 @keyframes swipeBgLeft {
     0% { transform: translateX(0); }
-    50% { transform: translateX(-140vw); }
-    100% { transform: translateX(-280vw); }
+    50% { transform: translateX(-200vw); }
+    100% { transform: translateX(-400vw); }
 }
 
 .theme-transition-text {
