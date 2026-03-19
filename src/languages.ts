@@ -148,7 +148,11 @@ export const translations = {
         btnRename: 'إعادة تسمية',
         newNamePlaceholder: 'الاسم الجديد...',
         emailCopied: 'تم نسخ البريد الإلكتروني',
-        version: 'الإصدار 1.0'
+        version: 'الإصدار 1.0',
+        contextMenuTitle: 'الترجمة بالنقر بزر الماوس الأيمن (قائمة السياق)',
+        contextMenuDesc: 'انقر بزر الماوس الأيمن على النص المحدد لفتح القائمة',
+        autoPopupTitle: 'نافذة منبثقة تلقائية',
+        autoPopupDesc: 'يظهر زر على الفور بعد تحديد النص'
     },
     zh: {
         enterWord: '输入单词...',
@@ -263,7 +267,11 @@ export const translations = {
         btnRename: '重命名',
         newNamePlaceholder: '新名称...',
         emailCopied: '已复制电子邮件',
-        version: '版本 1.0'
+        version: '版本 1.0',
+        contextMenuTitle: '右键翻译（上下文菜单）',
+        contextMenuDesc: '右键单击所选文本以打开菜单',
+        autoPopupTitle: '自动弹出窗口',
+        autoPopupDesc: '选择文本后立即出现一个按钮'
     },
     en: {
         enterWord: 'Enter word...',
@@ -378,7 +386,11 @@ export const translations = {
         btnRename: 'Rename',
         newNamePlaceholder: 'New name...',
         emailCopied: 'Email copied to clipboard',
-        version: 'Version 1.0'
+        version: 'Version 1.0',
+        contextMenuTitle: 'Right-Click Translation (Context Menu)',
+        contextMenuDesc: 'Right-click on the selected text to open the menu',
+        autoPopupTitle: 'Automatic Popup',
+        autoPopupDesc: 'A button appears immediately after selecting text'
     },
     fr: {
         enterWord: 'Entrez un mot...',
@@ -493,7 +505,11 @@ export const translations = {
         btnRename: 'Renommer',
         newNamePlaceholder: 'Nouveau nom...',
         emailCopied: 'E-mail copié',
-        version: 'Version 1.0'
+        version: 'Version 1.0',
+        contextMenuTitle: 'Traduction par clic droit (Menu contextuel)',
+        contextMenuDesc: 'Faites un clic droit sur le texte sélectionné pour ouvrir le menu',
+        autoPopupTitle: 'Fenêtre automatique',
+        autoPopupDesc: 'Un bouton apparaît immédiatement après la sélection du texte'
     },
     hi: {
         enterWord: 'शब्द दर्ज करें...',
@@ -608,7 +624,11 @@ export const translations = {
         btnRename: 'नाम बदलें',
         newNamePlaceholder: 'नया नाम...',
         emailCopied: 'ईमेल कॉपी किया गया',
-        version: 'संस्करण 1.0'
+        version: 'संस्करण 1.0',
+        contextMenuTitle: 'राइट-क्लिक अनुवाद (संदर्भ मेनू)',
+        contextMenuDesc: 'मेनू खोलने के लिए चयनित टेक्स्ट पर राइट-क्लिक करें',
+        autoPopupTitle: 'स्वचालित पॉपअप',
+        autoPopupDesc: 'टेक्स्ट चुनने के तुरंत बाद एक बटन दिखाई देता है'
     },
     pl: {
         enterWord: 'Wpisz słowo...',
@@ -723,7 +743,11 @@ export const translations = {
         btnRename: 'Zmień nazwę',
         newNamePlaceholder: 'Nowa nazwa...',
         emailCopied: 'Skopiowano email',
-        version: 'Wersja 1.0'
+        version: 'Wersja 1.0',
+        contextMenuTitle: 'Tłumaczenie PPM (Menu kontekstowe)',
+        contextMenuDesc: 'Kliknij prawym przyciskiem myszy na zaznaczony tekst, aby otworzyć menu',
+        autoPopupTitle: 'Automatyczne okno',
+        autoPopupDesc: 'Przycisk pojawia się natychmiast po zaznaczeniu tekstu'
     },
     pt: {
         enterWord: 'Digite a palavra...',
@@ -838,7 +862,11 @@ export const translations = {
         btnRename: 'Renommer',
         newNamePlaceholder: 'Novo nome...',
         emailCopied: 'E-mail copiado',
-        version: 'Versão 1.0'
+        version: 'Versão 1.0',
+        contextMenuTitle: 'Tradução com botão direito (Menu de contexto)',
+        contextMenuDesc: 'Clique com o botão direito no texto selecionado para abrir o menu',
+        autoPopupTitle: 'Janela automática',
+        autoPopupDesc: 'Um botão aparece imediatamente após selecionar o texto'
     },
     ru: {
         enterWord: 'Введите слово...',
@@ -935,7 +963,7 @@ export const translations = {
         quickTransDesc: 'Показывать плавающую кнопку AiTerm при выделении текста на любом сайте.',
         soonBadge: 'Больше крутих функций в будущих обновлениях! 🚀',
         aboutTitle1: 'Что такое AiTerm?',
-        aboutText1: 'AiTerm — это продвинутый ИИ-переводчик, созданный для глубокого анализа контекста и изучения языков.',
+        aboutText1: 'AiTerm — это продвинутый ИИ-переводчик, созданный для глубокого анализа контексту и изучения языков.',
         aboutTitle2: 'Почему именно AiTerm?',
         aboutText2: '• Контекстная точность: AiTerm анализирует весь текст, чтобы дать самый точный перевод.\n• Оценка CEFR: Моментально узнайте сложность слова.\n• Умные словари: Собирайте свою базу слов с полным контекстом и примерами.',
         aboutTitle3: 'Как пользоваться',
@@ -953,7 +981,11 @@ export const translations = {
         btnRename: 'Переименовать',
         newNamePlaceholder: 'Новое название...',
         emailCopied: 'Email скопирован',
-        version: 'Версия 1.0'
+        version: 'Версия 1.0',
+        contextMenuTitle: 'Перевод по ПКМ (Контекстное меню)',
+        contextMenuDesc: 'Кликните правой кнопкой мыши по выделенному тексту для вызова меню',
+        autoPopupTitle: 'Автоматическое окно',
+        autoPopupDesc: 'Кнопка появляется сразу после выделения текста'
     },
     es: {
         enterWord: 'Introduce palabra...',
@@ -1068,7 +1100,11 @@ export const translations = {
         btnRename: 'Renommar',
         newNamePlaceholder: 'Nuevo nombre...',
         emailCopied: 'Correo electrónico copiado',
-        version: 'Versión 1.0'
+        version: 'Versión 1.0',
+        contextMenuTitle: 'Traducción con clic derecho (Menú contextual)',
+        contextMenuDesc: 'Haz clic derecho sobre el texto seleccionado para abrir el menú',
+        autoPopupTitle: 'Ventana automática',
+        autoPopupDesc: 'Un botón aparece inmediatamente después de seleccionar el texto'
     },
     uk: {
         enterWord: 'Введіть слово...',
@@ -1183,7 +1219,11 @@ export const translations = {
         btnRename: 'Перейменувати',
         newNamePlaceholder: 'Нова назва...',
         emailCopied: 'Email скопійовано',
-        version: 'Версія 1.0'
+        version: 'Версія 1.0',
+        contextMenuTitle: 'Переклад за ПКМ (Контекстне меню)',
+        contextMenuDesc: 'Клікніть правою кнопкою миші по виділеному тексту для виклику меню',
+        autoPopupTitle: 'Автоматичне вікно',
+        autoPopupDesc: 'Кнопка з\'являється одразу після виділення тексту'
     }
 };
 

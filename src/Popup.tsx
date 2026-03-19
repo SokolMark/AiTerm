@@ -1247,8 +1247,8 @@ function Popup() {
 
                             <div className="feature-card">
                                 <div className="feature-info">
-                                    <span className="feature-title">Перевод по ПКМ (Контекстное меню)</span>
-                                    <span className="feature-desc">Кликните правой кнопкой мыши по выделенному тексту для вызова меню</span>
+                                    <span className="feature-title">{t.contextMenuTitle}</span>
+                                    <span className="feature-desc">{t.contextMenuDesc}</span>
                                 </div>
                                 <label className="switch">
                                     <input type="checkbox" checked={isContextMenuEnabled} onChange={toggleContextMenu} />
@@ -1258,8 +1258,8 @@ function Popup() {
 
                             <div className="feature-card">
                                 <div className="feature-info">
-                                    <span className="feature-title">Автоматическое окно</span>
-                                    <span className="feature-desc">Кнопка появляется сразу после выделения текста</span>
+                                    <span className="feature-title">{t.autoPopupTitle}</span>
+                                    <span className="feature-desc">{t.autoPopupDesc}</span>
                                 </div>
                                 <label className="switch">
                                     <input type="checkbox" checked={isAutoPopupEnabled} onChange={toggleAutoPopup} />
