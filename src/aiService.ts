@@ -11,8 +11,17 @@ export interface WordData {
     isCached?: boolean; // Добавлен флаг кэширования
 }
 
-// const BASE_URL = "http://127.0.0.1:8787";
 const BASE_URL = "https://aiterm-proxy.sarkkofag.workers.dev";
+const API_SECRET = "aiterm_secret_key_2026_mvp";
+
+const HEADERS_JSON = {
+    "Content-Type": "application/json",
+    "x-extension-secret": API_SECRET
+};
+
+const HEADERS_GET = {
+    "x-extension-secret": API_SECRET
+};
 
 const CACHE_KEY = 'aiterm-translation-cache';
 const MAX_CACHE_SIZE = 100;
@@ -101,7 +110,7 @@ JSON:
     try {
         const response = await fetch(`${BASE_URL}/translate`, {
             method: "POST",
-            headers: {"Content-Type": "application/json"},
+            headers: HEADERS_JSON,
             body: JSON.stringify({prompt: unifiedPrompt, email, source})
         });
 
@@ -157,7 +166,7 @@ export const authenticateUser = async (email: string) => {
     try {
         const response = await fetch(`${BASE_URL}/auth`, {
             method: "POST",
-            headers: {"Content-Type": "application/json"},
+            headers: HEADERS_JSON,
             body: JSON.stringify({email})
         });
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
@@ -171,7 +180,7 @@ export const deleteUserProfile = async (email: string) => {
     try {
         const response = await fetch(`${BASE_URL}/user`, {
             method: "DELETE",
-            headers: {"Content-Type": "application/json"},
+            headers: HEADERS_JSON,
             body: JSON.stringify({email})
         });
         return await response.json();
@@ -182,7 +191,9 @@ export const deleteUserProfile = async (email: string) => {
 
 export const getDictionaries = async (email: string) => {
     try {
-        const response = await fetch(`${BASE_URL}/dictionaries?email=${encodeURIComponent(email)}`);
+        const response = await fetch(`${BASE_URL}/dictionaries?email=${encodeURIComponent(email)}`, {
+            headers: HEADERS_GET
+        });
         const data = await response.json();
         return data.dictionaries || [];
     } catch (error) {
@@ -194,7 +205,7 @@ export const createDictionary = async (email: string, name: string) => {
     try {
         const response = await fetch(`${BASE_URL}/dictionaries`, {
             method: "POST",
-            headers: {"Content-Type": "application/json"},
+            headers: HEADERS_JSON,
             body: JSON.stringify({email, name})
         });
         return await response.json();
@@ -207,7 +218,7 @@ export const renameDictionary = async (dictId: string, newName: string) => {
     try {
         const response = await fetch(`${BASE_URL}/dictionaries`, {
             method: "PUT",
-            headers: {"Content-Type": "application/json"},
+            headers: HEADERS_JSON,
             body: JSON.stringify({dictId, newName})
         });
         return await response.json();
@@ -220,7 +231,7 @@ export const deleteDictionary = async (dictId: string) => {
     try {
         const response = await fetch(`${BASE_URL}/dictionaries`, {
             method: "DELETE",
-            headers: {"Content-Type": "application/json"},
+            headers: HEADERS_JSON,
             body: JSON.stringify({dictId})
         });
         return await response.json();
@@ -231,7 +242,9 @@ export const deleteDictionary = async (dictId: string) => {
 
 export const getDictionaryWords = async (dictId: string) => {
     try {
-        const response = await fetch(`${BASE_URL}/words?dictId=${encodeURIComponent(dictId)}`);
+        const response = await fetch(`${BASE_URL}/words?dictId=${encodeURIComponent(dictId)}`, {
+            headers: HEADERS_GET
+        });
         const data = await response.json();
         return data.words || [];
     } catch (error) {
@@ -243,7 +256,7 @@ export const saveWordToDictionary = async (dictId: string, word: string, transla
     try {
         const response = await fetch(`${BASE_URL}/words`, {
             method: "POST",
-            headers: {"Content-Type": "application/json"},
+            headers: HEADERS_JSON,
             body: JSON.stringify({dictId, word, translation, wordData})
         });
         return await response.json();
@@ -256,7 +269,7 @@ export const deleteWord = async (wordId: string) => {
     try {
         const response = await fetch(`${BASE_URL}/words`, {
             method: "DELETE",
-            headers: {"Content-Type": "application/json"},
+            headers: HEADERS_JSON,
             body: JSON.stringify({wordId})
         });
         return await response.json();

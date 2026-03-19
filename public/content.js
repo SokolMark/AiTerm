@@ -532,7 +532,10 @@ function openFloatingWindow() {
                         try {
                             const response = await fetch(`${BASE_URL}/translate`, {
                                 method: "POST",
-                                headers: {"Content-Type": "application/json"},
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "x-extension-secret": "aiterm_secret_key_2026_mvp"
+                                },
                                 body: JSON.stringify({ prompt: prompt, email: result.aitermUserEmail, source: 'mini' }),
                                 signal: signal
                             });
