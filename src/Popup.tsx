@@ -163,7 +163,7 @@ function Popup() {
     };
 
     const handleCopyEmail = () => {
-        navigator.clipboard.writeText('sarkkofag@gmail.com').then(() => {
+        navigator.clipboard.writeText('mark.sokol@aiterm.xyz').then(() => {
             showToast(t.emailCopied, "success");
         });
     };
@@ -1308,7 +1308,7 @@ function Popup() {
 
                             <div className="contact-btn" onClick={handleCopyEmail}>
                                 <MailIcon/>
-                                <span>sarkkofag@gmail.com</span>
+                                <span>mark.sokol@aiterm.xyz</span>
                                 <div style={{marginLeft: 'auto', opacity: 0.5}}><CopyIcon/></div>
                             </div>
 
